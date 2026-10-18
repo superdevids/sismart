@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: sismart-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER:-sismart}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-sismart}
+      POSTGRES_DB: ${DB_DATABASE:-sismart}
+    ports:
+      - '127.0.0.1:${DB_PORT:-5432}:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${DB_USER:-sismart} -d ${DB_DATABASE:-sismart}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:
