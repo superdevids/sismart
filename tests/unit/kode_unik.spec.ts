@@ -10,7 +10,6 @@ test.group('Kode unik format', () => {
 
   test('accepts employee codes (K + year + gender + sequence)', ({ assert }) => {
     assert.isTrue(isValidKodeUnik('K261001'))
-    assert.isTrue(isValidKodeUnik('K261000'))
     assert.isTrue(isValidKodeUnik('K270999'))
   })
 
@@ -24,8 +23,10 @@ test.group('Kode unik format', () => {
       'S2610100',
       'S261010000',
       'S26102001',
+      'S26100000',
       'K26100',
       'K2610001',
+      'K261000',
       'K279999',
       'admin',
     ]

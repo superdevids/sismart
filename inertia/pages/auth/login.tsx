@@ -4,15 +4,15 @@ import { Form } from '@adonisjs/inertia/react'
 export default function Login() {
   return (
     <>
-      <h1 className="auth__title">Welcome back</h1>
-      <p className="auth__sub">Sign in with your unique code to continue.</p>
+      <h1 className="auth__title">Selamat datang kembali</h1>
+      <p className="auth__sub">Masuk dengan kode unik untuk melanjutkan.</p>
 
       <Form route="session.store">
         {({ errors, processing }) => (
           <div className="auth__form">
             <div className="field">
               <label className="field__label" htmlFor="kodeUnik">
-                Unique code
+                Kode unik
               </label>
               <input
                 id="kodeUnik"
@@ -48,7 +48,7 @@ export default function Login() {
               disabled={processing}
               style={{ marginTop: 4 }}
             >
-              {processing ? 'One moment…' : 'Sign in'}
+              {processing ? 'Sebentar…' : 'Masuk'}
             </button>
           </div>
         )}

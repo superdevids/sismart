@@ -1,27 +1,49 @@
 import { Link } from '@adonisjs/inertia/react'
 
-export default function Logo({ size = 26 }: { size?: number }) {
+type LogoProps = {
+  size?: number
+  label?: string
+}
+
+export default function Logo({ size = 26, label = 'Sismart' }: LogoProps) {
   return (
     <Link
       route="home"
-      aria-label="AdonisJS"
-      style={{ display: 'inline-flex', color: 'var(--ink)' }}
+      aria-label={label}
+      style={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        gap: size * 0.28,
+        color: 'var(--ink)',
+      }}
     >
       <svg
         width={size}
         height={size}
-        viewBox="0 0 160 160"
+        viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
+        stroke="var(--accent)"
+        strokeWidth="1.8"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
-        <path
-          fillRule="evenodd"
-          clipRule="evenodd"
-          d="M0 80.0001C0 144.521 15.4786 160 79.9999 160 144.521 160 160 144.521 160 80.0001 160 15.4786 144.521 0 79.9999 0 15.4786 0 0 15.4786 0 80.0001zm32.2607 16.6191l25.0918-57.0266c4.2361-9.613 12.3825-14.8268 22.6474-14.8268 10.265 0 18.4113 5.2138 22.6481 14.8268l25.091 57.0266c1.141 2.77 2.118 6.3538 2.118 9.4498 0 14.175-9.939 24.114-24.114 24.114-4.828 0-8.6629-1.232-12.5444-2.479-3.9771-1.278-8.0036-2.572-13.1987-2.572-5.1349 0-9.2597 1.306-13.3154 2.589-3.9233 1.241-7.7814 2.462-12.4279 2.462-14.1752 0-24.1141-9.939-24.1141-24.114 0-3.096.9776-6.6798 2.1182-9.4498zm47.7392-47.0871L55.2344 105.581c7.332-3.422 15.8043-5.051 24.7655-5.051 8.6358 0 17.434 1.629 24.4401 5.051L79.9999 49.5321z"
-          fill="currentColor"
-        />
+        <path d="M12 3.5 21 8l-9 4.5L3 8l9-4.5Z" />
+        <path d="M6.5 10.3V15c0 1.6 2.5 2.9 5.5 2.9s5.5-1.3 5.5-2.9v-4.7" />
+        <path d="M21 8v5.5" />
+        <circle cx="21" cy="15.2" r="1.3" fill="var(--accent)" stroke="none" />
       </svg>
+      <span
+        style={{
+          fontWeight: 700,
+          fontSize: size * 0.82,
+          letterSpacing: '-0.02em',
+          lineHeight: 1,
+        }}
+      >
+        {label}
+      </span>
     </Link>
   )
 }

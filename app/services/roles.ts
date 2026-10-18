@@ -13,6 +13,14 @@ export const ROLES = {
 
 export type RoleName = (typeof ROLES)[keyof typeof ROLES]
 
+/**
+ * True when the given name is a role the platform recognises. Accounts without
+ * a role, or holding a name that is no longer known, count as not yet activated.
+ */
+export function isKnownRoleName(name: string | null | undefined): boolean {
+  return !!name && (Object.values(ROLES) as string[]).includes(name)
+}
+
 const ROLE_LABELS: Record<RoleName, string> = {
   [ROLES.admin]: 'Administrator',
   [ROLES.kepalaSekolah]: 'Kepala Sekolah',

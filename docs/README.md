@@ -27,7 +27,7 @@ Lihat seksi "Bootstrap dari nol" di [03-arsitektur-teknis.md](./03-arsitektur-te
 ## Aturan penting yang berlaku seterusnya
 
 1. **Migration immutable** — jangan edit migration yang sudah ter-apply; selalu tambah migration baru. `1792200000001_alter_users_table.ts` **destruktif** (up: drop+recreate users; down: kembalikan tabel email lawas). **Jangan jalankan `migrate:rollback` pada DB yang berisi data.**
-2. Kode unik tunduk format `app/services/kode_unik.ts`; aturan binding: sequence **001–999** (catat: regex saat ini masih menerima `000` — koreksi dijadwalkan, lihat 02/D3).
+2. Kode unik tunduk format `app/services/kode_unik.ts`; aturan binding: sequence **001-999** (sudah di-enforce di regex - fix T-009 APPROVED Rocky; commit menyusul).
 3. Self-registration & reset password belum dibangun dan belum diminta — dilarang muncul diam-diam.
 4. Data SPP & gaji = finansial sensitif: akses per role ketat; **backend backup (pg_dump + uji restore) wajib ada SEBELUM data nyata masuk** — desainnya belum diputuskan (lihat 02/D13).
 5. Menu sidebar per-role **belum dibangun** (nav saat ini statis) — dilarang mengklaim sebaliknya di dokumen/kode.

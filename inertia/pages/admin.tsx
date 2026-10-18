@@ -9,8 +9,8 @@ export default function Admin() {
         <div className="empty__mark">
           <ShieldCheck size={22} />
         </div>
-        <h1>Admin area</h1>
-        <p>Halaman ini hanya dapat diakses oleh pengguna dengan role admin.</p>
+        <h1>Area admin</h1>
+        <p>Halaman ini hanya dapat diakses oleh pengguna dengan peran admin.</p>
       </div>
     </Page>
   )
