@@ -3,7 +3,8 @@ import Role from '#models/role'
 import User from '#models/user'
 import { ROLES } from '#services/roles'
 import { isValidKodeUnik } from '#services/kode_unik'
-import { BaseCommand } from '@adonisjs/core/ace'
+import { PASSWORD_MIN_LENGTH, passwordValidator } from '#validators/password'
+import { BaseCommand, flags } from '@adonisjs/core/ace'
 import type { CommandOptions } from '@adonisjs/core/types/ace'
 
 /**
@@ -11,12 +12,18 @@ import type { CommandOptions } from '@adonisjs/core/types/ace'
  * so no credentials live in the source tree. Idempotent: re-running it resets
  * the admin password.
  *
+ * A code that already belongs to a non-admin account is never promoted
+ * silently; pass `--force` to override that guard (P3).
+ *
  *   node ace admin:create
  */
 export default class CreateAdmin extends BaseCommand {
   static commandName = 'admin:create'
   static description = 'Create or update the bootstrap administrator from ADMIN_* env variables'
   static options: CommandOptions = { startApp: true }
+
+  @flags.boolean({ description: 'Promote an existing non-admin account holding this code' })
+  declare force: boolean
 
   async run() {
     const kodeUnik = env.get('ADMIN_KODE_UNIK')
@@ -35,13 +42,25 @@ export default class CreateAdmin extends BaseCommand {
       return
     }
 
-    if (password.length < 8) {
-      this.logger.error('ADMIN_PASSWORD must be at least 8 characters long')
+    try {
+      await passwordValidator.validate({ password })
+    } catch {
+      this.logger.error(`ADMIN_PASSWORD must be at least ${PASSWORD_MIN_LENGTH} characters long`)
       this.exitCode = 1
       return
     }
 
     const adminRole = await Role.findByOrFail('name', ROLES.admin)
+
+    const existing = await User.findBy('kodeUnik', kodeUnik)
+
+    if (existing && existing.roleId !== adminRole.id && !this.force) {
+      this.logger.error(
+        `Kode unik "${kodeUnik}" already belongs to a non-admin account; refusing to promote it. Re-run with --force to override.`
+      )
+      this.exitCode = 1
+      return
+    }
 
     const user = await User.updateOrCreate(
       { kodeUnik },

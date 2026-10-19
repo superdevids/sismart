@@ -1,65 +1,65 @@
-﻿# 02 â€” Keputusan Desain (semuanya user-approved)
+# 02 �?" Keputusan Desain (semuanya user-approved)
 
-Semua keputusan di bawah terkunci dari sesi diskusi 17â€“18 Okt 2026 dan mengikat implementasi. Perubahan hanya lewat keputusan user terbaru, dicatat di sini sebagai revisi.
+Semua keputusan di bawah terkunci dari sesi diskusi 17�?"18 Okt 2026 dan mengikat implementasi. Perubahan hanya lewat keputusan user terbaru, dicatat di sini sebagai revisi.
 
-## D1 â€” Stack
+## D1 �?" Stack
 
-**AdonisJS 7 + Inertia React 19 + Tailwind CSS v4 + PostgreSQL on-premise (Docker).** Backend session-based. Validasi VineJS. Tanpa library RBAC eksternal. Alias import backend per `package.json â†’ imports` (`#controllers/*`, `#models/*`, `#services/*`, dst.); frontend `~/` â†’ `inertia/` dan `@generated` (via `vite.config.ts`).
+**AdonisJS 7 + Inertia React 19 + Tailwind CSS v4 + PostgreSQL on-premise (Docker).** Backend session-based. Validasi VineJS. Tanpa library RBAC eksternal. Alias import backend per `package.json �?' imports` (`#controllers/*`, `#models/*`, `#services/*`, dst.); frontend `~/` �?' `inertia/` dan `@generated` (via `vite.config.ts`).
 
-## D2 â€” Database & hosting
+## D2 �?" Database & hosting
 
-PostgreSQL **on-premise** via `docker-compose.yml` (volume `postgres_data`, healthcheck, binding `127.0.0.1`). Suite test **SQLite** (`NODE_ENV=test`). **Port kanonik: 5432** (default compose & `.env.example`); dev lokal di mesin pemilik project memakai override `DB_PORT=5433` karena 5432 terpakai container lain â€” bukan standar. Deploy produksi: fleksibel **on-premise sekolah atau VPS**.
+PostgreSQL **on-premise** via `docker-compose.yml` (volume `postgres_data`, healthcheck, binding `127.0.0.1`). Suite test **SQLite** (`NODE_ENV=test`). **Port kanonik: 5432** (default compose & `.env.example`); dev lokal di mesin pemilik project memakai override `DB_PORT=5433` karena 5432 terpakai container lain �?" bukan standar. Deploy produksi: fleksibel **on-premise sekolah atau VPS**.
 
-## D3 â€” Kode unik (login tanpa SSO)
+## D3 �?" Kode unik (login tanpa SSO)
 
 Identitas login = kode unik + password; **Google SSO batal**.
 
-- **Siswa:** `S` + 2 digit tahun masuk + 2 digit kode program studi + 1 digit gender (1=L, 0=P) + 3 digit sequence **001â€“999**, reset tiap tahun ajaran. Contoh `S26101001`.
+- **Siswa:** `S` + 2 digit tahun masuk + 2 digit kode program studi + 1 digit gender (1=L, 0=P) + 3 digit sequence **001�?"999**, reset tiap tahun ajaran. Contoh `S26101001`.
 - **Karyawan:** `K` + 2 digit tahun masuk + 1 digit gender + 3 digit sequence. Contoh `K261001`.
-- **Status koreksi (selesai 18 Okt):** regex kini menolak sequence `000` (`(?!000)`) dan test dikoreksi â€” review Rocky T-010 `APPROVED` (menunggu commit berikutnya). Generator nomor sequence tetap dibangun bersama modul data induk.
+- **Status koreksi (selesai 18 Okt):** regex kini menolak sequence `000` (`(?!000)`) dan test dikoreksi �?" review Rocky T-010 `APPROVED` (menunggu commit berikutnya). Generator nomor sequence tetap dibangun bersama modul data induk.
 - Generator nomor sequence dibangun bersama modul data induk.
 
-## D4 â€” Portal & peran + akun wali
+## D4 �?" Portal & peran + akun wali
 
 1 portal multi-role: admin, kepala_sekolah, guru, staff, siswa, wali. **Wali punya akun: 1 akun wali per siswa.** Opsi "1 akun per keluarga" **ditolak** (tidak dipilih). Struktur akun wali disiapkan sekarang; fiturnya menyusul.
 
-## D5 â€” Absensi
+## D5 �?" Absensi
 
-- Granularitas siswa: **harian** â€” status hadir/sakit/izin/alfa/terlambat.
-- Metode: **manual web + QR dinamis** (QR berganti Â±30 detik, siswa scan via HP sendiri). Fallback manual selalu tersedia.
+- Granularitas siswa: **harian** �?" status hadir/sakit/izin/alfa/terlambat.
+- Metode: **manual web + QR dinamis** (QR berganti ±30 detik, siswa scan via HP sendiri). Fallback manual selalu tersedia.
 
-## D6 â€” Pembayaran SPP
+## D6 �?" Pembayaran SPP
 
 Dua jalur: (a) **tunai di bendahara**, kuitansi digital tercat; (b) **transfer via Midtrans** + webhook konfirmasi.
-Eksekusi: **sandbox dulu**; produksiä½† butuh akun/key milik sekolah + persetujuan user terpisah (aksi eksternal & berbayar).
+Eksekusi: **sandbox dulu**; produksi�? butuh akun/key milik sekolah + persetujuan user terpisah (aksi eksternal & berbayar).
 
-## D7 â€” Penggajian
+## D7 �?" Penggajian
 
 **Campuran:** tunjangan kehadiran dihitung otomatis dari absensi guru; komponen lain (jabatan, kinerja, potongan BPJS/koperasi) input manual bendahara.
 
-## D8 â€” CBT
+## D8 �?" CBT
 
-Beban puncak **>300 siswa bersamaan** â†’ connection pooling, indeks ketat, **uji beban = AC wajib modul CBT**. Jenis soal, acak urutan, timer auto-submit: rinci saat spec modul CBT.
+Beban puncak **>300 siswa bersamaan** �?' connection pooling, indeks ketat, **uji beban = AC wajib modul CBT**. Jenis soal, acak urutan, timer auto-submit: rinci saat spec modul CBT.
 
-## D9 â€” Data awal
+## D9 �?" Data awal
 
 **Import massal Excel/CSV diperlukan** untuk siswa & pegawai (validasi duplikat, preview sebelum commit).
 
-## D10 â€” Urutan build
+## D10 �?" Urutan build
 
 Semua modul dibangun; eksekusi per wave setelah fondasi. Fondasi memblokir semuanya (dependency teknis).
 
-## D11 â€” Kebijakan operasional
+## D11 �?" Kebijakan operasional
 
 - Tanpa persetujuan user: tidak ada commit/push/deploy/publish, aksi eksternal/berbayar, penghapusan data.
 - Secret tidak pernah masuk source/log/laporan; admin bootstrap hanya via env (`ADMIN_*`).
 - Spec berubah versi bila perilaku/scope/AC berubah.
 
-## D12 â€” Timezone (hasil audit)
+## D12 �?" Timezone (hasil audit)
 
-Baku: **`Asia/Jakarta` (WIB)** â€” konsisten keputusan user "UI Indonesia, Rupiah, WIB". `.env.example` saat ini `TZ=UTC` â†’ **koreksi dijadwalkan (T-009)**. Semua penyimpanan waktu mengikuti keputusan ini; absensi/SPP/gaji nyata jangan dijalankan sebelum koreksi.
+Baku: **`Asia/Jakarta` (WIB)** �?" konsisten keputusan user "UI Indonesia, Rupiah, WIB". `.env.example` saat ini `TZ=UTC` �?' **koreksi dijadwalkan (T-009)**. Semua penyimpanan waktu mengikuti keputusan ini; absensi/SPP/gaji nyata jangan dijalankan sebelum koreksi.
 
-## D13 â€” Backup & audit trail (status: BELUM DIPUTUSKAN)
+## D13 �?" Backup & audit trail (status: BELUM DIPUTUSKAN)
 
 Prinsip sudah disepakati (wajib sebelum data finansial nyata), **desainnya belum**: backend/jadwal `pg_dump` + lokasi + **uji restore berkala**; desain audit trail (tabel audit vs event log) belum dipilih. Dicatat eksplisit agar tidak dikira sudah ada.
 
@@ -114,3 +114,11 @@ Empat temuan MINOR hasil review Rocky (T-018b) DIPUTUSKAN menjadi backlog non-bl
 5. (Baru, hasil verifikasi Tara T-022) App shell mobile: klik-luar menutup menu tapi fokus tidak kembali ke toggle (Escape sudah benar) - tambahkan menuButtonRef.focus() pada handler click-outside (inertia/layouts/app.tsx)
 6. (Baru, T-022) Kontras text-brand-blue di dark terukur 2.92:1 - konfirmasi terukur untuk item 2
    Kewajiban: dikerjakan sebelum rilis produksi publik; landing page sekolah tidak boleh publikasi selama item 1-2 belum selesai.
+
+## D25 - Audit trail (keputusan 19 Okt)
+
+WV-7 implementasi: kolom created_by/updated_by di semua tabel induk + tabel audit_log generik (actor_id, action, entity, entity_id, payload_lama JSON, created_at) ditulis via service terpusat pada create/update/delete oleh admin/staff. Alasan: prasyarat sebelum modul beruang (SPP).
+
+## D26 - Backup & deploy produksi (keputusan 19 Okt)
+
+Retensi 7 harian + 4 mingguan + 12 bulanan; offsite = NAS/drive sekolah. Deploy produksi awal: VPS (on-premise menyusul bila sekolah siap). Repo GitHub superdevids/sismart PRIVATE (konfirmasi user). CI GitHub Actions minimal: lint + typecheck + unit/functional per push (keputusan user).

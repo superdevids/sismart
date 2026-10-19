@@ -342,4 +342,19 @@ test.group('Admin bootstrap command', (group) => {
     assert.notEqual(user.password, password)
     assert.isTrue(await user.verifyPassword(password))
   })
+
+  test('refuses to promote an existing non-admin account', async ({ assert }) => {
+    // The command reads ADMIN_KODE_UNIK from the environment, so the colliding
+    // account must hold that same (valid) code. A malformed code would be
+    // rejected earlier by the format guard and never reach the promotion guard.
+    const kodeUnik = env.get('ADMIN_KODE_UNIK')!
+    await createUser(kodeUnik, ROLES.siswa)
+
+    const result = await ace.exec('admin:create', [])
+    assert.equal(result.exitCode, 1)
+
+    const user = await User.findByOrFail('kode_unik', kodeUnik)
+    const role = await Role.findOrFail(user.roleId!)
+    assert.equal(role.name, ROLES.siswa)
+  })
 })

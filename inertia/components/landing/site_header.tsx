@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import { usePage } from '@inertiajs/react'
 import { Link } from '@adonisjs/inertia/react'
@@ -13,19 +13,39 @@ import { focusRing } from './ui'
  * dan digantikan tombol hamburger yang membuka panel menu.
  *
  * Aksesibilitas menu: tombol memakai `aria-expanded`/`aria-controls` dengan
- * `aria-label`, panel tertutup saat tombol Escape ditekan atau tautan dipilih.
+ * `aria-label`, panel tertutup saat tombol Escape ditekan, saat tautan dipilih,
+ * atau saat pengguna klik di luarnya — fokus selalu dikembalikan ke tombol.
  */
 export default function SiteHeader() {
   const { props } = usePage()
   const [open, setOpen] = useState(false)
+  const menuButtonRef = useRef<HTMLButtonElement>(null)
+  const menuPanelRef = useRef<HTMLElement>(null)
 
+  // While the mobile menu is open: Escape and any click outside of it close it
+  // and hand focus back to the toggle so keyboard users are not stranded.
   useEffect(() => {
     if (!open) return
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setOpen(false)
+
+    const close = () => {
+      setOpen(false)
+      menuButtonRef.current?.focus()
     }
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') close()
+    }
+    const onPointerDown = (event: PointerEvent) => {
+      const target = event.target as Node
+      if (menuPanelRef.current?.contains(target) || menuButtonRef.current?.contains(target)) return
+      close()
+    }
+
     document.addEventListener('keydown', onKeyDown)
-    return () => document.removeEventListener('keydown', onKeyDown)
+    document.addEventListener('pointerdown', onPointerDown)
+    return () => {
+      document.removeEventListener('keydown', onKeyDown)
+      document.removeEventListener('pointerdown', onPointerDown)
+    }
   }, [open])
 
   const isLoggedIn = Boolean(props.user)
@@ -70,6 +90,7 @@ export default function SiteHeader() {
             </Link>
           )}
           <button
+            ref={menuButtonRef}
             type="button"
             className={`inline-grid h-9 w-9 place-items-center rounded-[var(--r)] border border-[var(--line)] text-[var(--ink)] transition-colors hover:border-[var(--line-2)] md:hidden ${focusRing}`}
             aria-expanded={open}
@@ -83,7 +104,7 @@ export default function SiteHeader() {
       </div>
 
       {open && (
-        <nav id="menu-publik" aria-label="Navigasi mobile" className="md:hidden">
+        <nav id="menu-publik" ref={menuPanelRef} aria-label="Navigasi mobile" className="md:hidden">
           <div className="mx-auto w-full max-w-[1120px] px-5 pb-4 sm:px-6">
             <ul className="flex flex-col rounded-[var(--r-lg)] border border-[var(--line-2)] bg-[var(--card)] p-2 shadow-lg">
               {LANDING.nav.map((item) => (

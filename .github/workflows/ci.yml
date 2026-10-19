@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Lint, typecheck, functional tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      # Functional tests run on SQLite (see config/database.ts) against the
+      # tracked .env.test credentials — no database service or secrets needed.
+      # The browser suite is intentionally out of the minimal CI: it requires a
+      # built front-end and runs locally / on a schedule instead.
+      - name: Functional tests
+        run: node ace test functional

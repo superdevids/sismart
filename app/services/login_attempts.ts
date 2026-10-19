@@ -33,7 +33,15 @@ function isWindowExpired(row: LoginAttemptRow) {
  */
 export async function isLockedOut(kodeUnik: string) {
   const row = await findRow(kodeUnik)
-  if (!row || isWindowExpired(row)) return false
+  if (!row) return false
+
+  // Lazy cleanup: a lapsed window can never lock anyone out, so drop the stale
+  // row now instead of leaving it to bloat the table.
+  if (isWindowExpired(row)) {
+    await db.from(TABLE).where('kode_unik', kodeUnik).delete()
+    return false
+  }
+
   return Number(row.failed_count) >= MAX_FAILED_ATTEMPTS
 }
 

@@ -71,8 +71,13 @@ export default function Login() {
                 autoComplete="username"
                 placeholder="S26101001"
                 aria-invalid={errors.kodeUnik ? 'true' : 'false'}
+                aria-describedby={errors.kodeUnik ? 'kodeUnik-error' : undefined}
               />
-              {errors.kodeUnik && <span className="field__error">{errors.kodeUnik}</span>}
+              {errors.kodeUnik && (
+                <span id="kodeUnik-error" role="alert" className="field__error">
+                  {errors.kodeUnik}
+                </span>
+              )}
             </div>
 
             <div className="field">
@@ -87,8 +92,13 @@ export default function Login() {
                 autoComplete="current-password"
                 placeholder="••••••••"
                 aria-invalid={errors.password ? 'true' : 'false'}
+                aria-describedby={errors.password ? 'password-error' : undefined}
               />
-              {errors.password && <span className="field__error">{errors.password}</span>}
+              {errors.password && (
+                <span id="password-error" role="alert" className="field__error">
+                  {errors.password}
+                </span>
+              )}
             </div>
 
             <button

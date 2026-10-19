@@ -18,9 +18,9 @@ const items: NavItem[] = []
  */
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
-    <Page title="Settings" description="Manage your account settings and preferences.">
+    <Page title="Pengaturan" description="Kelola pengaturan dan preferensi akun Anda.">
       <div className="sidebar-layout">
-        <nav className="sidebar-layout__nav" aria-label="Settings">
+        <nav className="sidebar-layout__nav" aria-label="Pengaturan">
           {items.map(({ label, route, icon: Icon }) => (
             <NavLink key={label} route={route} exact className="sidebar-layout__item">
               {Icon && <Icon size={16} />}

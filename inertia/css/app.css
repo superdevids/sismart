@@ -45,6 +45,7 @@
     --ring: rgba(10, 10, 11, 0.13);
     --field: #ffffff;
     --ok: #18794e;
+    --danger: #c0392b;
 
     /* elevation tokens: 1 = field hairline, 2 = raised card, 3 = floating toast.
        Light values are the original shadows verbatim, so light is unchanged. */
@@ -84,6 +85,7 @@
     --ring: rgba(125, 151, 255, 0.3);
     --field: #0e1016;
     --ok: #3ecf8e;
+    --danger: #e0685c;
 
     /* soft glow instead of a hard drop shadow on the dark surface */
     --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5);

@@ -119,10 +119,7 @@ export function EkskulTeaser() {
   )
 }
 
-/**
- * Berita ditampilkan lengkap di beranda karena belum ada halaman berita
- * tersendiri, sehingga tidak ada tautan "Lihat semua".
- */
+/** Cuplikan berita terbaru dengan tautan ke halaman berita lengkap. */
 export function BeritaTeaser() {
   return (
     <TeaserSection
@@ -130,6 +127,8 @@ export function BeritaTeaser() {
       eyebrow={BERITA.eyebrow}
       title={BERITA.title}
       description={BERITA.description}
+      href="/berita"
+      linkLabel={`${LANDING.actions.seeAll} berita`}
     >
       <ul className={gridClass}>
         {BERITA.items.map((item) => (
