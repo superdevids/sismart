@@ -17,7 +17,7 @@ export default function ProfilPage() {
         <meta name="description" content={PROFIL.meta.description} />
       </Head>
 
-      <main>
+      <main className="page">
         <PageHero
           eyebrow={PROFIL.eyebrow}
           title={PROFIL.title}
@@ -73,7 +73,7 @@ export default function ProfilPage() {
         </Section>
 
         <Section id="visi-misi">
-          <div className="grid gap-6 lg:grid-cols-2">
+          <div className="flex flex-col gap-6">
             <article className={`p-6 sm:p-8 ${cardClass}`}>
               <h2 className="text-[12px] font-semibold uppercase tracking-[0.1em] text-brand-blue">
                 {PROFIL.vision.title}

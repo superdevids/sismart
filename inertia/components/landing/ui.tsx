@@ -15,16 +15,6 @@ export const focusRing =
 
 export const eyebrowClass = 'font-mono text-[11px] uppercase tracking-[0.14em] text-brand-blue'
 
-/**
- * Judul utama yang fluid: ukurannya mengikuti lebar viewport lewat `clamp()`
- * sehingga teks tetap nyaman dari layar kecil sampai besar tanpa lompatan
- * breakpoint.
- */
-export const displayTitleClass = 'text-[clamp(2.125rem,6vw,3.5rem)]'
-
-/** Judul section dengan ukuran fluid yang lebih kecil dari judul halaman. */
-export const sectionTitleClass = 'text-[clamp(1.5rem,3.2vw,2.125rem)]'
-
 export const cardClass = 'rounded-[var(--r-lg)] border border-[var(--line-2)] bg-[var(--card)]'
 
 export function Container({
@@ -77,11 +67,7 @@ export function SectionHeader({
   return (
     <header className="max-w-[720px]">
       {eyebrow && <p className={eyebrowClass}>{eyebrow}</p>}
-      <Heading
-        className={`mt-3 text-balance font-semibold leading-tight tracking-[-0.02em] ${sectionTitleClass}`}
-      >
-        {title}
-      </Heading>
+      <Heading className="heading-section mt-3 text-balance">{title}</Heading>
       {description && (
         <p className="mt-4 text-[15px] leading-relaxed text-[var(--muted)] text-pretty">
           {description}

@@ -19,6 +19,7 @@ router.on('/profil').renderInertia('publik/profil', {}).as('publik.profil')
 router.on('/jurusan').renderInertia('publik/jurusan', {}).as('publik.jurusan')
 router.on('/fasilitas').renderInertia('publik/fasilitas', {}).as('publik.fasilitas')
 router.on('/ekskul').renderInertia('publik/ekskul', {}).as('publik.ekskul')
+router.on('/berita').renderInertia('publik/berita', {}).as('publik.berita')
 router.on('/ppdb').renderInertia('publik/ppdb', {}).as('publik.ppdb')
 router.on('/kontak').renderInertia('publik/kontak', {}).as('publik.kontak')
 

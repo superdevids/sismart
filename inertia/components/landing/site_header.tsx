@@ -32,8 +32,8 @@ export default function SiteHeader() {
   const closeMenu = () => setOpen(false)
 
   return (
-    <header className="header header--floating">
-      <div className="header__inner">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-[var(--line)] bg-card/85 backdrop-blur-md">
+      <div className="mx-auto flex w-full max-w-[1120px] items-center justify-between gap-4 px-5 py-3 sm:px-6 lg:px-8">
         <Logo size={28} />
 
         <nav aria-label="Navigasi utama" className="hidden md:block">

@@ -29,15 +29,17 @@
     --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
     --serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
-    --paper: #f5f5f6;
-    --card: #ffffff;
+    /* softer light surface: lower glare, same hierarchy. Dark values are
+       intentionally untouched. */
+    --paper: #eef0f4;
+    --card: #f8f9fb;
     --card-2: #ffffff;
-    --ink: #0a0a0b;
-    --ink-2: #2a2c30;
-    --muted: #6b6f76;
-    --subtle: #7a7f88;
-    --line: #ededee;
-    --line-2: #dddfe2;
+    --ink: #14161b;
+    --ink-2: #3d4350;
+    --muted: #5b6270;
+    --subtle: #878d99;
+    --line: #dfe3ea;
+    --line-2: #cdd3dc;
     --btn: #0a0a0b;
     --btn-fg: #ffffff;
     --ring: rgba(10, 10, 11, 0.13);
@@ -158,6 +160,20 @@
     letter-spacing: 0.09em;
     text-transform: uppercase;
     color: var(--subtle);
+  }
+  /* Display + section headings. Plus Jakarta Sans Variable ships a 200-800
+     wght axis, so 800 is a real weight, not a synthesized bold. */
+  .heading-display {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+    font-size: clamp(1.75rem, 1.2rem + 2.2vw, 3rem);
+  }
+  .heading-section {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    font-size: clamp(1.5rem, 1.2rem + 1.2vw, 2.25rem);
   }
 
   /* --- buttons --- */
@@ -369,6 +385,8 @@
   /* --- header: shared by the marketing and app layouts --- */
   .header__inner {
     width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
     padding: 0 16px;
     display: flex;
     align-items: center;
@@ -387,10 +405,6 @@
     right: 0;
     z-index: 10;
     padding: 22px 0;
-  }
-  .header--floating .header__inner {
-    max-width: 1100px;
-    margin: 0 auto;
   }
   /* solid bar above the page content (app layout) */
   .header--bar {
@@ -585,6 +599,26 @@
     display: block;
   }
 
+  /* --- hero media: image frame + paper-tinted blend overlay.
+     Ratio is overridable per usage via --hero-media-ratio. --- */
+  .hero-media {
+    position: relative;
+    aspect-ratio: var(--hero-media-ratio, 16 / 9);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+  }
+  .hero-media__overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      to top,
+      var(--paper) 0%,
+      color-mix(in oklab, var(--paper) 60%, transparent) 40%,
+      transparent 100%
+    );
+  }
+
   /* ==========================================================================
      Auth — split, form left, colophon + Plus pitch right
      ========================================================================== */
@@ -688,6 +722,9 @@
     display: flex;
     align-items: center;
     gap: 22px;
+    width: 100%;
+    max-width: 1440px;
+    margin: 0 auto;
     padding: 0 16px;
     height: 100%;
   }
@@ -729,7 +766,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    max-width: 1080px;
+    max-width: 1440px;
     margin: 0 auto;
     padding: 28px 16px 48px;
   }
@@ -947,7 +984,7 @@
       padding: 0 30px;
     }
     .page {
-      padding: 40px 30px 64px;
+      padding: 32px 48px 72px;
     }
     .panel {
       padding: 28px;

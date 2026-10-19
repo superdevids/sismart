@@ -1,6 +1,7 @@
 import { test } from '@japa/runner'
 import testUtils from '@adonisjs/core/services/test_utils'
 import {
+  LANDING_NAV_PAGE_HREFS,
   LANDING_SECTION_IDS,
   RENDER_TIMEOUT,
   collectPageErrors,
@@ -13,9 +14,13 @@ import {
  * (id anchor, tag, atribut) — bukan copy teks — supaya tidak rapuh terhadap
  * perubahan wording/i18n.
  *
- * Kontrak yang diuji (disampaikan ke Cody-B):
+ * Kontrak yang diuji (keputusan user: section index pills dihapus dari
+ * landing, sehingga satu-satunya sumber `a[href^="#"]` ikut hilang):
  *  - section dengan id: profil, jurusan, fasilitas, ekskul, ppdb, kontak
- *  - nav anchor di header menautkan ke section tersebut
+ *    tetap tersedia dan berkonten di home
+ *  - nav header publik menautkan ke halaman PAGE
+ *    (/profil, /jurusan, /fasilitas, /ekskul, /berita, /ppdb, /kontak)
+ *    dan menavigasi ke path yang benar
  *  - tidak ada tautan domain adonisjs.com (termasuk docs/plus)
  */
 test.group('Landing page', (group) => {
@@ -105,63 +110,42 @@ test.group('Landing page', (group) => {
     }
   })
 
-  test('header nav anchor scrolls to its target section', async ({ assert, visit }) => {
+  test('header nav exposes page links that navigate to their target pages', async ({
+    assert,
+    visit,
+  }) => {
     const page = await visit('/')
 
-    // Tunggu render CSR: nav anchor baru tersedia setelah React hydrate.
+    // Tunggu render CSR: nav header baru tersedia setelah React hydrate.
     await waitForLandingContent(page)
 
-    // Anchor nav yang tersedia di header, fallback ke nav biasa, lalu link mana pun.
-    const navSelector = 'header a[href^="#"], nav a[href^="#"], a[href^="#"]'
-    const anchorHrefs = await page.$$eval(navSelector, (links) =>
+    // Nav header publik (desktop) wajib memuat seluruh link PAGE kontrak.
+    // Filter getClientRects() memastikan yang dibaca hanya nav yang terlihat
+    // pada viewport desktop (nav mobile hanya dirender saat menu terbuka).
+    const navHrefs = await page.$$eval('header nav a[href]', (links) =>
       links
         .filter((link) => link.getClientRects().length > 0)
         .map((link) => link.getAttribute('href') ?? '')
     )
 
-    // Pilih anchor kontrak yang tersedia; section terakhir diprioritaskan agar
-    // pergeseran scroll pasti terjadi dari posisi atas halaman.
-    const target =
-      [...LANDING_SECTION_IDS.map((id) => `#${id}`)]
-        .reverse()
-        .find((href) => anchorHrefs.includes(href)) ?? anchorHrefs.find((href) => href.length > 1)
-
-    assert.isDefined(
-      target,
-      'landing header must expose at least one in-page anchor link (e.g. #profil)'
-    )
-
-    // Pastikan posisi awal di puncak halaman agar scroll benar-benar teruji.
-    // Callback evaluate berjalan di browser; lib tsconfig tanpa DOM, jadi
-    // jendela browser diakses lewat globalThis (berupa window di konteks browser).
-    type BrowserGlobals = {
-      scrollTo(x: number, y: number): void
-      innerHeight: number
-      document: {
-        getElementById(
-          id: string
-        ): { getBoundingClientRect(): { top: number; bottom: number } } | null
-      }
+    for (const href of LANDING_NAV_PAGE_HREFS) {
+      assert.include(navHrefs, href, `header nav must expose a link to ${href}`)
     }
 
-    await page.evaluate(() => (globalThis as unknown as BrowserGlobals).scrollTo(0, 0))
-    const link = page.locator(`a[href="${target}"]`).first()
-    await link.click()
+    // Klik tiap link nav dari '/' — path tujuan harus benar dan halaman
+    // tujuan benar-benar ter-render (bukan navigasi yang "sukses" URL-nya
+    // saja padahal halamannya gagal memuat).
+    for (const href of LANDING_NAV_PAGE_HREFS) {
+      const home = await visit('/')
+      await waitForLandingContent(home)
 
-    await page.assertUrlContains(target!)
+      await home.locator(`header nav a[href="${href}"]`).first().click()
+      await home.assertPath(href)
 
-    // Section target harus benar-benar masuk ke viewport setelah klik.
-    const sectionId = target!.slice(1)
-    await page.waitForFunction(
-      (id) => {
-        const g = globalThis as unknown as BrowserGlobals
-        const el = g.document.getElementById(id)
-        if (!el) return false
-        const rect = el.getBoundingClientRect()
-        return rect.top < g.innerHeight && rect.bottom > 0
-      },
-      sectionId,
-      { timeout: 5000 }
-    )
+      assert.isTrue(
+        await waitForLandingContent(home),
+        `target page ${href} must render content after clicking the nav link`
+      )
+    }
   })
 })

@@ -1,11 +1,12 @@
 import { type Gambar } from '~/content/gambar'
 import Photo from './photo'
-import { Container, displayTitleClass, eyebrowClass } from './ui'
+import { Container, eyebrowClass } from './ui'
 
 /**
- * Kepala halaman publik (bukan beranda): eyebrow, judul `<h1>`, deskripsi, dan
- * gambar pendamping opsional. Mobile-first: konten menumpuk, lalu menjadi dua
- * kolom pada layar lebar.
+ * Kepala halaman publik (bukan beranda): eyebrow, judul `<h1>`, dan deskripsi
+ * di atas latar gambar. Gambar dirender sebagai lapisan latar dengan overlay
+ * bertoken tema (`hero-media__overlay`) plus lapisan `--paper` tipis agar teks
+ * tetap terbaca di mode terang maupun gelap.
  */
 export default function PageHero({
   eyebrow,
@@ -19,35 +20,30 @@ export default function PageHero({
   image?: Gambar
 }) {
   return (
-    <section className="relative overflow-hidden border-b border-[var(--line)] pt-28 pb-12 sm:pt-32 md:pt-36 md:pb-16">
-      <div aria-hidden="true" className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute -top-16 right-[-6rem] h-64 w-64 rounded-full bg-brand-blue opacity-10 blur-3xl" />
-      </div>
-
-      <Container>
-        <div className="grid items-center gap-8 md:grid-cols-[1.15fr_0.85fr] md:gap-12">
-          <div>
-            <p className={eyebrowClass}>{eyebrow}</p>
-            <h1
-              className={`mt-3 text-balance font-semibold leading-[1.1] tracking-[-0.03em] ${displayTitleClass}`}
-            >
-              {title}
-            </h1>
-            <p className="mt-4 max-w-[60ch] text-[15.5px] leading-relaxed text-[var(--muted)] text-pretty sm:text-[16.5px]">
-              {description}
-            </p>
-          </div>
-
-          {image && (
-            <Photo
-              image={image}
-              width={1200}
-              height={800}
-              priority
-              className="aspect-[16/10] w-full rounded-[var(--r-lg)] border border-[var(--line-2)] md:aspect-[4/3]"
-            />
-          )}
+    <section className="relative isolate overflow-hidden border-b border-[var(--line)] pt-28 pb-14 sm:pt-32 md:pt-36 md:pb-20">
+      {image && (
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-0 -z-10 bg-[var(--paper)]"
+        >
+          <Photo
+            image={image}
+            width={1920}
+            height={1080}
+            priority
+            overlay={false}
+            className="h-full w-full opacity-40"
+          />
+          <span className="hero-media__overlay" />
         </div>
+      )}
+
+      <Container className="relative">
+        <p className={eyebrowClass}>{eyebrow}</p>
+        <h1 className="heading-display mt-3 text-balance">{title}</h1>
+        <p className="mt-4 max-w-[60ch] text-[15.5px] leading-relaxed text-[var(--muted)] text-pretty sm:text-[16.5px]">
+          {description}
+        </p>
       </Container>
     </section>
   )

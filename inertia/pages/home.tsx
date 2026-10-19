@@ -2,7 +2,6 @@ import { Head } from '@inertiajs/react'
 import MarketingLayout from '~/layouts/marketing'
 import { LANDING } from '~/content/landing'
 import Hero from '~/components/landing/hero'
-import SectionIndex from '~/components/landing/section_index'
 import {
   BeritaTeaser,
   EkskulTeaser,
@@ -27,7 +26,6 @@ export default function Home() {
 
       <main>
         <Hero />
-        <SectionIndex />
         <ProfilTeaser />
         <JurusanTeaser />
         <FasilitasTeaser />

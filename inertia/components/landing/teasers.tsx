@@ -21,12 +21,14 @@ export function ProfilTeaser() {
       id="profil"
       eyebrow={PROFIL.eyebrow}
       title={PROFIL.title}
-      description={PROFIL.description}
       href="/profil"
       linkLabel={`${LANDING.actions.seeAll} profil`}
     >
       <div className="grid gap-8 lg:grid-cols-[1.1fr_0.9fr]">
+        {/* Deskripsi sengaja dirender di kontainer yang sama dengan paragraf
+            agar lebar dan perataannya identik (sebelumnya di header section). */}
         <div className="flex flex-col gap-4 text-[15px] leading-relaxed text-[var(--ink-2)] text-pretty">
+          <p>{PROFIL.description}</p>
           {PROFIL.paragraphs.slice(0, 2).map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
@@ -63,8 +65,8 @@ export function JurusanTeaser() {
     >
       <ul className={gridClass}>
         {JURUSAN.items.slice(0, 3).map((major) => (
-          <li key={major.code}>
-            <MajorCard major={major} />
+          <li key={major.kode}>
+            <MajorCard major={major} showCode={false} />
           </li>
         ))}
       </ul>
@@ -158,7 +160,10 @@ export function PpdbTeaser() {
         ))}
       </ul>
 
-      <dl className={`mt-6 ${cardClass}`}>
+      <h3 className="mt-8 text-[12px] font-semibold uppercase tracking-[0.1em] text-[var(--muted)]">
+        {PPDB.scheduleTitle}
+      </h3>
+      <dl className={`mt-3 ${cardClass}`}>
         {PPDB.schedule.slice(0, 2).map((entry, index) => (
           <div
             key={entry.label}

@@ -99,6 +99,10 @@ Halaman / menjadi landing sekolah minimalis (identitas + tombol masuk), menggant
 
 Ikut ter-track git (isi: kredensial test non-produksi). Repo harus tetap private.
 
+## D24 - Data induk defaults (keputusan 19 Okt)
+
+SPEC WV-7 (docs/07) FINAL dengan default: jurusan standar TKJ=10/RPL=11/DKV=12/AKL=13/OTM=14/TKR=15 (editable admin, perubahan kode tidak migrasi silang siswa lama); import keduanya xlsx+CSV dengan dependency exceljs; staff (TU) boleh input/edit siswa saja; kolom siswa = nama, gender, TTL, alamat, agama, NISN nullable, jurusan, rombel, tahun masuk, data wali; dashboard default statistik ringkas + menu per role. Password awal wajib ganti (must_change_password).
+
 ## D23 - Backlog 4 MINOR frontend (keputusan 18 Okt)
 
 Empat temuan MINOR hasil review Rocky (T-018b) DIPUTUSKAN menjadi backlog non-blocking (fix tiga kali dibatalkan sebelum menulis kode):

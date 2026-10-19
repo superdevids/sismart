@@ -34,7 +34,7 @@ export const LANDING = {
     { label: 'Jurusan', href: '/jurusan' },
     { label: 'Fasilitas', href: '/fasilitas' },
     { label: 'Ekskul', href: '/ekskul' },
-    { label: 'Berita', href: '/#berita' },
+    { label: 'Berita', href: '/berita' },
     { label: 'PPDB', href: '/ppdb' },
     { label: 'Kontak', href: '/kontak' },
   ],
@@ -58,6 +58,8 @@ export const LANDING = {
       'Jelajahi profil, program keahlian, fasilitas, dan kegiatan sekolah melalui halaman-halaman berikut.',
     primaryCta: { label: 'Informasi PPDB', href: '/ppdb' },
     secondaryCta: { label: 'Masuk' },
+    // Opsional: URL video latar hero (mp4/webm). Kosong = pakai gambar `GAMBAR.hero`.
+    videoUrl: '',
     // TODO: ganti data asli sekolah
     stats: [
       { value: '600+', label: 'Siswa aktif' },

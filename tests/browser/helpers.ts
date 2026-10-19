@@ -15,6 +15,22 @@ export const LANDING_SECTION_IDS = [
 ] as const
 
 /**
+ * Kontrak link PAGE pada nav header publik (keputusan user: section index
+ * pills dihapus, nav header kini menautkan ke halaman publik terpisah).
+ * Dipakai landing.spec.ts untuk memastikan setiap link nav tersedia dan
+ * menavigasi ke path yang benar.
+ */
+export const LANDING_NAV_PAGE_HREFS = [
+  '/profil',
+  '/jurusan',
+  '/fasilitas',
+  '/ekskul',
+  '/berita',
+  '/ppdb',
+  '/kontak',
+] as const
+
+/**
  * Menempelkan listener pada `page` untuk menangkap error fatal saat navigasi.
  *
  * - `pageerror`  : uncaught exception (benar-benar fatal, selalu dibagikan).

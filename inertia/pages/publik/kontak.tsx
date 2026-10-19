@@ -18,7 +18,7 @@ export default function KontakPage() {
         <meta name="description" content={KONTAK.meta.description} />
       </Head>
 
-      <main>
+      <main className="page">
         <PageHero
           eyebrow={KONTAK.eyebrow}
           title={KONTAK.title}

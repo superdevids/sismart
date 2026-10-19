@@ -22,7 +22,7 @@ export default function PpdbPage() {
         <meta name="description" content={PPDB.meta.description} />
       </Head>
 
-      <main>
+      <main className="page">
         <PageHero
           eyebrow={PPDB.eyebrow}
           title={PPDB.title}

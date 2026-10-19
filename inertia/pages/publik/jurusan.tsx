@@ -1,13 +1,14 @@
 import { Head } from '@inertiajs/react'
 import MarketingLayout from '~/layouts/marketing'
 import { JURUSAN } from '~/content/jurusan'
+import { GAMBAR } from '~/content/gambar'
 import PageHero from '~/components/landing/page_hero'
 import { MajorCard } from '~/components/landing/cards'
 import { Section, SectionHeader } from '~/components/landing/ui'
 
 /**
- * Halaman lengkap JURUSAN: grid kartu tiap program keahlian dengan detail
- * kompetensi dan prospek karier.
+ * Halaman lengkap JURUSAN: satu kolom, tiap program keahlian dijabarkan dengan
+ * materi, keunggulan, prospek kerja, dan kampus lanjutan.
  */
 export default function JurusanPage() {
   return (
@@ -16,18 +17,19 @@ export default function JurusanPage() {
         <meta name="description" content={JURUSAN.meta.description} />
       </Head>
 
-      <main>
+      <main className="page">
         <PageHero
           eyebrow={JURUSAN.eyebrow}
           title={JURUSAN.title}
           description={JURUSAN.description}
+          image={GAMBAR.jurusanTkj}
         />
 
         <Section id="jurusan">
           <SectionHeader title={JURUSAN.listTitle} />
-          <ul className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-10 grid gap-6">
             {JURUSAN.items.map((major) => (
-              <li key={major.code}>
+              <li key={major.kode}>
                 <MajorCard major={major} detailed />
               </li>
             ))}

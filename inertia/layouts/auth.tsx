@@ -7,13 +7,10 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
   return (
     <>
       <div className="auth">
-        <div className="auth__form-col">
-          <Logo size={28} />
-          <div className="auth__form-wrap">{children}</div>
-          <div style={{ height: 20 }} />
-        </div>
-
-        <aside className="auth__aside">
+        <aside
+          className="auth__aside"
+          style={{ borderLeft: 'none', borderRight: '1px solid var(--line)' }}
+        >
           <div className="auth__aside-top">
             <ThemeToggle />
           </div>
@@ -22,6 +19,12 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             Satu pintu untuk administrasi sekolah: kehadiran, pembayaran, dan kegiatan belajar.
           </p>
         </aside>
+
+        <div className="auth__form-col">
+          <Logo size={28} />
+          <div className="auth__form-wrap">{children}</div>
+          <div style={{ height: 20 }} />
+        </div>
       </div>
       <FlashToasts />
     </>
