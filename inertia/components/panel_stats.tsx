@@ -336,6 +336,45 @@ export function QuickLink({
   )
 }
 
+/**
+ * Petak besar dan mudah dipindai untuk pengguna non-teknis (siswa / orang tua).
+ * Ikon besar, judul tebal, satu kalimat penjelas — tanpa istilah teknis.
+ */
+export function EasyTile({
+  icon,
+  title,
+  hint,
+  tone = 'primary',
+}: {
+  icon: LucideIcon
+  title: string
+  hint: string
+  tone?: 'primary' | 'info' | 'success' | 'warning'
+}) {
+  const Icon = icon
+  const tones: Record<string, string> = {
+    primary: 'bg-primary-soft text-primary-ink ring-primary/15',
+    info: 'bg-info-soft text-info ring-info/15',
+    success: 'bg-success-soft text-success ring-success/15',
+    warning: 'bg-warning-soft text-warning ring-warning/15',
+  }
+
+  return (
+    <div className="flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-3.5 shadow-xs transition-colors hover:border-muted-foreground/40">
+      <span
+        className={cn('grid size-11 shrink-0 place-items-center rounded-xl ring-4', tones[tone])}
+        aria-hidden="true"
+      >
+        <Icon className="size-5" />
+      </span>
+      <div className="flex min-w-0 flex-col">
+        <span className="text-sm font-semibold text-foreground">{title}</span>
+        <span className="truncate text-xs text-muted-foreground">{hint}</span>
+      </div>
+    </div>
+  )
+}
+
 export function InfoCard({
   title,
   children,

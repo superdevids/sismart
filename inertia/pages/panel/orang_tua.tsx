@@ -1,9 +1,17 @@
 import Page from '~/components/page'
 import AppLayout from '~/layouts/app'
 import { usePage } from '@inertiajs/react'
-import { BookOpen, ClipboardCheck, Info, Link2, Users, Wallet } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import { HeroPanel, InfoCard, QuickLink, TaskList } from '~/components/panel_stats'
+import {
+  BookOpen,
+  ClipboardCheck,
+  HeartHandshake,
+  Info,
+  Link2,
+  ShieldCheck,
+  Wallet,
+} from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { EasyTile, InfoCard, QuickLink, TaskList } from '~/components/panel_stats'
 
 type Props = {
   profile: { fullName: string | null; loginCode: string | null; role: string }
@@ -32,19 +40,45 @@ const PANTAUAN = [
 
 export default function OrangTuaPanel() {
   const { profile } = usePage<Props>().props
+  const brand = usePage().props.brand
 
   return (
     <Page title="Panel orang tua" hideTitle description={undefined}>
-      <div className="flex flex-col gap-4">
-        <HeroPanel
-          role="orang_tua"
-          fullName={profile.fullName}
-          loginCode={profile.loginCode}
-          summary="Di halaman ini Anda dapat memantau perkembangan belajar dan kewajiban administrasi anak dalam satu tampilan."
-        />
+      <div className="flex flex-col gap-5">
+        <div className="@container/main flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">{brand?.name ?? 'Sekolah'} · Orang tua</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground @[480px]:text-3xl">
+            Terima kasih telah mendampingi
+          </h1>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Pantau perkembangan belajar dan kewajiban administrasi{' '}
+            {profile.fullName ? 'anak Anda' : 'anak Anda'} dalam satu tampilan.
+          </p>
+        </div>
 
-        <div className="grid gap-3 xl:grid-cols-3">
-          <div className="xl:col-span-2">
+        <div className="grid grid-cols-1 gap-3 @xl/main:grid-cols-3">
+          <EasyTile
+            icon={BookOpen}
+            title="Nilai anak"
+            hint="Harian & rapor semester"
+            tone="primary"
+          />
+          <EasyTile
+            icon={ClipboardCheck}
+            title="Kehadiran"
+            hint="Hadir, izin, sakit, alpa"
+            tone="info"
+          />
+          <EasyTile
+            icon={Wallet}
+            title="Tagihan SPP"
+            hint="Status & riwayat bayar"
+            tone="success"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 @4xl/main:grid-cols-3">
+          <div className="@4xl/main:col-span-2">
             <TaskList
               title="Ringkasan anak"
               description="Tiga informasi utama yang akan tersedia setelah modul akademik dan keuangan diaktifkan."
@@ -54,12 +88,12 @@ export default function OrangTuaPanel() {
           </div>
 
           <div className="flex flex-col gap-3">
-            <Card className="shadow-none">
+            <Card className="shadow-xs">
               <CardHeader>
-                <p className="text-base font-semibold text-foreground">Langkah berikutnya</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Yang perlu Anda lakukan agar ringkasan muncul.
-                </p>
+                <CardTitle className="flex items-center gap-1.5">
+                  <HeartHandshake className="size-4 text-success" aria-hidden="true" />
+                  Langkah berikutnya
+                </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
                 <QuickLink
@@ -69,7 +103,7 @@ export default function OrangTuaPanel() {
                   tone="primary"
                 />
                 <QuickLink
-                  icon={Users}
+                  icon={Info}
                   label="Perbarui nomor kontak"
                   note="Melalui tata usaha, bukan lewat pesan"
                   tone="default"
@@ -84,9 +118,8 @@ export default function OrangTuaPanel() {
 
             <InfoCard title="Privasi data anak" tone="info">
               <span className="inline-flex items-start gap-1.5">
-                <Info className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
-                Data nilai dan kehadiran hanya dapat dilihat oleh Anda, anak, dan guru yang
-                bersangkutan.
+                <ShieldCheck className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+                Nilai dan kehadiran hanya dapat dilihat oleh Anda, anak, dan guru yang bersangkutan.
               </span>
             </InfoCard>
           </div>

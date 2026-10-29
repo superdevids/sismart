@@ -2,22 +2,17 @@ import Page from '~/components/page'
 import AppLayout from '~/layouts/app'
 import { usePage } from '@inertiajs/react'
 import { CalendarCheck, GraduationCap, TrendingUp, UserCheck, Users, Wallet } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import {
-  HeroPanel,
-  InfoCard,
-  Metric,
-  MetricGrid,
-  ROLE_META,
-  percent,
-  roleLabel,
-} from '~/components/panel_stats'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { InfoCard, ROLE_META, percent, roleLabel } from '~/components/panel_stats'
+import { StatCard } from '~/components/dashboard/stat_card'
+import { GrowthChart } from '~/components/dashboard/growth_chart'
 import { cn } from '~/lib/utils'
 
 type Props = {
   profile: { fullName: string | null; loginCode: string | null; role: string }
   stats: { total: number; active: number; students: number; teachers: number }
   roleBreakdown: { role: string; total: number }[]
+  trend: { label: string; value: number }[]
 }
 
 const AGENDA = [
@@ -38,103 +33,78 @@ const AGENDA_TONE: Record<string, string> = {
 }
 
 export default function KepsekPanel() {
-  const { profile, stats, roleBreakdown } = usePage<Props>().props
+  const { profile, stats, roleBreakdown, trend } = usePage<Props>().props
+  const brand = usePage().props.brand
   const activePercent = percent(stats.active, stats.total)
   const peak = Math.max(1, ...roleBreakdown.map((row) => row.total))
+  const studentShare = percent(stats.students, stats.total)
 
   return (
-    <Page title="Panel kepala sekolah" hideTitle description={undefined} actions={undefined}>
-      <div className="flex flex-col gap-4">
-        <HeroPanel
-          role="kepsek"
-          fullName={profile.fullName}
-          loginCode={profile.loginCode}
-          summary={`Ringkasan lembaga hari ini: ${stats.students} siswa dan ${stats.teachers} guru terdaftar. Akses Anda bersifat pemantauan, bukan input operasional.`}
-        />
+    <Page title="Panel kepala sekolah" hideTitle description={undefined}>
+      <div className="flex flex-col gap-5">
+        <div className="@container/main flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">
+            {brand?.name ?? 'Sekolah'} · Kepala sekolah
+          </p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground @[480px]:text-3xl">
+            Ringkasan lembaga
+          </h1>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Selamat datang, {profile.fullName?.split(' ')[0] ?? 'Bapak/Ibu'}. Akses Anda bersifat
+            pemantauan, bukan input operasional.
+          </p>
+        </div>
 
-        <MetricGrid>
-          <Metric
-            icon={<GraduationCap className="size-5" />}
-            value={String(stats.students)}
+        <div className="grid grid-cols-1 gap-4 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+          <StatCard
             label="Siswa terdaftar"
-            hint="Akun dengan peran siswa"
-            tone="primary"
+            value={stats.students}
+            icon={GraduationCap}
+            footnote={`${studentShare}% dari seluruh akun`}
+            accent="primary"
+            highlight
           />
-          <Metric
-            icon={<Users className="size-5" />}
-            value={String(stats.teachers)}
+          <StatCard
             label="Guru"
-            hint="Tenaga pengajar aktif di lembaga"
-            tone="info"
+            value={stats.teachers}
+            icon={Users}
+            footnote="Tenaga pengajar aktif"
+            accent="info"
           />
-          <Metric
-            icon={<TrendingUp className="size-5" />}
-            value={`${activePercent}%`}
+          <StatCard
             label="Akun aktif"
-            hint={`${stats.active} dari ${stats.total} akun dapat masuk`}
-            tone="success"
-            progress={activePercent}
+            value={`${activePercent}%`}
+            icon={TrendingUp}
+            trend={{ value: `${stats.active} dari ${stats.total}`, direction: 'up' }}
+            footnote="Dapat masuk ke sistem hari ini"
+            accent="success"
           />
-        </MetricGrid>
+          <StatCard
+            label="Rasio siswa per guru"
+            value={stats.teachers > 0 ? Math.round(stats.students / stats.teachers) : '—'}
+            unit={stats.teachers > 0 ? 'siswa' : undefined}
+            icon={UserCheck}
+            footnote={
+              stats.teachers > 0 ? 'Semakin kecil semakin baik' : 'Belum ada guru terdaftar'
+            }
+            accent="warning"
+          />
+        </div>
 
-        <div className="grid gap-3 xl:grid-cols-3">
-          <Card className="shadow-none xl:col-span-2">
+        <div className="grid grid-cols-1 gap-4 @4xl/main:grid-cols-3">
+          <div className="@4xl/main:col-span-2">
+            <GrowthChart
+              title="Pertumbuhan akun"
+              description="Enam bulan terakhir, dihitung dari tanggal pembuatan akun."
+              data={trend}
+              seriesLabel="Akun baru"
+              footnote="Bulan tanpa akun baru tetap tampil sebagai nol."
+            />
+          </div>
+
+          <Card className="shadow-xs">
             <CardHeader>
-              <p className="text-base font-semibold text-foreground">Komposisi peran</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Sebaran seluruh akun menurut peran. Batang terpanjang adalah peran terbanyak.
-              </p>
-            </CardHeader>
-            <CardContent className="flex flex-col gap-3">
-              {roleBreakdown.map((row) => {
-                const meta = ROLE_META[row.role as keyof typeof ROLE_META]
-                const Icon = meta?.icon
-                const width = Math.round((row.total / peak) * 100)
-
-                return (
-                  <div key={row.role} className="flex items-center gap-3">
-                    <span
-                      className={cn(
-                        'grid size-8 shrink-0 place-items-center rounded-lg',
-                        meta
-                          ? `${meta.bar} text-primary-foreground`
-                          : 'bg-muted text-muted-foreground'
-                      )}
-                      aria-hidden="true"
-                    >
-                      {Icon ? <Icon className="size-4" /> : null}
-                    </span>
-                    <div className="flex min-w-0 flex-1 flex-col gap-1">
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="truncate text-sm font-medium text-foreground">
-                          {roleLabel(row.role)}
-                        </span>
-                        <span className="text-sm font-semibold tabular-nums text-foreground">
-                          {row.total}
-                        </span>
-                      </div>
-                      <div className="h-2 w-full overflow-hidden rounded-full bg-muted">
-                        <div
-                          className={cn(
-                            'h-full rounded-full transition-[width] duration-500',
-                            meta?.bar ?? 'bg-muted-foreground'
-                          )}
-                          style={{ width: `${width}%` }}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                )
-              })}
-            </CardContent>
-          </Card>
-
-          <Card className="shadow-none">
-            <CardHeader>
-              <p className="text-base font-semibold text-foreground">Agenda pemantauan</p>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                Kegiatan rutin yang perlu ditinjau.
-              </p>
+              <CardTitle>Agenda pemantauan</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-2">
               {AGENDA.map((item) => {
@@ -160,14 +130,49 @@ export default function KepsekPanel() {
                   </div>
                 )
               })}
-              <div className="pt-1">
-                <InfoCard title="Angka belum tersedia" tone="info">
-                  Kehadiran dan keuangan belum tampil karena modul terkait belum aktif.
-                </InfoCard>
-              </div>
+              <InfoCard title="Angka belum tersedia" tone="info">
+                Kehadiran dan keuangan belum tampil karena modul terkait belum aktif.
+              </InfoCard>
             </CardContent>
           </Card>
         </div>
+
+        <Card className="shadow-xs">
+          <CardHeader>
+            <CardTitle>Komposisi peran</CardTitle>
+          </CardHeader>
+          <CardContent className="grid grid-cols-1 gap-x-6 gap-y-3.5 @lg/main:grid-cols-2">
+            {roleBreakdown.map((row) => {
+              const meta = ROLE_META[row.role as keyof typeof ROLE_META]
+              const Icon = meta?.icon
+              const width = Math.round((row.total / peak) * 100)
+              return (
+                <div key={row.role} className="flex flex-col gap-1.5">
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="flex min-w-0 items-center gap-1.5 text-sm font-medium text-foreground">
+                      {Icon ? (
+                        <Icon
+                          className="size-3.5 shrink-0 text-muted-foreground"
+                          aria-hidden="true"
+                        />
+                      ) : null}
+                      <span className="truncate">{roleLabel(row.role)}</span>
+                    </span>
+                    <span className="text-sm font-semibold tabular-nums text-foreground">
+                      {row.total}
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-info transition-[width] duration-500"
+                      style={{ width: `${width}%` }}
+                    />
+                  </div>
+                </div>
+              )
+            })}
+          </CardContent>
+        </Card>
       </div>
     </Page>
   )

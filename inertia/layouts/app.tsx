@@ -10,10 +10,14 @@ import { cn } from '~/lib/utils'
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   const { component, url } = usePage()
+  const pageProps = usePage().props
+  const user = pageProps.user
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [collapsed, setCollapsed] = useState(false)
 
   const crumbs = buildBreadcrumbs(component, url)
+  const initials = buildInitials(user?.fullName, user?.loginCode)
+  const roleHint = ROLE_LABELS[user?.role ?? ''] ?? 'Pengguna'
 
   return (
     <div className="flex min-h-dvh bg-background">
@@ -68,6 +72,24 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
             <div className="ml-auto flex items-center gap-1.5">
               <ThemeToggle />
+
+              <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
+
+              {/* Identitas pengguna, mengikuti pola menu user pada dashboard admin */}
+              <div className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 sm:pr-3">
+                <span
+                  className="grid size-8 shrink-0 place-items-center rounded-full bg-primary-soft text-[11px] font-semibold text-primary-ink ring-2 ring-primary/15"
+                  aria-hidden="true"
+                >
+                  {initials}
+                </span>
+                <div className="hidden min-w-0 flex-col leading-tight sm:flex">
+                  <span className="max-w-[12rem] truncate text-[13px] font-semibold text-foreground">
+                    {user?.fullName ?? 'Pengguna'}
+                  </span>
+                  <span className="truncate text-[11px] text-muted-foreground">{roleHint}</span>
+                </div>
+              </div>
             </div>
           </div>
         </header>
@@ -78,6 +100,26 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <FlashToasts />
     </div>
   )
+}
+
+function buildInitials(name: string | null | undefined, code: string | null | undefined) {
+  const source = (name ?? '').trim()
+  if (source) {
+    const parts = source.split(/\s+/)
+    const first = parts[0]?.[0] ?? ''
+    const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : ''
+    return `${first}${last}`.toUpperCase()
+  }
+  return (code ?? '—').slice(0, 2).toUpperCase()
+}
+
+const ROLE_LABELS: Record<string, string> = {
+  admin: 'Administrator',
+  kepsek: 'Kepala sekolah',
+  guru: 'Guru',
+  staff: 'Tata usaha',
+  siswa: 'Siswa',
+  orang_tua: 'Orang tua',
 }
 
 function buildBreadcrumbs(component: string, url: string): { label: string }[] {

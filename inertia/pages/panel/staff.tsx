@@ -10,15 +10,9 @@ import {
   UserRound,
   UserX,
 } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import {
-  HeroPanel,
-  InfoCard,
-  Metric,
-  MetricGrid,
-  TaskList,
-  percent,
-} from '~/components/panel_stats'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { InfoCard, TaskList, percent } from '~/components/panel_stats'
+import { StatCard } from '~/components/dashboard/stat_card'
 
 type Props = {
   profile: { fullName: string | null; loginCode: string | null; role: string }
@@ -54,46 +48,68 @@ const ANTREAN = [
 
 export default function StaffPanel() {
   const { profile, stats } = usePage<Props>().props
+  const brand = usePage().props.brand
   const total = stats.active + stats.inactive
   const activePercent = percent(stats.active, total)
+  const dormantPercent = percent(stats.inactive, total)
 
   return (
     <Page title="Panel tata usaha" hideTitle description={undefined}>
-      <div className="flex flex-col gap-4">
-        <HeroPanel
-          role="staff"
-          fullName={profile.fullName}
-          loginCode={profile.loginCode}
-          summary={`Anda menangani administrasi ${stats.students} siswa. ${stats.inactive > 0 ? `${stats.inactive} akun nonaktif perlu ditinjau.` : 'Seluruh akun saat ini aktif.'}`}
-        />
+      <div className="flex flex-col gap-5">
+        <div className="@container/main flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">{brand?.name ?? 'Sekolah'} · Tata usaha</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground @[480px]:text-3xl">
+            Selamat bertugas, {profile.fullName?.split(' ')[0] ?? 'Bapak/Ibu'}
+          </h1>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Anda menangani administrasi {stats.students} siswa.{' '}
+            {stats.inactive > 0
+              ? `${stats.inactive} akun nonaktif perlu ditinjau.`
+              : 'Seluruh akun saat ini aktif.'}
+          </p>
+        </div>
 
-        <MetricGrid>
-          <Metric
-            icon={<GraduationCap className="size-5" />}
-            value={String(stats.students)}
+        <div className="grid grid-cols-1 gap-4 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+          <StatCard
             label="Siswa"
-            hint="Basis data siswa terdaftar"
-            tone="primary"
+            value={stats.students}
+            icon={GraduationCap}
+            footnote="Basis data siswa terdaftar"
+            accent="primary"
+            highlight
           />
-          <Metric
-            icon={<UserCheck className="size-5" />}
-            value={String(stats.active)}
+          <StatCard
             label="Akun aktif"
-            hint={`${activePercent}% dari seluruh akun dapat masuk`}
-            tone="success"
-            progress={activePercent}
+            value={stats.active}
+            icon={UserCheck}
+            trend={{ value: `${activePercent}%`, direction: 'up' }}
+            footnote="Dapat masuk ke sistem"
+            accent="success"
           />
-          <Metric
-            icon={<UserX className="size-5" />}
-            value={String(stats.inactive)}
+          <StatCard
             label="Akun nonaktif"
-            hint={stats.inactive > 0 ? 'Perlu ditinjau ulang' : 'Tidak ada akun tertahan'}
-            tone={stats.inactive > 0 ? 'danger' : 'success'}
+            value={stats.inactive}
+            icon={UserX}
+            trend={
+              stats.inactive > 0
+                ? { value: `${dormantPercent}%`, direction: 'down' }
+                : { value: 'Bersih', direction: 'flat' }
+            }
+            footnote={stats.inactive > 0 ? 'Perlu ditinjau ulang' : 'Tidak ada akun tertahan'}
+            accent={stats.inactive > 0 ? 'warning' : 'success'}
           />
-        </MetricGrid>
+          <StatCard
+            label="Pekerjaan menunggu"
+            value={ANTREAN.length}
+            unit="modul"
+            icon={CalendarClock}
+            footnote="Akan aktif bertahap"
+            accent="info"
+          />
+        </div>
 
-        <div className="grid gap-3 xl:grid-cols-3">
-          <div className="xl:col-span-2">
+        <div className="grid grid-cols-1 gap-4 @4xl/main:grid-cols-3">
+          <div className="@4xl/main:col-span-2">
             <TaskList
               title="Antrean administrasi"
               description="Pekerjaan tata usaha yang akan tersedia pada halaman ini."
@@ -101,32 +117,26 @@ export default function StaffPanel() {
             />
           </div>
 
-          <div className="flex flex-col gap-3">
-            <Card className="shadow-none">
-              <CardHeader>
-                <p className="text-base font-semibold text-foreground">Kontak cepat</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Siapa dihubungi untuk kendala tertentu.
-                </p>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                <InfoCard title="Akun siswa & orang tua" tone="info">
-                  Reset ID Pengguna dan password dilakukan oleh administrator sekolah, bukan tata
-                  usaha.
-                </InfoCard>
-                <InfoCard title="Pembayaran tunai" tone="warning">
-                  Selalu dicatat lewat modul keuangan agar tercatat atomik dan tidak dobel.
-                </InfoCard>
-              </CardContent>
-            </Card>
-
-            <InfoCard title="Data sensitif" tone="success">
-              <span className="inline-flex items-start gap-1.5">
-                <ShieldCheck className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
-                Data keuangan siswa hanya untuk keperluan administrasi sekolah.
-              </span>
-            </InfoCard>
-          </div>
+          <Card className="shadow-xs">
+            <CardHeader>
+              <CardTitle>Kontak cepat</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <InfoCard title="Akun siswa & orang tua" tone="info">
+                Reset ID Pengguna dan password dilakukan oleh administrator sekolah, bukan tata
+                usaha.
+              </InfoCard>
+              <InfoCard title="Pembayaran tunai" tone="warning">
+                Selalu dicatat lewat modul keuangan agar tercatat atomik dan tidak dobel.
+              </InfoCard>
+              <InfoCard title="Data sensitif" tone="success">
+                <span className="inline-flex items-start gap-1.5">
+                  <ShieldCheck className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+                  Data keuangan siswa hanya untuk keperluan administrasi sekolah.
+                </span>
+              </InfoCard>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Page>

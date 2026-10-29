@@ -1,4 +1,5 @@
 import User, { USER_ROLES, type UserRole } from '#models/user'
+import { DateTime } from 'luxon'
 import type { HttpContext } from '@adonisjs/core/http'
 
 type AggregateRow = { role: string; $extras?: { total?: string | number } }
@@ -53,6 +54,49 @@ async function aggregates() {
   return { counts, split }
 }
 
+/**
+ * Jumlah akun yang dibuat per bulan untuk 6 bulan terakhir.
+ * Dihitung dari kolom `created_at` yang memang ada — tidak ada angka karangan.
+ * Bulan kosong tetap ditampilkan sebagai 0 agar sumbu waktu tidak bolong.
+ */
+async function signupTrend(months = 6) {
+  const now = DateTime.now().startOf('month')
+  const start = now.minus({ months: months - 1 })
+
+  const rows = await User.query().where('createdAt', '>=', start.toSQL()!).select('createdAt')
+
+  const buckets = new Map<string, number>()
+  for (let i = 0; i < months; i++) {
+    const month = start.plus({ months: i })
+    buckets.set(month.toFormat('yyyy-MM'), 0)
+  }
+
+  for (const row of rows) {
+    // Lucid mengembalikan DateTime untuk kolom dateTime, tetapi tipe statisnya
+    // tidak menjamin itu. Tangani string/Date juga agar tidak meledak saat runtime.
+    const value = row.createdAt as unknown
+    let stamp: DateTime | null = null
+
+    if (value instanceof DateTime) {
+      stamp = value
+    } else if (value instanceof Date) {
+      stamp = DateTime.fromJSDate(value)
+    } else if (typeof value === 'string') {
+      const parsed = DateTime.fromSQL(value)
+      stamp = parsed.isValid ? parsed : null
+    }
+
+    if (!stamp?.isValid) continue
+    const key = stamp.toFormat('yyyy-MM')
+    if (buckets.has(key)) buckets.set(key, (buckets.get(key) ?? 0) + 1)
+  }
+
+  return [...buckets.entries()].map(([key, value]) => ({
+    label: DateTime.fromFormat(key, 'yyyy-MM').setLocale('id').toFormat('LLL'),
+    value,
+  }))
+}
+
 export default class PanelController {
   async index({ auth, inertia, response }: HttpContext) {
     const user = auth.user
@@ -73,9 +117,10 @@ export default class PanelController {
 
     switch (role) {
       case 'admin': {
-        const [{ counts, split }, recentUsers] = await Promise.all([
+        const [{ counts, split }, recentUsers, trend] = await Promise.all([
           aggregates(),
           latestAccounts(5),
+          signupTrend(),
         ])
 
         return inertia.render('panel/admin', {
@@ -83,11 +128,12 @@ export default class PanelController {
           stats: { total: counts.total, active: counts.active },
           roleBreakdown: split,
           recentUsers,
+          trend,
         })
       }
 
       case 'kepsek': {
-        const { counts, split } = await aggregates()
+        const [{ counts, split }, trend] = await Promise.all([aggregates(), signupTrend()])
 
         return inertia.render('panel/kepsek', {
           profile,
@@ -98,6 +144,7 @@ export default class PanelController {
             teachers: roleTotal(split, 'guru'),
           },
           roleBreakdown: split,
+          trend,
         })
       }
 

@@ -7,10 +7,11 @@ import {
   ClipboardCheck,
   KeyRound,
   MessageSquare,
+  Sparkles,
   Wallet,
 } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import { HeroPanel, InfoCard, QuickLink, TaskList } from '~/components/panel_stats'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { EasyTile, InfoCard, TaskList } from '~/components/panel_stats'
 
 type Props = {
   profile: { fullName: string | null; loginCode: string | null; role: string }
@@ -20,7 +21,7 @@ const MENU = [
   {
     icon: BookOpen,
     label: 'Nilai rapor',
-    note: 'Nilai harian dan rapor semester akan tampil di sini',
+    note: 'Nilai harian dan rapor semester',
     status: 'belum' as const,
   },
   {
@@ -32,7 +33,7 @@ const MENU = [
   {
     icon: ClipboardCheck,
     label: 'Absensi',
-    note: 'Rekap kehadiran Anda setiap bulan',
+    note: 'Rekap kehadiran setiap bulan',
     status: 'belum' as const,
   },
   {
@@ -45,34 +46,61 @@ const MENU = [
 
 export default function SiswaPanel() {
   const { profile } = usePage<Props>().props
+  const brand = usePage().props.brand
 
   return (
     <Page title="Panel siswa" hideTitle description={undefined}>
-      <div className="flex flex-col gap-4">
-        <HeroPanel
-          role="siswa"
-          fullName={profile.fullName}
-          loginCode={profile.loginCode}
-          summary="Halaman ini akan menjadi tempat Anda melihat nilai, jadwal, kehadiran, dan tagihan sekolah dalam satu tempat."
-        />
+      <div className="flex flex-col gap-5">
+        <div className="@container/main flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">{brand?.name ?? 'Sekolah'} · Siswa</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground @[480px]:text-3xl">
+            Semangat belajar, {profile.fullName?.split(' ')[0] ?? 'Siswa'}
+          </h1>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Semua yang kamu butuhkan soal sekolah akan ada di satu tempat ini. Tidak perlu melakukan
+            apa pun untuk mengaktifkannya.
+          </p>
+        </div>
 
-        <div className="grid gap-3 xl:grid-cols-3">
-          <div className="xl:col-span-2">
+        {/* Tiga hal yang paling sering dicari siswa */}
+        <div className="grid grid-cols-1 gap-3 @xl/main:grid-cols-3">
+          <EasyTile
+            icon={BookOpen}
+            title="Lihat nilai"
+            hint="Nilai harian & rapor"
+            tone="primary"
+          />
+          <EasyTile
+            icon={CalendarDays}
+            title="Lihat jadwal"
+            hint="Jadwal mingguan kelas"
+            tone="info"
+          />
+          <EasyTile
+            icon={ClipboardCheck}
+            title="Cek kehadiran"
+            hint="Hadir, izin, sakit, alpa"
+            tone="success"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-4 @4xl/main:grid-cols-3">
+          <div className="@4xl/main:col-span-2">
             <TaskList
-              title="Akan tersedia untuk Anda"
-              description="Empat hal ini sedang disiapkan sekolah. Anda tidak perlu melakukan apa pun untuk mengaktifkannya."
+              title="Akan tersedia untukmu"
+              description="Empat menu ini sedang disiapkan sekolah dan akan muncul otomatis."
               items={MENU}
-              footer="Jika ada nilai atau kehadiran yang menurut Anda keliru, hubungi wali kelas. Siswa tidak dapat mengubah data sendiri."
+              footer="Jika ada nilai atau kehadiran yang menurutmu keliru, hubungi wali kelas. Siswa tidak dapat mengubah data sendiri."
             />
           </div>
 
           <div className="flex flex-col gap-3">
-            <Card className="shadow-none">
+            <Card className="shadow-xs">
               <CardHeader>
-                <p className="text-base font-semibold text-foreground">Identitas Anda</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Dipakai saat masuk ke sistem bersama password.
-                </p>
+                <CardTitle className="flex items-center gap-1.5">
+                  <KeyRound className="size-4 text-primary" aria-hidden="true" />
+                  Identitas kamu
+                </CardTitle>
               </CardHeader>
               <CardContent className="flex flex-col gap-2">
                 <div className="flex items-center justify-between gap-2 rounded-lg bg-muted px-3 py-2">
@@ -82,34 +110,31 @@ export default function SiswaPanel() {
                   </span>
                 </div>
                 <div className="flex items-center justify-between gap-2 rounded-lg bg-muted px-3 py-2">
-                  <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                    <KeyRound className="size-3.5" aria-hidden="true" />
-                    ID Pengguna
-                  </span>
+                  <span className="text-sm text-muted-foreground">ID Pengguna</span>
                   <span className="font-mono text-xs font-semibold text-foreground">
                     {profile.loginCode ?? '—'}
                   </span>
                 </div>
+                <p className="text-xs leading-relaxed text-muted-foreground">
+                  Dipakai saat masuk ke sistem, bersama password.
+                </p>
               </CardContent>
             </Card>
 
-            <Card className="shadow-none">
-              <CardHeader>
-                <p className="text-base font-semibold text-foreground">Butuh bantuan?</p>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                <QuickLink
-                  icon={MessageSquare}
-                  label="Lupa password"
-                  note="Minta admin sekolah mengatur ulang"
-                  tone="warning"
-                />
-                <InfoCard title="Jaga kerahasiaan ID dan password" tone="info">
-                  Jangan bagikan ID Pengguna atau password kepada siapa pun, termasuk yang mengaku
-                  dari pihak sekolah.
-                </InfoCard>
-              </CardContent>
-            </Card>
+            <InfoCard title="Butuh bantuan?" tone="warning">
+              <span className="inline-flex items-start gap-1.5">
+                <MessageSquare className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+                Lupa password? Minta admin sekolah mengatur ulang. Jangan bagikan ID atau password
+                kepada siapa pun.
+              </span>
+            </InfoCard>
+
+            <InfoCard title="Privasi" tone="info">
+              <span className="inline-flex items-start gap-1.5">
+                <Sparkles className="mt-0.5 size-3 shrink-0" aria-hidden="true" />
+                Nilaimu hanya bisa dilihat oleh kamu, orang tua, dan gurumu.
+              </span>
+            </InfoCard>
           </div>
         </div>
       </div>

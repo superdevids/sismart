@@ -9,15 +9,9 @@ import {
   TrendingUp,
   Users,
 } from 'lucide-react'
-import { Card, CardContent, CardHeader } from '~/components/ui/card'
-import {
-  HeroPanel,
-  InfoCard,
-  Metric,
-  MetricGrid,
-  TaskList,
-  percent,
-} from '~/components/panel_stats'
+import { Card, CardContent, CardHeader, CardTitle } from '~/components/ui/card'
+import { InfoCard, TaskList, percent } from '~/components/panel_stats'
+import { StatCard } from '~/components/dashboard/stat_card'
 
 type Props = {
   profile: { fullName: string | null; loginCode: string | null; role: string }
@@ -47,45 +41,59 @@ const TUGAS = [
 
 export default function GuruPanel() {
   const { profile, stats } = usePage<Props>().props
+  const brand = usePage().props.brand
   const guruPercent = percent(stats.teachers, stats.students + stats.teachers)
+  const ratio = stats.teachers > 0 ? Math.round(stats.students / stats.teachers) : 0
 
   return (
     <Page title="Panel guru" hideTitle description={undefined}>
-      <div className="flex flex-col gap-4">
-        <HeroPanel
-          role="guru"
-          fullName={profile.fullName}
-          loginCode={profile.loginCode}
-          summary={`Lembaga ini memiliki ${stats.students} siswa dan ${stats.teachers} guru. Pekerjaan mengajar akan muncul di halaman ini setelah modul akademik diaktifkan.`}
-        />
+      <div className="flex flex-col gap-5">
+        <div className="@container/main flex flex-col gap-1">
+          <p className="text-sm text-muted-foreground">{brand?.name ?? 'Sekolah'} · Guru</p>
+          <h1 className="text-2xl font-bold tracking-tight text-foreground @[480px]:text-3xl">
+            Selamat mengajar, {profile.fullName?.split(' ')[0] ?? 'Bapak/Ibu'}
+          </h1>
+          <p className="max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Lembaga ini memiliki {stats.students} siswa dan {stats.teachers} guru. Pekerjaan
+            mengajar akan muncul di sini setelah modul akademik diaktifkan.
+          </p>
+        </div>
 
-        <MetricGrid>
-          <Metric
-            icon={<GraduationCap className="size-5" />}
-            value={String(stats.students)}
+        <div className="grid grid-cols-1 gap-4 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+          <StatCard
             label="Siswa"
-            hint="Seluruh siswa yang terdaftar di lembaga"
-            tone="primary"
+            value={stats.students}
+            icon={GraduationCap}
+            footnote="Seluruh siswa terdaftar"
+            accent="primary"
+            highlight
           />
-          <Metric
-            icon={<Users className="size-5" />}
-            value={String(stats.teachers)}
+          <StatCard
             label="Rekan guru"
-            hint="Guru yang dapat Anda koordinasikan"
-            tone="info"
+            value={stats.teachers}
+            icon={Users}
+            footnote="Guru yang dapat Anda koordinasikan"
+            accent="info"
           />
-          <Metric
-            icon={<TrendingUp className="size-5" />}
+          <StatCard
+            label="Porsi guru"
             value={`${guruPercent}%`}
-            label="Rasio guru"
-            hint="Perbandingan guru terhadap total pengguna akademik"
-            tone="success"
-            progress={guruPercent}
+            icon={TrendingUp}
+            footnote="Terhadap total pengguna akademik"
+            accent="success"
           />
-        </MetricGrid>
+          <StatCard
+            label="Rasio kelas"
+            value={ratio > 0 ? ratio : '—'}
+            unit={ratio > 0 ? 'siswa/guru' : undefined}
+            icon={Users}
+            footnote={ratio > 0 ? 'Beban rata-rata per guru' : 'Belum ada guru terdaftar'}
+            accent="warning"
+          />
+        </div>
 
-        <div className="grid gap-3 xl:grid-cols-3">
-          <div className="xl:col-span-2">
+        <div className="grid grid-cols-1 gap-4 @4xl/main:grid-cols-3">
+          <div className="@4xl/main:col-span-2">
             <TaskList
               title="Tugas mengajar"
               description="Pekerjaan harian Anda. Label menunjukkan apakah modulnya sudah dapat dipakai."
@@ -93,30 +101,24 @@ export default function GuruPanel() {
             />
           </div>
 
-          <div className="flex flex-col gap-3">
-            <Card className="shadow-none">
-              <CardHeader>
-                <p className="text-base font-semibold text-foreground">Prinsip input data</p>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  Dua aturan yang menjaga nilai tetap dapat dipertanggungjawabkan.
-                </p>
-              </CardHeader>
-              <CardContent className="flex flex-col gap-2">
-                <InfoCard title="Pratinjau sebelum simpan" tone="info">
-                  Input massal dari Excel selalu ditampilkan dulu. Baris bermasalah ditandai sebelum
-                  data masuk.
-                </InfoCard>
-                <InfoCard title="Setiap perubahan tercatat" tone="success">
-                  Perubahan nilai menyimpan jejak siapa mengubah, kapan, dan nilai sebelumnya.
-                </InfoCard>
-              </CardContent>
-            </Card>
-
-            <InfoCard title="Tentang halaman ini" tone="info">
-              Panel guru dibuat ringkas: hanya informasi yang Anda butuhkan sebelum mulai mengajar.
-              Daftar kelas ajar, jadwal, dan antrean penilaian akan muncul di sini.
-            </InfoCard>
-          </div>
+          <Card className="shadow-xs">
+            <CardHeader>
+              <CardTitle>Prinsip input data</CardTitle>
+            </CardHeader>
+            <CardContent className="flex flex-col gap-2">
+              <InfoCard title="Pratinjau sebelum simpan" tone="info">
+                Input massal dari Excel selalu ditampilkan dulu. Baris bermasalah ditandai sebelum
+                data masuk.
+              </InfoCard>
+              <InfoCard title="Setiap perubahan tercatat" tone="success">
+                Perubahan nilai menyimpan jejak siapa mengubah, kapan, dan nilai sebelumnya.
+              </InfoCard>
+              <p className="text-xs leading-relaxed text-muted-foreground">
+                Daftar kelas ajar, jadwal, dan antrean penilaian akan muncul setelah modul akademik
+                aktif.
+              </p>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </Page>
