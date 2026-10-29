@@ -10,6 +10,7 @@ export const BRANDING_KEYS = {
   shortName: 'brand.short_name',
   tagline: 'brand.tagline',
   institutionType: 'brand.institution_type',
+  accreditation: 'brand.accreditation',
 } as const
 
 /**
@@ -21,6 +22,7 @@ export const BRANDING_DEFAULTS = {
   shortName: 'SMKN 1 Indonesia',
   tagline: 'Sistem informasi sekolah',
   institutionType: 'Sekolah',
+  accreditation: 'Terakreditasi A',
 } as const
 
 export type Branding = {
@@ -28,6 +30,7 @@ export type Branding = {
   shortName: string
   tagline: string
   institutionType: string
+  accreditation: string
 }
 
 /**
@@ -55,6 +58,7 @@ class BrandingService {
         tagline: byKey.get(BRANDING_KEYS.tagline) || BRANDING_DEFAULTS.tagline,
         institutionType:
           byKey.get(BRANDING_KEYS.institutionType) || BRANDING_DEFAULTS.institutionType,
+        accreditation: byKey.get(BRANDING_KEYS.accreditation) || BRANDING_DEFAULTS.accreditation,
       }
       this.loaded = true
 

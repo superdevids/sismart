@@ -15,6 +15,7 @@ export default class extends BaseSeeder {
       [BRANDING_KEYS.shortName, BRANDING_DEFAULTS.shortName],
       [BRANDING_KEYS.tagline, BRANDING_DEFAULTS.tagline],
       [BRANDING_KEYS.institutionType, BRANDING_DEFAULTS.institutionType],
+      [BRANDING_KEYS.accreditation, BRANDING_DEFAULTS.accreditation],
     ]
 
     for (const [key, value] of defaults) {

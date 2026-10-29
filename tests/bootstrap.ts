@@ -43,7 +43,22 @@ export const plugins: Config['plugins'] = [
  * The teardown functions are executed after all the tests
  */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  setup: [],
+  /**
+   * Aplikasi dan test memakai file SQLite yang sama (`tmp/db.sqlite3`).
+   * Truncate per-test dari `group.each.setup(() => testUtils.db().truncate())`
+   * hanya berjalan SETELAH tiap test, sehingga test pertama pada satu
+   * rangkaian akan menabrak data dev yang tersisa (mis. hasil `db:seed`)
+   * dan gagal karena unique constraint.
+   *
+   * Karena itu database dibersihkan sekali sebelum seluruh test dimulai,
+   * agar hasil test tidak bergantung pada isi database dev saat itu.
+   */
+  setup: [
+    async () => {
+      const truncate = await testUtils.db().truncate()
+      await truncate()
+    },
+  ],
   teardown: [],
 }
 

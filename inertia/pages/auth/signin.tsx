@@ -1,11 +1,10 @@
 import AuthLayout from '~/layouts/auth'
 import { Form } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { KeyRound, LogIn, ShieldCheck } from 'lucide-react'
+import { AlertCircle, KeyRound, LoaderCircle, LogIn, ShieldCheck } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
-import { Separator } from '~/components/ui/separator'
 import { cn } from '~/lib/utils'
 
 /**
@@ -16,16 +15,13 @@ import { cn } from '~/lib/utils'
  */
 export default function Signin() {
   const brand = usePage().props.brand
-  const brandName = brand?.name ?? 'SMKN 1 Indonesia'
 
   return (
     <>
       <div className="mb-6">
-        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Masuk ke Sismart</h1>
+        <h1 className="text-2xl font-bold tracking-tight text-foreground">Masuk ke Sismart</h1>
         <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          Satu kode untuk seluruh urusan {brand?.institutionType?.toLowerCase() ?? 'sekolah'}. Kode
-          dibagikan oleh administrator{' '}
-          <span className="font-medium text-foreground">{brandName}</span>.
+          Satu kode untuk seluruh urusan {brand?.institutionType?.toLowerCase() ?? 'sekolah'}.
         </p>
       </div>
 
@@ -54,7 +50,7 @@ export default function Signin() {
                   // Kode masuk adalah identifier teknis (bukan prosa), jadi
                   // monospace diizinkan oleh DESIGN-SYSTEM.md §2. Placeholder
                   // tetap memakai font teks karena berisi contoh, bukan kode nyata.
-                  'h-11 rounded-lg font-mono text-base font-semibold uppercase tracking-[0.12em]',
+                  'h-11 rounded-lg font-mono text-base font-semibold uppercase tracking-widest',
                   'placeholder:font-sans placeholder:text-sm placeholder:font-normal placeholder:normal-case placeholder:tracking-normal'
                 )}
               />
@@ -63,9 +59,10 @@ export default function Signin() {
                 <p
                   id="loginCode-error"
                   role="alert"
-                  className="text-xs font-medium text-destructive"
+                  className="flex items-start gap-1.5 text-sm font-medium text-foreground"
                 >
-                  {errors.loginCode}
+                  <AlertCircle className="mt-0.5 size-3.5 shrink-0 text-destructive" />
+                  <span>{errors.loginCode}</span>
                 </p>
               ) : (
                 <p id="loginCode-help" className="text-xs leading-relaxed text-muted-foreground">
@@ -74,23 +71,28 @@ export default function Signin() {
               )}
             </div>
 
-            <Button type="submit" disabled={processing} className="h-10 w-full rounded-lg">
-              <LogIn className="size-4" />
+            <Button
+              type="submit"
+              disabled={processing}
+              className="group h-11 w-full rounded-lg font-semibold hover:-translate-y-0.5 active:translate-y-0"
+            >
+              {processing ? (
+                <LoaderCircle className="size-4 animate-spin" />
+              ) : (
+                <LogIn className="size-4 transition-transform duration-200 group-hover:translate-x-0.5" />
+              )}
               {processing ? 'Memeriksa…' : 'Masuk'}
             </Button>
           </div>
         )}
       </Form>
 
-      <div className="my-5 flex items-center gap-3">
-        <Separator className="flex-1" />
-        <span className="text-xs text-muted-foreground">atau</span>
-        <Separator className="flex-1" />
-      </div>
-
-      <p className="flex items-center gap-2 text-xs leading-relaxed text-muted-foreground">
-        <ShieldCheck className="mt-0.5 size-3 shrink-0 text-success" />
-        <span>Sesi Anda aman dan tidak dibagikan ke siapa pun.</span>
+      <p className="mt-6 flex items-center gap-2 text-xs leading-relaxed text-muted-foreground">
+        <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-success" />
+        <span>
+          Kode ini bersifat rahasia dan hanya terhubung ke satu akun. Jangan bagikan kepada siapa
+          pun.
+        </span>
       </p>
     </>
   )

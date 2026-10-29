@@ -56,9 +56,9 @@ export default function ThemeToggle() {
       onClick={toggle}
       aria-label={isDark ? 'Ganti ke tema terang' : 'Ganti ke tema gelap'}
       title={isDark ? 'Ganti ke tema terang' : 'Ganti ke tema gelap'}
-      className="inline-grid size-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+      className="inline-grid size-7 cursor-pointer place-items-center rounded-md border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
     >
-      {isDark ? <Sun size={16} strokeWidth={1.8} /> : <Moon size={16} strokeWidth={1.8} />}
+      {isDark ? <Sun size={14} strokeWidth={1.8} /> : <Moon size={14} strokeWidth={1.8} />}
     </button>
   )
 }
