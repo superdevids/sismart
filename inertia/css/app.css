@@ -734,6 +734,33 @@ input {
   color: var(--muted);
 }
 
+/* --- brand bar (kolom form) --- */
+.auth__brandbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.auth__brandname {
+  font-size: 14.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+.auth__legal {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--subtle);
+}
+.auth__legal-dot {
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* --- panel kanan --- */
 .auth__aside {
   position: relative;
   border-left: 1px solid var(--line);
@@ -742,39 +769,249 @@ input {
   flex-direction: column;
   justify-content: space-between;
   padding: 44px;
+  overflow: hidden;
+}
+.auth__aside::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    60% 55% at 78% 18%,
+    color-mix(in oklab, var(--primary) 14%, transparent),
+    transparent 70%
+  );
+}
+.auth__aside > * {
+  position: relative;
 }
 .auth__aside-top {
   display: flex;
   align-items: center;
   justify-content: flex-end;
 }
-.auth__quote {
-  font-family: var(--serif);
-  font-weight: 400;
-  font-size: 25px;
-  line-height: 1.3;
-  letter-spacing: 0.2px;
-  text-wrap: balance;
-  max-width: 22ch;
-}
-.pitch__t {
+.auth__eyebrow {
+  font-size: 12px;
   font-weight: 600;
-  font-size: 15px;
-  margin-bottom: 5px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+.auth__aside-title {
+  margin-top: 12px;
+  font-size: clamp(22px, 2.2vw, 30px);
+  font-weight: 700;
+  line-height: 1.18;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.auth__features {
+  list-style: none;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.auth__feature {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.auth__feature-icon {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--r);
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--primary);
+}
+.auth__feature strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
-.pitch__p {
+.auth__feature span {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  line-height: 1.5;
   color: var(--muted);
-  font-size: 13.5px;
-  line-height: 1.55;
   text-wrap: pretty;
-  max-width: 36ch;
 }
-.pitch__a {
+.auth__aside-foot {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+  max-width: 40ch;
+}
+
+/* --- halaman signin (kolom form) --- */
+.signin__head {
+  margin-bottom: 4px;
+}
+.signin__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--primary) 10%, transparent);
+  color: var(--primary);
+  font-size: 12px;
+  font-weight: 600;
+}
+.signin__title {
   margin-top: 14px;
-  display: inline-block;
-  font-size: 13.5px;
-  white-space: nowrap;
+  font-size: clamp(24px, 2.4vw, 30px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.signin__sub {
+  margin-top: 8px;
+  font-size: 14.5px;
+  line-height: 1.55;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.signin__sub strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.signin__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 26px;
+}
+.signin__field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+.signin__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+}
+.signin__input {
+  height: 52px;
+  padding: 0 16px;
+  width: 100%;
+  background: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  color: var(--ink);
+  font-family: var(--font-mono);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition:
+    border-color 0.15s,
+    box-shadow 0.15s,
+    background 0.15s;
+}
+.signin__input::placeholder {
+  font-size: 15px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: none;
+  color: var(--subtle);
+}
+.signin__input:focus {
+  outline: none;
+  background: var(--card);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 18%, transparent);
+}
+.signin__input[aria-invalid='true'] {
+  border-color: var(--destructive);
+}
+.signin__input[aria-invalid='true']:focus {
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--destructive) 18%, transparent);
+}
+.signin__hint {
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
+}
+.signin__error {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--destructive);
+}
+
+.signin__submit {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  height: 50px;
+  padding: 0 10px 0 20px;
+  border-radius: var(--r-lg);
+  background: var(--primary);
+  color: var(--primary-foreground);
+  font-size: 15px;
+  font-weight: 600;
+  transition:
+    background 0.15s,
+    scale 0.15s,
+    opacity 0.15s;
+}
+.signin__submit:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--primary) 88%, var(--foreground));
+}
+.signin__submit:active:not(:disabled) {
+  scale: 0.985;
+}
+.signin__submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 30%, transparent);
+}
+.signin__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+.signin__submit-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r);
+  background: color-mix(in oklab, var(--primary-foreground) 16%, transparent);
+}
+
+.signin__secure {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 18px;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+.signin__secure svg {
+  flex: none;
+  color: var(--success);
+}
+
+.signin__foot {
+  margin-top: 22px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--muted);
+  text-wrap: pretty;
 }
 
 /* ==========================================================================
@@ -1046,11 +1283,30 @@ input {
   .auth__aside {
     display: none;
   }
+  .auth__form-col {
+    padding: 24px 20px;
+  }
+  .auth__legal {
+    flex-wrap: wrap;
+  }
   .prose-card {
     padding: 34px 28px 20px;
   }
   .pc-lead {
     font-size: 30px;
+  }
+}
+@media (max-width: 480px) {
+  .signin__input {
+    height: 48px;
+    font-size: 16px;
+    letter-spacing: 0.1em;
+  }
+  .signin__submit {
+    height: 48px;
+  }
+  .signin__title {
+    font-size: 23px;
   }
 }
 @media (max-width: 720px) {
