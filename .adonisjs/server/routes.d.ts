@@ -7,20 +7,20 @@ export type ScannedRoutes = {
     'home': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
     'session.store': { paramsTuple?: []; params?: {} }
-    'dashboard': { paramsTuple?: []; params?: {} }
+    'panel': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
     'session.destroy': { paramsTuple?: []; params?: {} }
   }
   GET: {
     'home': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
-    'dashboard': { paramsTuple?: []; params?: {} }
+    'panel': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
   }
   HEAD: {
     'home': { paramsTuple?: []; params?: {} }
     'session.create': { paramsTuple?: []; params?: {} }
-    'dashboard': { paramsTuple?: []; params?: {} }
+    'panel': { paramsTuple?: []; params?: {} }
     'users.index': { paramsTuple?: []; params?: {} }
   }
   POST: {

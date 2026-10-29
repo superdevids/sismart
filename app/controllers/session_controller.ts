@@ -39,7 +39,7 @@ export default class SessionController {
     await user.save()
 
     session.flash('success', 'Berhasil masuk. Selamat datang!')
-    return response.redirect().toRoute('dashboard')
+    return response.redirect().toRoute('panel')
   }
 
   async destroy({ auth, response }: HttpContext) {

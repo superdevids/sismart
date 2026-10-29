@@ -136,7 +136,8 @@ providers/             # service provider kustom
   - Opsi A: murni role-based (sederhana, cukup untuk awal).
   - Opsi B: tabel `permissions` + `role_permissions` (fail-closed, kunci-katalog).
 - **Aturan fail-closed (dari pengalaman sebelumnya):** permission key harus terdaftar di katalog sebelum dipakai; tanpa izin → 403. Ini mencegah 403 massal akibat key hilang.
-- Middleware `auth` dan `guest` sudah ada; tambah middleware `role`/`can` untuk modul.
+- Middleware `auth` dan `guest` sudah ada; middleware `role` tersedia dan dipakai per-route (mis. `/pengguna` hanya `admin`), dengan perilaku fail-closed: role di luar daftar dialihkan ke `/panel` disertai pesan.
+- **Panel per role, satu URL:** route `GET /panel` menyajikan komponen Inertia berbeda menurut `users.role` (`panel/admin`, `panel/kepsek`, `panel/guru`, `panel/staff`, `panel/orang_tua`, `panel/siswa`). Keputusan role diambil di server sehingga klien tidak dapat memilih panel. Props juga dibatasi per role (dashboard admin tidak menerima statistik agregat). URL tetap sama untuk semua role agar bookmark dan notifikasi tidak bergantung pada peran.
 
 ---
 
@@ -249,6 +250,8 @@ npm run build       # node ace build
 ```
 
 Semua harus hijau sebelum pekerjaan dianggap selesai. **Jangan pernah** jalankan `tsc` tanpa `--noEmit`.
+
+**Cakupan test panel:** setiap role diuji menghasilkan komponen Inertia yang benar di `/panel`, pembatasan props per role, redirect `/dashboard` → `/panel`, dan penolakan akses non-admin ke `/pengguna`.
 
 ---
 

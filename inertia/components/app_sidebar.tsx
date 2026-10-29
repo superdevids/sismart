@@ -15,17 +15,34 @@ export type NavGroup = {
 
 const NAV_GROUPS: NavGroup[] = [
   {
-    label: 'Akademik',
-    items: [{ label: 'Dasbor', route: 'dashboard', icon: House }],
-  },
-  {
-    label: 'Administrasi',
-    items: [{ label: 'Data pengguna', route: 'users.index', icon: Users }],
+    label: 'Navigasi',
+    items: [{ label: 'Panel', route: 'panel', icon: House }],
   },
 ]
 
+const ADMIN_GROUP: NavGroup = {
+  label: 'Administrasi',
+  items: [{ label: 'Data pengguna', route: 'users.index', icon: Users }],
+}
+
+function groupsForRole(role: string | undefined): NavGroup[] {
+  if (role === 'admin') {
+    return [...NAV_GROUPS, ADMIN_GROUP]
+  }
+  return NAV_GROUPS
+}
+
+const ROLE_HINT: Record<string, string> = {
+  admin: 'Administrator',
+  kepsek: 'Kepala sekolah',
+  guru: 'Guru',
+  staff: 'Tata usaha',
+  siswa: 'Siswa',
+  orang_tua: 'Orang tua',
+}
+
 export default function AppSidebar({
-  groups = NAV_GROUPS,
+  groups,
   open,
   onClose,
   collapsed,
@@ -37,9 +54,12 @@ export default function AppSidebar({
   collapsed: boolean
   onToggleCollapse: () => void
 }) {
-  const brand = usePage().props.brand
+  const pageProps = usePage().props
+  const brand = pageProps.brand
   const brandName = brand?.name ?? 'SMKN 1 Indonesia'
   const institutionType = brand?.institutionType ?? 'Sekolah'
+  const resolvedGroups = groups ?? groupsForRole(pageProps.user?.role)
+  const roleHint = ROLE_HINT[pageProps.user?.role ?? ''] ?? institutionType
 
   return (
     <>
@@ -69,7 +89,7 @@ export default function AppSidebar({
               <p className="truncate text-[13.5px] font-semibold leading-tight text-foreground">
                 {brandName}
               </p>
-              <p className="truncate text-[11px] text-muted-foreground">{institutionType}</p>
+              <p className="truncate text-[11px] text-muted-foreground">{roleHint}</p>
             </div>
           )}
           <Button
@@ -86,7 +106,7 @@ export default function AppSidebar({
         <Separator />
 
         <nav className="flex-1 overflow-y-auto px-3 py-4">
-          {groups.map((group) => (
+          {resolvedGroups.map((group) => (
             <div key={group.label ?? 'utama'} className="mb-5 last:mb-0">
               {group.label && !collapsed && (
                 <p className="mb-1.5 px-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
@@ -149,12 +169,13 @@ function SidebarLink({
   return (
     <NavLink
       route={item.route}
+      exact
       className={cn(
-        'flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm font-medium text-muted-foreground transition-colors',
+        'group relative flex h-9 items-center gap-2.5 rounded-lg px-2.5 text-sm font-medium text-muted-foreground transition-colors',
         'hover:bg-muted hover:text-foreground',
         collapsed && 'lg:justify-center lg:px-0'
       )}
-      activeClassName="bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary"
+      activeClassName="bg-primary-soft text-primary-ink hover:bg-primary-soft hover:text-primary-ink"
       onClick={onNavigate}
     >
       {Icon ? <Icon className="size-4 shrink-0" /> : null}

@@ -22,7 +22,7 @@ export default function Signin() {
   return (
     <>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight text-foreground">Masuk ke Sismart</h1>
+        <h1 className="text-2xl text-center font-bold tracking-tight text-foreground">Masuk</h1>
       </div>
 
       <Form route="session.store">

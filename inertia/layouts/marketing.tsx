@@ -16,8 +16,8 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <ThemeToggle />
             <Button asChild size="sm" className="rounded-lg">
-              <Link route={props.user ? 'dashboard' : 'session.create'}>
-                {props.user ? 'Dasbor' : 'Masuk'}
+              <Link route={props.user ? 'panel' : 'session.create'}>
+                {props.user ? 'Panel' : 'Masuk'}
               </Link>
             </Button>
           </div>

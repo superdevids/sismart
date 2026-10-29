@@ -68,13 +68,16 @@ Pengguna
 
 ### 2.2 Redirect Otomatis
 
-- Pengguna **sudah login** mencoba akses `/login` → redirect ke dashboard (guest middleware, sudah ada).
-- Pengguna **belum login** mencoba akses halaman terlindungi → redirect `/login` (auth middleware, sudah ada).
-- Redirect tujuan disesuaikan per role (bukan dashboard generik) → **[TBD-AFD-02]**.
+- Pengguna **sudah login** mencoba akses `/login` → redirect ke `/panel` (guest middleware, sudah ada).
+- Pengguna **belum login** mencoba akses halaman terlindungi → redirect `/auth/signin` (auth middleware, sudah ada).
+- **Redirect per role** (menjawab `TBD-AFD-02`): semua role diarahkan ke **satu URL `/panel`**. Konten panel ditentukan oleh role di server, sehingga URL tidak berbeda antar-role.
+  - `/dashboard` (URL lama) dialihkan permanen ke `/panel`.
 
 ---
 
 ## 3. Alur Siswa
+
+> **Panel `/panel`:** komponen `panel/siswa` — identitas akun + daftar menu akademik (nilai, jadwal, absensi, tagihan) dengan status modul. Tidak menerima prop statistik agregat.
 
 ### 3.1 Melihat Nilai
 
@@ -104,6 +107,8 @@ Pengguna
 
 ## 4. Alur Orang Tua
 
+> **Panel `/panel`:** komponen `panel/orang_tua` — identitas akun + pantauan anak (nilai, kehadiran, tagihan). Daftar anak belum dapat ditampilkan karena relasi orang tua ↔ siswa belum dimodelkan.
+
 ### 4.1 Memantau Anak
 
 ```
@@ -132,6 +137,8 @@ Pengguna
 ---
 
 ## 5. Alur Guru
+
+> **Panel `/panel`:** komponen `panel/guru` — jumlah siswa, rekan guru, akun aktif, plus daftar tugas mengajar yang menunggu modul. Tidak menerima data akun terbaru.
 
 ### 5.1 Input Nilai (termasuk Paste Excel)
 
@@ -172,6 +179,8 @@ Pengguna
 
 ## 6. Alur Staff / Tata Usaha
 
+> **Panel `/panel`:** komponen `panel/staff` — jumlah siswa, akun aktif, akun nonaktif, plus antrean administrasi (SPP, data siswa, agenda operasional).
+
 ### 6.1 Mengelola SPP & Pembayaran
 
 ```
@@ -208,6 +217,8 @@ Pengguna
 
 ## 7. Alur Kepala Sekolah
 
+> **Panel `/panel`:** komponen `panel/kepsek` — jumlah siswa, guru, persentase akun aktif, komposisi peran, dan agenda pemantauan. Akses bersifat lihat, bukan input operasional.
+
 ```
 1. Kepsek login → dashboard agregat
 2. Lihat ringkasan: jumlah siswa, kehadiran, keuangan, agenda mendatang
@@ -220,6 +231,8 @@ Pengguna
 ---
 
 ## 8. Alur Administrator
+
+> **Panel `/panel`:** komponen `panel/admin` — statistik akun, donut aktivasi, sebaran peran, dan tabel lima akun terbaru. Hanya admin yang melihat menu **Data pengguna**; role lain dialihkan kembali ke `/panel` bila membukanya (`403` → redirect + pesan).
 
 ### 8.1 Mengelola Pengguna & Role
 
@@ -301,8 +314,9 @@ Pengguna
 | ID         | Pertanyaan                                               |
 | ---------- | -------------------------------------------------------- |
 | TBD-AFD-01 | Parameter lockout (N, M)                                 |
-| TBD-AFD-02 | Redirect dashboard per role                              |
 | TBD-AFD-03 | Relasi ortu multi-anak                                   |
 | TBD-AFD-04 | Skala & rentang nilai, konfigurasi per mapel             |
 | TBD-AFD-05 | Daftar approval kepsek                                   |
 | TBD-AFD-06 | Alur reset kode unik yang hilang (self-service vs admin) |
+
+> **TBD-AFD-02 (selesai 2026-10-29):** diputuskan memakai **satu URL `/panel`** untuk seluruh role, bukan redirect ke dashboard terpisah. Lihat §2.2.

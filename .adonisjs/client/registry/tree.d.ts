@@ -8,7 +8,7 @@ export interface ApiDefinition {
     store: typeof routes['session.store']
     destroy: typeof routes['session.destroy']
   }
-  dashboard: typeof routes['dashboard']
+  panel: typeof routes['panel']
   users: {
     index: typeof routes['users.index']
   }

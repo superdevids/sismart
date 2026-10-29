@@ -31,7 +31,7 @@ test.group('Auth / sign-in (logic)', (group) => {
     } as any)
   }
 
-  test('kode dan password benar membuat sesi dan mengarahkan ke dashboard', async ({
+  test('kode dan password benar membuat sesi dan mengarahkan ke panel', async ({
     client,
     assert,
   }) => {
@@ -45,7 +45,7 @@ test.group('Auth / sign-in (logic)', (group) => {
       .form({ loginCode: user.loginCode, password: AUTH_PASSWORD })
 
     response.assertStatus(302)
-    assert.equal(response.headers()['location'], '/dashboard')
+    assert.equal(response.headers()['location'], '/panel')
   })
 
   test('kode tidak valid ditolak dan kembali ke halaman masuk', async ({ client, assert }) => {
@@ -120,7 +120,7 @@ test.group('Auth / sign-in (logic)', (group) => {
       .form({ loginCode: 's2026002', password: AUTH_PASSWORD })
 
     response.assertStatus(302)
-    assert.equal(response.headers()['location'], '/dashboard')
+    assert.equal(response.headers()['location'], '/panel')
   })
 
   test('kode terlalu pendek gagal validasi dan kembali ke halaman masuk', async ({
@@ -208,7 +208,7 @@ test.group('Auth / sign-in (logic)', (group) => {
       .post('/auth/signin')
       .form({ loginCode: user.loginCode, password: AUTH_PASSWORD })
 
-    assert.notEqual(response.headers().location, '/dashboard')
+    assert.notEqual(response.headers().location, '/panel')
     await user.refresh()
     assert.isNull(user.lastLoginAt)
   })
@@ -230,13 +230,13 @@ test.group('Auth / protected area (logic)', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
   test('pengguna belum masuk diarahkan ke halaman masuk', async ({ client, assert }) => {
-    const response = await client.get('/dashboard').redirects(0)
+    const response = await client.get('/panel').redirects(0)
 
     response.assertStatus(302)
     assert.equal(response.headers()['location'], '/auth/signin')
   })
 
-  test('pengguna yang sudah masuk dapat membuka dashboard', async ({ client }) => {
+  test('pengguna yang sudah masuk dapat membuka panel', async ({ client }) => {
     const user = await User.create({
       loginCode: 'S2026010',
       fullName: 'Siswa Masuk',
@@ -245,7 +245,7 @@ test.group('Auth / protected area (logic)', (group) => {
       password: AUTH_PASSWORD,
     } as any)
 
-    const response = await client.get('/dashboard').loginAs(user)
+    const response = await client.get('/panel').loginAs(user)
 
     response.assertStatus(200)
   })

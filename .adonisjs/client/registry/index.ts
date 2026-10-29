@@ -26,11 +26,11 @@ const routes = {
     tokens: [[0,"auth"],[0,"signin"]],
     types: placeholder as Registry['session.store']['types'],
   },
-  'dashboard': {
+  'panel': {
     methods: ["GET","HEAD"],
-    pattern: '/dashboard',
-    tokens: [[0,"dashboard"]],
-    types: placeholder as Registry['dashboard']['types'],
+    pattern: '/panel',
+    tokens: [[0,"panel"]],
+    types: placeholder as Registry['panel']['types'],
   },
   'users.index': {
     methods: ["GET","HEAD"],

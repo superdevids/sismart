@@ -13,10 +13,17 @@ router
 
 router.get('login', ({ response }) => response.redirect().toRoute('session.create'))
 
+router.get('dashboard', ({ response }) => response.redirect().toRoute('panel'))
+
 router
   .group(() => {
-    router.get('/dashboard', [controllers.Dashboard, 'index']).as('dashboard')
-    router.get('/pengguna', [controllers.Users, 'index']).as('users.index')
+    router.get('/panel', [controllers.Panel, 'index']).as('panel')
+
+    router
+      .get('/pengguna', [controllers.Users, 'index'])
+      .as('users.index')
+      .use(middleware.role({ roles: ['admin'] }))
+
     router.post('logout', [controllers.Session, 'destroy']).as('session.destroy')
   })
   .use(middleware.auth())

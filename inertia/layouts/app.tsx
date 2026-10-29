@@ -82,7 +82,12 @@ export default function AppLayout({ children }: { children: ReactNode }) {
 
 function buildBreadcrumbs(component: string, url: string): { label: string }[] {
   const KNOWN: Record<string, string> = {
-    'pages/dashboard': 'Dasbor',
+    'pages/panel/admin': 'Panel admin',
+    'pages/panel/kepsek': 'Panel kepala sekolah',
+    'pages/panel/guru': 'Panel guru',
+    'pages/panel/staff': 'Panel tata usaha',
+    'pages/panel/orang_tua': 'Panel orang tua',
+    'pages/panel/siswa': 'Panel siswa',
     'pages/home': 'Beranda',
   }
 

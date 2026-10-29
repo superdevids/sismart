@@ -123,67 +123,174 @@ test.group('Users / index (logic)', (group) => {
   })
 })
 
-test.group('Dashboard / index (logic)', (group) => {
+test.group('Panel / per role (logic)', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
-  test('menghitung total akun dan akun aktif dari basis data', async ({ client, assert }) => {
+  const ROLES = ['siswa', 'orang_tua', 'guru', 'staff', 'kepsek', 'admin'] as const
+
+  const COMPONENTS: Record<string, string> = {
+    siswa: 'panel/siswa',
+    orang_tua: 'panel/orang_tua',
+    guru: 'panel/guru',
+    staff: 'panel/staff',
+    kepsek: 'panel/kepsek',
+    admin: 'panel/admin',
+  }
+
+  for (const role of ROLES) {
+    test(`peran ${role} mendapat komponen panel ${COMPONENTS[role]}`, async ({
+      client,
+      assert,
+    }) => {
+      const user = await User.create({
+        loginCode: `USER-${role}`,
+        fullName: `Pengguna ${role}`,
+        role: role as any,
+        isActive: true,
+      } as any)
+
+      const response = await client.get('/panel').withInertia().loginAs(user)
+      const body = response.inertiaProps as any
+
+      response.assertStatus(200)
+      response.assertInertiaComponent(COMPONENTS[role])
+      assert.equal(body.profile.role, role)
+      assert.equal(body.profile.loginCode, `USER-${role}`)
+    })
+  }
+
+  test('semua peran memakai URL yang sama', async ({ client, assert }) => {
+    for (const role of ROLES) {
+      const user = await User.create({
+        loginCode: `URL-${role}`,
+        fullName: `Pengguna ${role}`,
+        role: role as any,
+        isActive: true,
+      } as any)
+
+      const response = await client.get('/panel').withInertia().loginAs(user)
+      assert.equal(response.status(), 200)
+      assert.equal(response.inertiaComponent, COMPONENTS[role])
+    }
+  })
+
+  test('pengguna belum masuk dialihkan dari /panel', async ({ client, assert }) => {
+    const response = await client.get('/panel').redirects(0)
+
+    response.assertStatus(302)
+    assert.equal(response.headers()['location'], '/auth/signin')
+  })
+
+  test('/dashboard lama dialihkan ke /panel', async ({ client, assert }) => {
+    const response = await client.get('/dashboard').redirects(0)
+
+    response.assertStatus(302)
+    assert.equal(response.headers()['location'], '/panel')
+  })
+
+  test('admin menerima statistik akun dari basis data', async ({ client, assert }) => {
     const admin = await User.create({
-      loginCode: 'A00001',
+      loginCode: 'ADM-STAT',
       fullName: 'Admin',
       role: 'admin' as any,
       isActive: true,
     } as any)
     await User.create({
-      loginCode: 'S00001',
-      fullName: 'Siswa Nonaktif',
+      loginCode: 'SIS-STAT',
+      fullName: 'Siswa',
       role: 'siswa' as any,
       isActive: false,
     } as any)
 
-    const response = await client.get('/dashboard').withInertia().loginAs(admin)
+    const response = await client.get('/panel').withInertia().loginAs(admin)
     const body = response.inertiaProps as any
 
-    response.assertStatus(200)
     assert.equal(body.stats.total, 2)
     assert.equal(body.stats.active, 1)
+    assert.lengthOf(body.roleBreakdown, 6)
   })
 
-  test('sebaran peran memuat seluruh peran yang tersedia', async ({ client, assert }) => {
-    const admin = await User.create({
-      loginCode: 'A00001',
-      fullName: 'Admin',
-      role: 'admin' as any,
+  test('kepsek menerima jumlah siswa dan guru', async ({ client, assert }) => {
+    const kepsek = await User.create({
+      loginCode: 'KEP-STAT',
+      fullName: 'Kepsek',
+      role: 'kepsek' as any,
+      isActive: true,
+    } as any)
+    await User.create({
+      loginCode: 'GUR-STAT',
+      fullName: 'Guru',
+      role: 'guru' as any,
       isActive: true,
     } as any)
 
-    const response = await client.get('/dashboard').withInertia().loginAs(admin)
+    const response = await client.get('/panel').withInertia().loginAs(kepsek)
     const body = response.inertiaProps as any
 
-    assert.lengthOf(body.roleBreakdown, 6)
-    const adminRow = body.roleBreakdown.find((r: any) => r.role === 'admin')
-    assert.equal(adminRow?.total, 1)
+    assert.equal(body.stats.teachers, 1)
+    assert.equal(body.stats.students, 0)
   })
 
-  test('akun terbaru dibatasi lima baris', async ({ client, assert }) => {
-    const admin = await User.create({
-      loginCode: 'A00001',
-      fullName: 'Admin',
-      role: 'admin' as any,
+  test('guru tidak menerima data akun terbaru', async ({ client, assert }) => {
+    const guru = await User.create({
+      loginCode: 'GUR-ONLY',
+      fullName: 'Guru',
+      role: 'guru' as any,
       isActive: true,
     } as any)
 
-    for (let i = 0; i < 8; i++) {
-      await User.create({
-        loginCode: `S20260${10 + i}`,
-        fullName: `Siswa ${i}`,
-        role: 'siswa' as any,
+    const response = await client.get('/panel').withInertia().loginAs(guru)
+    const body = response.inertiaProps as any
+
+    assert.notProperty(body, 'recentUsers')
+    assert.notProperty(body, 'roleBreakdown')
+  })
+
+  test('siswa dan orang tua hanya menerima profil, tanpa statistik', async ({ client, assert }) => {
+    for (const role of ['siswa', 'orang_tua'] as const) {
+      const user = await User.create({
+        loginCode: `MIN-${role}`,
+        fullName: `Pengguna ${role}`,
+        role: role as any,
         isActive: true,
       } as any)
+
+      const response = await client.get('/panel').withInertia().loginAs(user)
+      const body = response.inertiaProps as any
+
+      assert.notProperty(body, 'stats')
+      assert.property(body, 'profile')
     }
+  })
+})
 
-    const response = await client.get('/dashboard').withInertia().loginAs(admin)
-    const body = response.inertiaProps as any
+test.group('Users / akses peran (logic)', (group) => {
+  group.each.setup(() => testUtils.db().truncate())
 
-    assert.lengthOf(body.recentUsers, 5)
+  test('non-admin dialihkan dari daftar pengguna', async ({ client, assert }) => {
+    const guru = await User.create({
+      loginCode: 'GUR-NOACCESS',
+      fullName: 'Guru',
+      role: 'guru' as any,
+      isActive: true,
+    } as any)
+
+    const response = await client.get('/pengguna').redirects(0).loginAs(guru)
+
+    response.assertStatus(302)
+    assert.equal(response.headers()['location'], '/panel')
+  })
+
+  test('admin tetap dapat membuka daftar pengguna', async ({ client }) => {
+    const admin = await User.create({
+      loginCode: 'ADM-OK',
+      fullName: 'Admin',
+      role: 'admin' as any,
+      isActive: true,
+    } as any)
+
+    const response = await client.get('/pengguna').loginAs(admin)
+
+    response.assertStatus(200)
   })
 })
