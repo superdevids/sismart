@@ -30,6 +30,18 @@
   --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
 
+  /* Skala bobot resmi — HANYA gunakan nilai ini.
+     200 extra-light · 300 light · 400 normal · 500 medium
+     600 semibold · 700 bold · 800 extra-bold
+     Bobot di luar skala (mis. 560) tidak dimuat font dan akan dibulatkan. */
+  --font-weight-thin: 200;
+  --font-weight-light: 300;
+  --font-weight-normal: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-extrabold: 800;
+
   /* Radius (skala shadcn) */
   --radius: 0.625rem;
   --radius-sm: calc(var(--radius) - 4px);
@@ -753,7 +765,7 @@ input {
   max-width: 22ch;
 }
 .pitch__t {
-  font-weight: 560;
+  font-weight: 600;
   font-size: 15px;
   margin-bottom: 5px;
   letter-spacing: -0.01em;
@@ -868,7 +880,7 @@ input {
 }
 .section__title {
   font-size: 15px;
-  font-weight: 560;
+  font-weight: 600;
   letter-spacing: -0.01em;
 }
 .section__description {
@@ -1089,7 +1101,7 @@ input {
 }
 .hero__kicker {
   font-size: 13px;
-  font-weight: 560;
+  font-weight: 600;
   letter-spacing: 0.02em;
   text-transform: uppercase;
   color: var(--muted);

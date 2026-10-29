@@ -24,7 +24,26 @@
 | `--font-sans` | `'Plus Jakarta Sans'` (+ fallback system) | Wajib dimuat via `<link>` Google Fonts di `resources/views/inertia_layout.edge` |
 | `--font-mono` | system monospace                          | Hanya untuk kode/angka teknis                                                   |
 
-Bobot yang dimuat: 400, 500, 600, 700, 800.
+Bobot yang dimuat: `200;300;400;500;600;700;800`.
+
+### 2.1 Skala bobot (WAJIB — hanya nilai ini)
+
+| Token                     | Nilai | Nama        | Pakai untuk                                |
+| ------------------------- | ----- | ----------- | ------------------------------------------ |
+| `--font-weight-thin`      | `200` | extra-light | teks dekoratif besar / display halus       |
+| `--font-weight-light`     | `300` | light       | paragraf pengantar, caption panjang        |
+| `--font-weight-normal`    | `400` | normal      | **body text** (default)                    |
+| `--font-weight-medium`    | `500` | medium      | label form, item navigasi                  |
+| `--font-weight-semibold`  | `600` | semibold    | **judul kecil, kicker, sub-judul, tombol** |
+| `--font-weight-bold`      | `700` | bold        | judul halaman / section utama              |
+| `--font-weight-extrabold` | `800` | extra-bold  | angka KPI besar, hero display              |
+
+**Aturan pemakaian:**
+
+- **Jangan pakai bobot di luar skala** (mis. `560`, `550`, `650`). Font tidak memuatnya dan browser membulatkan diam-diam.
+- Pilih bobot **berdasarkan fungsi hierarki**, bukan "biar tebal": body `400` → label `500` → sub-judul/tombol `600` → judul `700` → display `800`.
+- Dalam satu blok teks, **maksimal 2 bobot**.
+- Ikon di samping teks mengikuti bobot teksnya.
 
 **Mengubah font:** ganti `--font-sans` di `@theme` **dan** URL Google Fonts di edge layout.
 
@@ -144,6 +163,7 @@ Aktif lewat **class `.dark`** atau atribut **`[data-theme='dark']`** pada `<html
 | ------------------ | ----------------------------------------------------- |
 | Warna brand        | `--palette-blue-600` (dan turunannya) di `@theme`     |
 | Font               | `--font-sans` + `<link>` Google Fonts                 |
+| Bobot dipakai      | Skala resmi §2.1: `200/300/400/500/600/700/800`       |
 | Kerapatan spasi    | `--spacing` (desktop & mobile)                        |
 | Sudut komponen     | `--radius`                                            |
 | Warna tema gelap   | blok `.dark`                                          |
