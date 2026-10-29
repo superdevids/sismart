@@ -3,32 +3,40 @@ import { type ReactNode } from 'react'
 import NavLink, { type NavItem } from '~/components/nav_link'
 
 /**
- * The pages of the settings area, listed in the sidebar. Register a route
- * for each page and add it here, for example:
+ * Halaman-halaman area pengaturan, ditampilkan di sidebar. Daftarkan route
+ * untuk setiap halaman lalu tambahkan di sini, contoh:
  *
- * `{ label: 'Profile', route: 'settings.profile', icon: User }`
+ * `{ label: 'Profil', route: 'settings.profile', icon: User }`
  */
 const items: NavItem[] = []
 
 /**
- * Renders the settings heading, a sidebar of links and a card holding the
- * current page. Nest it under the app layout from each settings page:
+ * Menampilkan judul pengaturan, sidebar tautan, dan kartu berisi halaman
+ * aktif. Bersarang di bawah layout aplikasi dari setiap halaman pengaturan:
  *
- * `Profile.layout = [AppLayout, SettingsLayout]`
+ * `Profil.layout = [AppLayout, SettingsLayout]`
  */
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
-    <Page title="Settings" description="Manage your account settings and preferences.">
-      <div className="sidebar-layout">
-        <nav className="sidebar-layout__nav" aria-label="Settings">
+    <Page title="Pengaturan" description="Kelola akun dan preferensi Anda.">
+      <div className="grid gap-6 md:grid-cols-[220px_minmax(0,1fr)]">
+        <nav aria-label="Pengaturan" className="flex gap-1 md:flex-col">
           {items.map(({ label, route, icon: Icon }) => (
-            <NavLink key={label} route={route} exact className="sidebar-layout__item">
-              {Icon && <Icon size={16} />}
+            <NavLink
+              key={label}
+              route={route}
+              exact
+              className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+              activeClassName="bg-muted text-foreground"
+            >
+              {Icon && <Icon size={16} strokeWidth={1.8} />}
               {label}
             </NavLink>
           ))}
         </nav>
-        <div className="sidebar-layout__content panel">{children}</div>
+        <div className="rounded-2xl border border-border bg-card p-6 text-card-foreground shadow-sm">
+          {children}
+        </div>
       </div>
     </Page>
   )

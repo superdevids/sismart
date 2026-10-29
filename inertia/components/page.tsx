@@ -1,10 +1,11 @@
 import { type ReactNode } from 'react'
 import { Head } from '@inertiajs/react'
+import { cn } from '~/lib/utils'
 
 /**
- * The frame for an app page: sets the document title and renders the page
- * heading, an optional description and optional actions (buttons, links)
- * aligned to the right. Pass `hideTitle` to only set the document title.
+ * Kerangka satu halaman aplikasi: menetapkan judul dokumen, lalu menampilkan
+ * judul halaman, deskripsi opsional, dan aksi (tombol/tautan) yang rata kanan.
+ * Pakai `hideTitle` bila hanya ingin menetapkan judul dokumen.
  */
 export default function Page({
   title,
@@ -22,15 +23,23 @@ export default function Page({
   const hasHeader = !hideTitle || description || actions
 
   return (
-    <div className="page">
+    <div className={cn('mx-auto w-full max-w-7xl', 'px-4 py-8 sm:px-6 md:py-12 lg:px-8')}>
       <Head title={title} />
       {hasHeader && (
-        <header className="page__header">
-          <div>
-            {!hideTitle && <h1 className="page__title">{title}</h1>}
-            {description && <p className="page__description">{description}</p>}
+        <header className="mb-8 flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0">
+            {!hideTitle && (
+              <h1 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+                {title}
+              </h1>
+            )}
+            {description && (
+              <p className="mt-1.5 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+                {description}
+              </p>
+            )}
           </div>
-          {actions && <div className="page__actions">{actions}</div>}
+          {actions && <div className="flex shrink-0 items-center gap-2">{actions}</div>}
         </header>
       )}
       {children}

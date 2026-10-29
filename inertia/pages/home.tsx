@@ -13,6 +13,7 @@ import {
   Users,
   Wallet,
 } from 'lucide-react'
+import { Button } from '~/components/ui/button'
 
 /**
  * Landing page Sismart — halaman publik di `/`.
@@ -23,7 +24,7 @@ import {
  */
 export default function Home() {
   return (
-    <div className="landing">
+    <div className="animate-fade">
       <Hero />
       <Modules />
       <ForWho />
@@ -46,105 +47,137 @@ function useBrand() {
 function Hero() {
   const brand = useBrand()
   return (
-    <section className="hero">
-      <div className="hero__inner">
-        <p className="hero__kicker">{brand.tagline}</p>
-        <h1 className="hero__title">
+    <section className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[1.05fr_1fr] lg:px-8">
+      <div className="animate-rise">
+        <p className="text-xs font-semibold uppercase tracking-[0.1em] text-primary">
+          {brand.tagline}
+        </p>
+        <h1 className="mt-4 text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.05] tracking-tight text-foreground">
           Seluruh urusan {brand.institutionType.toLowerCase()},
-          <br />
-          dalam satu tempat.
+          <br className="hidden sm:block" /> dalam satu tempat.
         </h1>
-        <p className="hero__sub">
+        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-base">
           Sismart menyatukan data siswa, nilai, absensi, dan pembayaran SPP untuk sekolah SD hingga
           SMK. Guru, tata usaha, orang tua, dan siswa bekerja dari satu sumber yang sama.
         </p>
-        <div className="hero__actions">
-          <Link route="session.create" className="btn btn--primary">
-            Masuk dengan kode
-            <ArrowRight size={16} />
-          </Link>
-          <a href="#peran" className="btn btn--secondary">
-            Lihat per peran
-          </a>
+
+        <div className="mt-8 flex flex-wrap items-center gap-3">
+          <Button asChild size="lg" className="h-11 rounded-xl px-5 text-[15px]">
+            <Link route="session.create">
+              Masuk dengan kode
+              <ArrowRight size={16} />
+            </Link>
+          </Button>
+          <Button asChild variant="outline" size="lg" className="h-11 rounded-xl px-5 text-[15px]">
+            <a href="#peran">Lihat per peran</a>
+          </Button>
         </div>
-        <p className="hero__note">Akses hanya dengan kode unik dari administrator sekolah.</p>
+
+        <p className="mt-4 text-[13px] text-muted-foreground">
+          Akses hanya dengan kode unik dari administrator sekolah.
+        </p>
       </div>
 
-      <div className="hero__panel" aria-hidden="true">
-        <div className="hero__panel-bar">
-          <span className="hero__dot" />
-          <span className="hero__dot" />
-          <span className="hero__dot" />
-          <span className="hero__panel-title">Sismart · Dasbor</span>
+      {/* Kartu pratinjau dasbor */}
+      <div
+        aria-hidden="true"
+        className="relative rounded-2xl border border-border bg-card p-1.5 shadow-2xl shadow-foreground/10 animate-rise"
+      >
+        <div className="rounded-xl border border-border/60 bg-background p-4">
+          <div className="flex items-center gap-1.5 border-b border-border/60 pb-3">
+            <span className="size-2 rounded-full bg-destructive/70" />
+            <span className="size-2 rounded-full bg-warning/70" />
+            <span className="size-2 rounded-full bg-success/70" />
+            <span className="ml-2 text-[11px] font-medium text-muted-foreground">
+              Sismart · Dasbor
+            </span>
+          </div>
+
+          <div className="mt-3 flex flex-col gap-1">
+            {[
+              ['Nilai rata-rata kelas', '78,4'],
+              ['Kehadiran bulan ini', '96%'],
+              ['Tagihan SPP terbayar', '182 / 210'],
+              ['Agenda pekan ini', '5 kegiatan'],
+            ].map(([label, value]) => (
+              <div
+                key={label}
+                className="flex items-center justify-between gap-3 rounded-lg px-2.5 py-2.5 transition-colors hover:bg-muted/60"
+              >
+                <span className="text-[12.5px] text-muted-foreground">{label}</span>
+                <span className="font-mono text-sm font-semibold text-foreground">{value}</span>
+              </div>
+            ))}
+          </div>
+
+          <p className="mt-2 border-t border-border/60 pt-2.5 text-[11px] text-muted-foreground">
+            Contoh tampilan dasbor
+          </p>
         </div>
-        <div className="hero__rows">
-          {[
-            ['Nilai rata-rata kelas', '78,4'],
-            ['Kehadiran bulan ini', '96%'],
-            ['Tagihan SPP terbayar', '182 / 210'],
-            ['Agenda pekan ini', '5 kegiatan'],
-          ].map(([label, value]) => (
-            <div className="hero__row" key={label}>
-              <span className="hero__row-label">{label}</span>
-              <span className="hero__row-value mono">{value}</span>
-            </div>
-          ))}
-        </div>
-        <p className="hero__panel-foot">Contoh tampilan dasbor</p>
       </div>
     </section>
   )
 }
+
+const MODULES = [
+  {
+    icon: GraduationCap,
+    title: 'Data siswa & kelas',
+    body: 'Biodata, NIS, kelas, dan status siswa terkelola rapi — siap untuk laporan kapan pun.',
+  },
+  {
+    icon: BookOpenCheck,
+    title: 'Nilai & rapor',
+    body: 'Input nilai manual atau tempel dari Excel, lalu susun rapor per semester.',
+  },
+  {
+    icon: ClipboardList,
+    title: 'Absensi',
+    body: 'Catat kehadiran per pertemuan; rekap izin, sakit, dan alpa otomatis.',
+  },
+  {
+    icon: Wallet,
+    title: 'Keuangan & SPP',
+    body: 'Buat tagihan massal, catat pembayaran tunai maupun online, dan lihat tunggakan.',
+  },
+  {
+    icon: CalendarDays,
+    title: 'Jadwal pelajaran',
+    body: 'Susun jadwal per kelas dan mata pelajaran; guru dan siswa melihatnya langsung.',
+  },
+  {
+    icon: Megaphone,
+    title: 'Pengumuman & portal',
+    body: 'Sampaikan berita dan informasi sekolah lewat portal publik yang dapat dikelola.',
+  },
+]
 
 function Modules() {
-  const items = [
-    {
-      icon: GraduationCap,
-      title: 'Data siswa & kelas',
-      body: 'Biodata, NIS, kelas, dan status siswa terkelola rapi — siap untuk laporan kapan pun.',
-    },
-    {
-      icon: BookOpenCheck,
-      title: 'Nilai & rapor',
-      body: 'Input nilai manual atau tempel dari Excel, lalu susun rapor per semester.',
-    },
-    {
-      icon: ClipboardList,
-      title: 'Absensi',
-      body: 'Catat kehadiran per pertemuan; rekap izin, sakit, dan alpa otomatis.',
-    },
-    {
-      icon: Wallet,
-      title: 'Keuangan & SPP',
-      body: 'Buat tagihan massal, catat pembayaran tunai maupun online, dan lihat tunggakan.',
-    },
-    {
-      icon: CalendarDays,
-      title: 'Jadwal pelajaran',
-      body: 'Susun jadwal per kelas dan mata pelajaran; guru dan siswa melihatnya langsung.',
-    },
-    {
-      icon: Megaphone,
-      title: 'Pengumuman & portal',
-      body: 'Sampaikan berita dan informasi sekolah lewat portal publik yang dapat dikelola.',
-    },
-  ]
-
   return (
-    <section className="section-band" id="modul">
-      <div className="section-band__inner">
-        <header className="section-band__head">
-          <h2>Yang bisa dikerjakan di Sismart</h2>
-          <p>Modul-modul inti untuk operasional sekolah sehari-hari.</p>
+    <section id="modul" className="border-y border-border bg-muted/40">
+      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+        <header className="max-w-2xl">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+            Yang bisa dikerjakan di Sismart
+          </h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+            Modul-modul inti untuk operasional sekolah sehari-hari.
+          </p>
         </header>
-        <div className="modules">
-          {items.map(({ icon: Icon, title, body }) => (
-            <article className="module" key={title}>
-              <span className="module__icon">
+
+        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          {MODULES.map(({ icon: Icon, title, body }) => (
+            <article
+              key={title}
+              className="group rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-sm transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-foreground/5"
+            >
+              <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                 <Icon size={20} strokeWidth={1.8} />
               </span>
-              <h3 className="module__title">{title}</h3>
-              <p className="module__body">{body}</p>
+              <h3 className="mt-4 text-[15px] font-semibold tracking-tight text-foreground">
+                {title}
+              </h3>
+              <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{body}</p>
             </article>
           ))}
         </div>
@@ -152,84 +185,94 @@ function Modules() {
     </section>
   )
 }
+
+const ROLES = [
+  {
+    icon: Users,
+    name: 'Guru',
+    line: 'Input nilai dan absensi, unggah materi, susun jadwal mengajar.',
+  },
+  {
+    icon: Wallet,
+    name: 'Tata usaha',
+    line: 'Kelola SPP, pembayaran, data siswa, inventaris, dan surat.',
+  },
+  {
+    icon: ShieldCheck,
+    name: 'Kepala sekolah',
+    line: 'Pantau ringkasan kehadiran, keuangan, dan agenda lewat satu dasbor.',
+  },
+  {
+    icon: CreditCard,
+    name: 'Orang tua',
+    line: 'Lihat nilai, kehadiran, dan tagihan anak; bayar SPP secara online.',
+  },
+]
 
 function ForWho() {
-  const roles = [
-    {
-      icon: Users,
-      name: 'Guru',
-      line: 'Input nilai dan absensi, unggah materi, susun jadwal mengajar.',
-    },
-    {
-      icon: Wallet,
-      name: 'Tata usaha',
-      line: 'Kelola SPP, pembayaran, data siswa, inventaris, dan surat.',
-    },
-    {
-      icon: ShieldCheck,
-      name: 'Kepala sekolah',
-      line: 'Pantau ringkasan kehadiran, keuangan, dan agenda lewat satu dasbor.',
-    },
-    {
-      icon: CreditCard,
-      name: 'Orang tua',
-      line: 'Lihat nilai, kehadiran, dan tagihan anak; bayar SPP secara online.',
-    },
-  ]
-
   return (
-    <section className="roles" id="peran">
-      <div className="roles__inner">
-        <header className="roles__head">
-          <h2>Satu sistem, banyak peran</h2>
-          <p>Setiap pengguna melihat dan mengerjakan bagiannya sendiri — sesuai peran.</p>
-        </header>
-        <div className="roles__grid">
-          {roles.map(({ icon: Icon, name, line }) => (
-            <article className="role" key={name}>
-              <span className="role__badge">
-                <Icon size={18} strokeWidth={1.8} />
-                {name}
-              </span>
-              <p className="role__line">{line}</p>
-            </article>
-          ))}
-        </div>
+    <section id="peran" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+      <header className="max-w-2xl">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          Satu sistem, banyak peran
+        </h2>
+        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+          Setiap pengguna melihat dan mengerjakan bagiannya sendiri — sesuai peran.
+        </p>
+      </header>
+
+      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+        {ROLES.map(({ icon: Icon, name, line }) => (
+          <article
+            key={name}
+            className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+          >
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-[13px] font-semibold text-foreground">
+              <Icon size={15} strokeWidth={1.8} className="text-primary" />
+              {name}
+            </span>
+            <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{line}</p>
+          </article>
+        ))}
       </div>
     </section>
   )
 }
 
+const STEPS = [
+  {
+    n: '01',
+    t: 'Terima kode unik',
+    d: 'Administrator sekolah memberi setiap pengguna satu kode masuk.',
+  },
+  {
+    n: '02',
+    t: 'Masuk ke Sismart',
+    d: 'Buka halaman masuk, masukkan kode, dan Anda langsung diarahkan ke dasbor.',
+  },
+  {
+    n: '03',
+    t: 'Kerjakan bagian Anda',
+    d: 'Guru mengajar dan menilai; tata usaha mengelola; orang tua memantau.',
+  },
+]
+
 function HowIt() {
-  const steps = [
-    {
-      n: '01',
-      t: 'Terima kode unik',
-      d: 'Administrator sekolah memberi setiap pengguna satu kode masuk.',
-    },
-    {
-      n: '02',
-      t: 'Masuk ke Sismart',
-      d: 'Buka halaman masuk, masukkan kode, dan anda langsung diarahkan ke dasbor.',
-    },
-    {
-      n: '03',
-      t: 'Kerjakan bagian anda',
-      d: 'Guru mengajar dan menilai; tata usaha mengelola; orang tua memantau.',
-    },
-  ]
   return (
-    <section className="how">
-      <div className="how__inner">
-        <header className="how__head">
-          <h2>Sesederhana tiga langkah</h2>
-        </header>
-        <ol className="how__steps">
-          {steps.map(({ n, t, d }) => (
-            <li className="how__step" key={n}>
-              <span className="how__num mono">{n}</span>
-              <h3 className="how__title">{t}</h3>
-              <p className="how__body">{d}</p>
+    <section className="border-y border-border bg-muted/40">
+      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          Sesederhana tiga langkah
+        </h2>
+
+        <ol className="mt-10 grid gap-4 md:grid-cols-3">
+          {STEPS.map(({ n, t, d }) => (
+            <li key={n} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
+              <span className="font-mono text-[13px] font-semibold text-primary">{n}</span>
+              <h3 className="mt-2.5 text-[15px] font-semibold tracking-tight text-foreground">
+                {t}
+              </h3>
+              <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{d}</p>
             </li>
           ))}
         </ol>
@@ -240,14 +283,20 @@ function HowIt() {
 
 function FinalCta() {
   return (
-    <section className="final">
-      <div className="final__inner">
-        <h2 className="final__title">Sudah punya kode masuk?</h2>
-        <p className="final__sub">Masuk sekarang dan mulai dari dasbor anda.</p>
-        <Link route="session.create" className="btn btn--primary">
-          Masuk dengan kode
-          <ArrowRight size={16} />
-        </Link>
+    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
+      <div className="rounded-3xl border border-border bg-card px-6 py-12 text-center shadow-sm sm:px-12">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          Sudah punya kode masuk?
+        </h2>
+        <p className="mx-auto mt-2 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+          Masuk sekarang dan mulai dari dasbor Anda.
+        </p>
+        <Button asChild size="lg" className="mt-6 h-11 rounded-xl px-5 text-[15px]">
+          <Link route="session.create">
+            Masuk dengan kode
+            <ArrowRight size={16} />
+          </Link>
+        </Button>
       </div>
     </section>
   )
@@ -256,13 +305,13 @@ function FinalCta() {
 function Footer() {
   const brand = useBrand()
   return (
-    <footer className="site-foot">
-      <div className="site-foot__inner">
-        <div className="site-foot__brand">
-          <strong>{brand.name}</strong>
-          <span>{brand.tagline}</span>
+    <footer className="border-t border-border bg-card">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+        <div className="flex flex-col">
+          <strong className="text-sm font-semibold text-foreground">{brand.name}</strong>
+          <span className="mt-0.5 text-[13px] text-muted-foreground">{brand.tagline}</span>
         </div>
-        <p className="site-foot__note">
+        <p className="max-w-md text-[13px] leading-relaxed text-muted-foreground">
           Sismart membantu satu lembaga sekolah mengelola akademik dan keuangan dalam satu tempat.
         </p>
       </div>

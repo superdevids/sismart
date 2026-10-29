@@ -7,7 +7,7 @@ export default function Logo({ size = 26 }: { size?: number }) {
     <Link
       route="home"
       aria-label={brand?.name ?? 'Sismart'}
-      style={{ display: 'inline-flex', color: 'var(--ink)' }}
+      className="inline-flex text-foreground transition-opacity hover:opacity-80"
     >
       <svg
         width={size}

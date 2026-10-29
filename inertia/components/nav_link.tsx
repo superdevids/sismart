@@ -3,6 +3,7 @@ import { usePage } from '@inertiajs/react'
 import { type LucideIcon } from 'lucide-react'
 import { type ReactNode } from 'react'
 import { Link } from '@adonisjs/inertia/react'
+import { cn } from '~/lib/utils'
 
 export type NavRoute = Parameters<typeof urlFor>[0]
 
@@ -13,20 +14,22 @@ export type NavItem = {
 }
 
 /**
- * A link that marks itself with `aria-current="page"` when the current URL
- * matches its route. By default nested URLs count as a match, so a
- * "Settings" link stays active on "/settings/security". Pass `exact` to
- * only match the route itself.
+ * Tautan yang menandai dirinya dengan `aria-current="page"` bila URL aktif
+ * cocok dengan route-nya. Secara default URL bertingkat ikut dianggap cocok,
+ * jadi tautan "Pengaturan" tetap aktif di "/settings/security". Pakai
+ * `exact` bila hanya ingin mencocokkan route itu sendiri.
  */
 export default function NavLink({
   route,
   exact = false,
   className,
+  activeClassName,
   children,
 }: {
   route: NavRoute
   exact?: boolean
   className?: string
+  activeClassName?: string
   children: ReactNode
 }) {
   const { url } = usePage()
@@ -35,7 +38,11 @@ export default function NavLink({
   const isActive = exact ? path === href : path === href || path.startsWith(`${href}/`)
 
   return (
-    <Link href={href} className={className} aria-current={isActive ? 'page' : undefined}>
+    <Link
+      href={href}
+      className={cn(className, isActive && activeClassName)}
+      aria-current={isActive ? 'page' : undefined}
+    >
       {children}
     </Link>
   )

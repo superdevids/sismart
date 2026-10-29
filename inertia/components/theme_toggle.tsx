@@ -17,7 +17,7 @@ function readTheme(): Theme {
 }
 
 /**
- * Terapkan tema ke DOM secara konsisten: `data-theme` (dipakai CSS token)
+ * Terapkan tema ke DOM secara konsisten: `data-theme` (dipakai token CSS)
  * dan class `dark` (dipakai varian Tailwind `dark:`).
  */
 function applyTheme(theme: Theme) {
@@ -53,13 +53,12 @@ export default function ThemeToggle() {
   return (
     <button
       type="button"
-      className="iconbtn"
       onClick={toggle}
-      aria-label={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
-      title={isDark ? 'Switch to light theme' : 'Switch to dark theme'}
+      aria-label={isDark ? 'Ganti ke tema terang' : 'Ganti ke tema gelap'}
+      title={isDark ? 'Ganti ke tema terang' : 'Ganti ke tema gelap'}
+      className="inline-grid size-9 place-items-center rounded-lg border border-border bg-card text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
     >
-      <Sun size={16} className={`themetoggle__icon ${isDark ? 'themetoggle__icon--on' : ''}`} />
-      <Moon size={16} className={`themetoggle__icon ${isDark ? '' : 'themetoggle__icon--on'}`} />
+      {isDark ? <Sun size={16} strokeWidth={1.8} /> : <Moon size={16} strokeWidth={1.8} />}
     </button>
   )
 }

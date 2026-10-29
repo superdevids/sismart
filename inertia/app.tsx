@@ -28,6 +28,7 @@ createInertiaApp({
     )
   },
   progress: {
-    color: '#4B5563',
+    // Ikut token design system, bukan nilai literal.
+    color: 'var(--primary)',
   },
 })

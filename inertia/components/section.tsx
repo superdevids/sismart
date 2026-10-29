@@ -1,9 +1,9 @@
 import { type ReactNode } from 'react'
 
 /**
- * A group of content within a page, such as a group of form fields, with
- * an optional title and description. Stack several sections and they are
- * separated by a divider.
+ * Sekelompok konten dalam satu halaman — misalnya sekumpulan field form —
+ * dengan judul dan deskripsi opsional. Beberapa Section ditumpuk akan
+ * dipisahkan garis.
  */
 export default function Section({
   title,
@@ -15,14 +15,18 @@ export default function Section({
   children: ReactNode
 }) {
   return (
-    <section className="section">
+    <section className="border-b border-border py-6 last:border-b-0 last:pb-0 first:pt-0">
       {(title || description) && (
-        <header className="section__header">
-          {title && <h2 className="section__title">{title}</h2>}
-          {description && <p className="section__description">{description}</p>}
+        <header className="mb-4">
+          {title && (
+            <h2 className="text-base font-semibold tracking-tight text-foreground">{title}</h2>
+          )}
+          {description && (
+            <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{description}</p>
+          )}
         </header>
       )}
-      <div className="section__body">{children}</div>
+      <div className="space-y-4">{children}</div>
     </section>
   )
 }
