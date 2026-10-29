@@ -352,7 +352,7 @@ input {
   border-radius: var(--r);
   color: var(--ink);
   font-size: 14px;
-  box-shadow: 0 1px 1px rgba(10, 10, 11, 0.03);
+  box-shadow: 0 1px 1px rgba(24, 27, 33);
   transition:
     border-color 0.15s,
     box-shadow 0.15s;
@@ -377,11 +377,7 @@ input {
 }
 .field__input[aria-invalid='true'],
 .field__input[data-invalid='true'] {
-  border-color: #c0392b;
-}
-:root[data-theme='dark'] .field__input[aria-invalid='true'],
-:root[data-theme='dark'] .field__input[data-invalid='true'] {
-  border-color: #e0685c;
+  border-color: var(--destructive);
 }
 .field__hint {
   font-size: 12.5px;
@@ -390,10 +386,7 @@ input {
 }
 .field__error {
   font-size: 12.5px;
-  color: #c0392b;
-}
-:root[data-theme='dark'] .field__error {
-  color: #e0685c;
+  color: var(--destructive);
 }
 
 /* --- inline link --- */
@@ -513,7 +506,7 @@ input {
   padding: 42px 46px 24px;
   box-shadow:
     0 1px 0 rgba(247, 249, 252, 0.55) inset,
-    0 36px 70px -46px rgba(10, 10, 11, 0.45);
+    0 36px 70px -46px rgba(24, 27, 33);
 }
 :root[data-theme='dark'] .prose-card {
   box-shadow: 0 36px 80px -50px rgba(24, 27, 33, 0.55);
@@ -669,7 +662,7 @@ input {
   margin-left: -8px;
   display: grid;
   place-items: center;
-  color: #f7f9fc;
+  color: var(--primary-foreground);
   font-weight: 600;
   font-size: 12px;
   box-shadow:
@@ -1003,7 +996,7 @@ input {
   border-radius: var(--r-lg);
   box-shadow:
     0 1px 0 rgba(247, 249, 252, 0.55) inset,
-    0 10px 30px -12px rgba(10, 10, 11, 0.18);
+    0 10px 30px -12px rgba(24, 27, 33);
   padding: 16px 18px;
 }
 :root[data-theme='dark'] [data-sonner-toaster] [data-sonner-toast] {
@@ -1040,10 +1033,7 @@ input {
   color: var(--ok);
 }
 [data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-icon] {
-  color: #c0392b;
-}
-:root[data-theme='dark'] [data-sonner-toaster] [data-sonner-toast][data-type='error'] [data-icon] {
-  color: #e0685c;
+  color: var(--destructive);
 }
 
 /* ==========================================================================
@@ -1141,7 +1131,7 @@ input {
   border-radius: var(--r-lg);
   box-shadow:
     0 1px 0 rgba(247, 249, 252, 0.55) inset,
-    0 40px 80px -52px rgba(10, 10, 11, 0.5);
+    0 40px 80px -52px rgba(24, 27, 33);
   overflow: hidden;
 }
 :root[data-theme='dark'] .hero__panel {
