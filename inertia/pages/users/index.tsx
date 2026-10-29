@@ -73,7 +73,7 @@ export default function UsersIndex() {
   return (
     <Page
       title="Data pengguna"
-      description="Seluruh akun yang terdaftar di Sismart beserta kode masuk dan perannya."
+      description="Seluruh akun yang terdaftar di Sismart beserta ID Pengguna dan perannya."
     >
       <Card>
         <CardHeader>
@@ -95,7 +95,7 @@ export default function UsersIndex() {
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Cari nama atau kode masuk…"
+                placeholder="Cari nama atau ID Pengguna…"
                 aria-label="Cari pengguna"
                 className="pl-8"
               />
@@ -146,7 +146,7 @@ export default function UsersIndex() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="pl-4">Nama</TableHead>
-                    <TableHead>Kode masuk</TableHead>
+                    <TableHead>ID Pengguna</TableHead>
                     <TableHead>Peran</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead className="pr-4">Terakhir masuk</TableHead>

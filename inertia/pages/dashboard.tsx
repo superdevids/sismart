@@ -96,7 +96,7 @@ export default function Dashboard() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="pl-5">Nama</TableHead>
-                    <TableHead>Kode</TableHead>
+                    <TableHead>ID Pengguna</TableHead>
                     <TableHead className="pr-5">Peran</TableHead>
                   </TableRow>
                 </TableHeader>

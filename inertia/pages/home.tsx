@@ -57,7 +57,7 @@ function Hero() {
         <div className="mt-8 flex flex-wrap items-center gap-3">
           <Button asChild size="lg" className="h-11 rounded-xl px-5 text-sm font-semibold">
             <Link route="session.create">
-              Masuk dengan kode
+              Masuk
               <ArrowRight size={16} />
             </Link>
           </Button>
@@ -72,7 +72,7 @@ function Hero() {
         </div>
 
         <p className="mt-4 text-sm text-muted-foreground">
-          Akses hanya dengan kode unik dari administrator sekolah.
+          Akses hanya dengan ID Pengguna dan password dari administrator sekolah.
         </p>
       </div>
 
@@ -237,13 +237,13 @@ function ForWho() {
 const STEPS = [
   {
     n: '01',
-    t: 'Terima kode unik',
-    d: 'Administrator sekolah memberi setiap pengguna satu kode masuk.',
+    t: 'Terima ID Pengguna',
+    d: 'Administrator sekolah memberi setiap pengguna ID Pengguna dan password awal.',
   },
   {
     n: '02',
     t: 'Masuk ke Sismart',
-    d: 'Buka halaman masuk, masukkan kode, dan Anda langsung diarahkan ke dasbor.',
+    d: 'Buka halaman masuk, masukkan ID Pengguna dan password, lalu Anda diarahkan ke dasbor.',
   },
   {
     n: '03',
@@ -279,14 +279,14 @@ function FinalCta() {
     <section className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-24">
       <div className="rounded-2xl border border-border bg-card px-6 py-12 text-center xl:px-12">
         <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
-          Sudah punya kode masuk?
+          Sudah punya ID Pengguna?
         </h2>
         <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
           Masuk sekarang dan mulai dari dasbor Anda.
         </p>
         <Button asChild size="lg" className="mt-6 h-11 rounded-xl px-5 text-sm font-semibold">
           <Link route="session.create">
-            Masuk dengan kode
+            Masuk
             <ArrowRight size={16} />
           </Link>
         </Button>

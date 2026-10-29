@@ -20,7 +20,7 @@ export default class SessionController {
     const normalized = loginCode.trim().toUpperCase()
 
     const invalid = () => {
-      session.flash('error', 'Kode masuk atau password salah, atau akun tidak aktif.')
+      session.flash('error', 'ID Pengguna atau password salah, atau akun tidak aktif.')
       return response.redirect().toRoute('session.create')
     }
 

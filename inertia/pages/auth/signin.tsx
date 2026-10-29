@@ -124,8 +124,8 @@ export default function Signin() {
       <p className="mt-6 flex items-start gap-2 text-xs leading-relaxed">
         <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-success" />
         <span>
-          Kode dan password bersifat rahasia. Jangan bagikan kepada siapa pun, termasuk yang mengaku
-          panitia atau tata usaha.
+          ID Pengguna dan password bersifat rahasia. Jangan bagikan kepada siapa pun, termasuk yang
+          mengaku panitia atau tata usaha.
         </span>
       </p>
     </>

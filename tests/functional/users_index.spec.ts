@@ -80,7 +80,7 @@ test.group('Users / index (logic)', (group) => {
     assert.equal(body.users[0].loginCode, 'S2026001')
   })
 
-  test('pencarian kode masuk juga bekerja', async ({ client, assert }) => {
+  test('pencarian ID Pengguna juga bekerja', async ({ client, assert }) => {
     await seedUsers()
     const admin = await asAdmin()
 

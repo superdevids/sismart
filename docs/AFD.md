@@ -46,11 +46,11 @@ Pengguna
 
 ```
 1. Pengguna buka /auth/signin
-2. Masukkan kode unik dan password
-   ◇ Kode/password salah?   → ⚠ "Kode masuk atau password salah, atau akun tidak aktif."
+2. Masukkan ID Pengguna dan password
+   ◇ ID Pengguna/password salah? → ⚠ "ID Pengguna atau password salah, atau akun tidak aktif."
    ◇ Akun nonaktif?         → ⚠ pesan yang sama (tidak membocorkan status akun)
    ◇ Sudah terkunci?        → ⚠ "Coba lagi dalam M menit"
-3. Sistem verifikasi kode lalu password
+3. Sistem verifikasi ID Pengguna lalu password
    ◇ Keduanya cocok?
       → sistem buat sesi, catat login, arahkan ke dashboard role
       ⚠ Gagal → tambah hitungan gagal; bila ≥ N → kunci akun M menit
@@ -59,8 +59,8 @@ Pengguna
 
 **Aturan:**
 
-- Pesan error **generik**: tidak membedakan kode salah, password salah, akun nonaktif, atau akun tanpa password.
-- Kode dinormalisasi ke huruf besar sebelum dicocokkan; password **tidak** di-trim.
+- Pesan error **generik**: tidak membedakan ID Pengguna salah, password salah, akun nonaktif, atau akun tanpa password.
+- ID Pengguna dinormalisasi ke huruf besar sebelum dicocokkan; password **tidak** di-trim.
 - **[TBD-AFD-01]** N gagal & durasi M mengikuti `TBD-TRD-02`.
 - Alur ganti password belum ada (lihat catatan TRD §4.1).
 
