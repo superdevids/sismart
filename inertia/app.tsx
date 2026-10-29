@@ -5,10 +5,14 @@ import { TuyauProvider } from '@adonisjs/inertia/react'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
 import { createInertiaApp, type ResolvedComponent } from '@inertiajs/react'
 
-const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
+/**
+ * Fallback document title used before an Inertia page sets its own. The
+ * brand name itself comes from shared props on each page render.
+ */
+const appName = import.meta.env.VITE_APP_NAME || 'Sismart'
 
 createInertiaApp({
-  title: (title) => (title ? `${title} - ${appName}` : appName),
+  title: (title) => (title ? `${title} - Sismart` : appName),
   resolve: async (name) => {
     const page = await resolvePageComponent(
       `./pages/${name}.tsx`,

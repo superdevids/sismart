@@ -14,28 +14,16 @@ const routes = {
     tokens: [[0,"/"]],
     types: placeholder as Registry['home']['types'],
   },
-  'new_account.create': {
-    methods: ["GET","HEAD"],
-    pattern: '/signup',
-    tokens: [[0,"signup"]],
-    types: placeholder as Registry['new_account.create']['types'],
-  },
-  'new_account.store': {
-    methods: ["POST"],
-    pattern: '/signup',
-    tokens: [[0,"signup"]],
-    types: placeholder as Registry['new_account.store']['types'],
-  },
   'session.create': {
     methods: ["GET","HEAD"],
-    pattern: '/login',
-    tokens: [[0,"login"]],
+    pattern: '/auth/signin',
+    tokens: [[0,"auth"],[0,"signin"]],
     types: placeholder as Registry['session.create']['types'],
   },
   'session.store': {
     methods: ["POST"],
-    pattern: '/login',
-    tokens: [[0,"login"]],
+    pattern: '/auth/signin',
+    tokens: [[0,"auth"],[0,"signin"]],
     types: placeholder as Registry['session.store']['types'],
   },
   'dashboard': {

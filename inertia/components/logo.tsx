@@ -1,10 +1,12 @@
 import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
 
 export default function Logo({ size = 26 }: { size?: number }) {
+  const brand = usePage().props.brand
   return (
     <Link
       route="home"
-      aria-label="AdonisJS"
+      aria-label={brand?.name ?? 'Sismart'}
       style={{ display: 'inline-flex', color: 'var(--ink)' }}
     >
       <svg

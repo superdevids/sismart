@@ -1,165 +1,272 @@
-import { ArrowUpRight } from 'lucide-react'
 import MarketingLayout from '~/layouts/marketing'
+import { Link } from '@adonisjs/inertia/react'
+import { usePage } from '@inertiajs/react'
+import {
+  ArrowRight,
+  BookOpenCheck,
+  CalendarDays,
+  ClipboardList,
+  CreditCard,
+  GraduationCap,
+  Megaphone,
+  ShieldCheck,
+  Users,
+  Wallet,
+} from 'lucide-react'
 
+/**
+ * Landing page Sismart — halaman publik di `/`.
+ *
+ * Nama sekolah (brand) berasal dari pengaturan yang dapat diubah admin, bukan
+ * teks mati. Produk tetap bernama "Sismart"; yang dinamis adalah identitas
+ * sekolah yang memakainya.
+ */
 export default function Home() {
   return (
-    <div className="home">
-      <article className="prose-card">
-        <div className="pc-top">
-          <span className="pc-status mono tag" style={{ color: 'var(--ok)' }}>
-            <span className="dot" /> Server ready
-          </span>
-        </div>
-
-        <div className="pc-lead">Welcome to the power of a full-stack React app.</div>
-
-        <p className="pc-para">
-          Powered by Inertia and React, this setup blends server-driven routing with rich
-          client-side interactivity that feels seamless, fast, and cohesive.
-        </p>
-
-        <p className="pc-para">
-          This page is simply proof the engine started. Everything from here is yours to build.
-        </p>
-
-        <ul className="links">
-          <li>
-            <a className="lrow" href="https://docs.adonisjs.com" target="_blank" rel="noreferrer">
-              <span className="lrow__bullet" />
-              <span className="lrow__title">Documentation</span>
-              <span className="lrow__desc">Guides & API reference</span>
-              <span className="lrow__arrow">
-                <ArrowUpRight size={16} />
-              </span>
-            </a>
-          </li>
-          <li>
-            <a className="lrow" href="https://plus.adonisjs.com" target="_blank" rel="noreferrer">
-              <span className="lrow__bullet" />
-              <span className="lrow__title">AdonisJS Plus</span>
-              <span className="lrow__desc">Feature packs and Flow AI</span>
-              <span className="lrow__arrow">
-                <ArrowUpRight size={16} />
-              </span>
-            </a>
-          </li>
-          <li>
-            <a
-              className="lrow"
-              href="https://discord.com/invite/vDcEjq6"
-              target="_blank"
-              rel="noreferrer"
-            >
-              <span className="lrow__bullet" />
-              <span className="lrow__title">Discord</span>
-              <span className="lrow__desc">Meet fellow AdonisJS developers</span>
-              <span className="lrow__arrow">
-                <ArrowUpRight size={16} />
-              </span>
-            </a>
-          </li>
-        </ul>
-
-        <div className="stack">
-          <span className="tag">Built with</span>
-          <div className="pile" role="list" aria-label="Tech stack">
-            <span
-              className="tile"
-              role="listitem"
-              title="AdonisJS"
-              style={{ background: '#5A45FF' }}
-            >
-              <svg viewBox="0 0 160 160" fill="#fff" aria-hidden="true">
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M0 80.0001C0 144.521 15.4786 160 79.9999 160 144.521 160 160 144.521 160 80.0001 160 15.4786 144.521 0 79.9999 0 15.4786 0 0 15.4786 0 80.0001zm32.2607 16.6191l25.0918-57.0266c4.2361-9.613 12.3825-14.8268 22.6474-14.8268 10.265 0 18.4113 5.2138 22.6481 14.8268l25.091 57.0266c1.141 2.77 2.118 6.3538 2.118 9.4498 0 14.175-9.939 24.114-24.114 24.114-4.828 0-8.6629-1.232-12.5444-2.479-3.9771-1.278-8.0036-2.572-13.1987-2.572-5.1349 0-9.2597 1.306-13.3154 2.589-3.9233 1.241-7.7814 2.462-12.4279 2.462-14.1752 0-24.1141-9.939-24.1141-24.114 0-3.096.9776-6.6798 2.1182-9.4498zm47.7392-47.0871L55.2344 105.581c7.332-3.422 15.8043-5.051 24.7655-5.051 8.6358 0 17.434 1.629 24.4401 5.051L79.9999 49.5321z"
-                />
-              </svg>
-            </span>
-            <span
-              className="tile"
-              role="listitem"
-              title="Inertia"
-              style={{ background: '#9061F9' }}
-            >
-              <svg viewBox="0 0 24 24" fill="#fff" aria-hidden="true">
-                <path d="M12.5 8l4 4l-4 4h4.5l4 -4l-4 -4z" />
-                <path d="M3.5 8l4 4l-4 4h4.5l4 -4l-4 -4z" />
-              </svg>
-            </span>
-            <span className="tile" role="listitem" title="React" style={{ background: '#23272F' }}>
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <g fill="none" stroke="#61DAFB" strokeWidth="1">
-                  <ellipse cx="12" cy="12" rx="11" ry="4.2" />
-                  <ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(60 12 12)" />
-                  <ellipse cx="12" cy="12" rx="11" ry="4.2" transform="rotate(120 12 12)" />
-                </g>
-                <circle cx="12" cy="12" r="2.1" fill="#61DAFB" />
-              </svg>
-            </span>
-            <span
-              className="tile"
-              role="listitem"
-              title="TypeScript"
-              style={{ background: '#3178C6' }}
-            >
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <text
-                  x="12"
-                  y="17"
-                  textAnchor="middle"
-                  fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace"
-                  fontWeight="700"
-                  fontSize="10"
-                  fill="#fff"
-                  letterSpacing="-0.5"
-                >
-                  TS
-                </text>
-              </svg>
-            </span>
-            <span className="tile" role="listitem" title="Vite" style={{ background: '#1E1B2E' }}>
-              <svg viewBox="0 0 410 404" aria-hidden="true">
-                <defs>
-                  <linearGradient
-                    id="viteA"
-                    x1="6"
-                    y1="33"
-                    x2="235"
-                    y2="344"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#41D1FF" />
-                    <stop offset="1" stopColor="#BD34FE" />
-                  </linearGradient>
-                  <linearGradient
-                    id="viteB"
-                    x1="194"
-                    y1="8"
-                    x2="236"
-                    y2="292"
-                    gradientUnits="userSpaceOnUse"
-                  >
-                    <stop stopColor="#FFEA83" />
-                    <stop offset=".083" stopColor="#FFDD35" />
-                    <stop offset="1" stopColor="#FFA800" />
-                  </linearGradient>
-                </defs>
-                <path
-                  d="M399.641 59.5246L215.643 388.545C211.844 395.338 202.084 395.378 198.228 388.618L10.5817 59.5563C6.38087 52.1896 12.6802 43.2665 21.0281 44.7586L205.223 77.6824C206.398 77.8924 207.601 77.8904 208.776 77.6763L389.119 44.8058C397.439 43.2894 403.768 52.1434 399.641 59.5246Z"
-                  fill="url(#viteA)"
-                />
-                <path
-                  d="M292.965 1.5744L156.801 28.2552C154.563 28.6937 152.906 30.5903 152.771 32.8664L144.395 174.33C144.198 177.662 147.258 180.248 150.51 179.498L188.42 170.749C191.967 169.931 195.172 173.055 194.443 176.622L183.18 231.775C182.422 235.487 185.907 238.661 189.532 237.56L212.947 230.446C216.577 229.344 220.065 232.527 219.297 236.242L201.398 322.875C200.278 328.294 207.486 331.249 210.492 326.603L212.5 323.5L323.454 102.072C325.312 98.3645 322.108 94.137 318.036 94.9233L279.014 102.452C275.347 103.159 272.227 99.7398 273.262 96.1457L298.731 7.66608C299.767 4.06956 296.642 0.649737 292.965 1.5744Z"
-                  fill="url(#viteB)"
-                />
-              </svg>
-            </span>
-          </div>
-        </div>
-      </article>
+    <div className="landing">
+      <Hero />
+      <Modules />
+      <ForWho />
+      <HowIt />
+      <FinalCta />
+      <Footer />
     </div>
+  )
+}
+
+function useBrand() {
+  const brand = usePage().props.brand
+  return {
+    name: brand?.name ?? 'SMKN 1 Indonesia',
+    tagline: brand?.tagline ?? 'Sistem informasi sekolah',
+    institutionType: brand?.institutionType ?? 'Sekolah',
+  }
+}
+
+function Hero() {
+  const brand = useBrand()
+  return (
+    <section className="hero">
+      <div className="hero__inner">
+        <p className="hero__kicker">{brand.tagline}</p>
+        <h1 className="hero__title">
+          Seluruh urusan {brand.institutionType.toLowerCase()},
+          <br />
+          dalam satu tempat.
+        </h1>
+        <p className="hero__sub">
+          Sismart menyatukan data siswa, nilai, absensi, dan pembayaran SPP untuk sekolah SD hingga
+          SMK. Guru, tata usaha, orang tua, dan siswa bekerja dari satu sumber yang sama.
+        </p>
+        <div className="hero__actions">
+          <Link route="session.create" className="btn btn--primary">
+            Masuk dengan kode
+            <ArrowRight size={16} />
+          </Link>
+          <a href="#peran" className="btn btn--secondary">
+            Lihat per peran
+          </a>
+        </div>
+        <p className="hero__note">Akses hanya dengan kode unik dari administrator sekolah.</p>
+      </div>
+
+      <div className="hero__panel" aria-hidden="true">
+        <div className="hero__panel-bar">
+          <span className="hero__dot" />
+          <span className="hero__dot" />
+          <span className="hero__dot" />
+          <span className="hero__panel-title">Sismart · Dasbor</span>
+        </div>
+        <div className="hero__rows">
+          {[
+            ['Nilai rata-rata kelas', '78,4'],
+            ['Kehadiran bulan ini', '96%'],
+            ['Tagihan SPP terbayar', '182 / 210'],
+            ['Agenda pekan ini', '5 kegiatan'],
+          ].map(([label, value]) => (
+            <div className="hero__row" key={label}>
+              <span className="hero__row-label">{label}</span>
+              <span className="hero__row-value mono">{value}</span>
+            </div>
+          ))}
+        </div>
+        <p className="hero__panel-foot">Contoh tampilan dasbor</p>
+      </div>
+    </section>
+  )
+}
+
+function Modules() {
+  const items = [
+    {
+      icon: GraduationCap,
+      title: 'Data siswa & kelas',
+      body: 'Biodata, NIS, kelas, dan status siswa terkelola rapi — siap untuk laporan kapan pun.',
+    },
+    {
+      icon: BookOpenCheck,
+      title: 'Nilai & rapor',
+      body: 'Input nilai manual atau tempel dari Excel, lalu susun rapor per semester.',
+    },
+    {
+      icon: ClipboardList,
+      title: 'Absensi',
+      body: 'Catat kehadiran per pertemuan; rekap izin, sakit, dan alpa otomatis.',
+    },
+    {
+      icon: Wallet,
+      title: 'Keuangan & SPP',
+      body: 'Buat tagihan massal, catat pembayaran tunai maupun online, dan lihat tunggakan.',
+    },
+    {
+      icon: CalendarDays,
+      title: 'Jadwal pelajaran',
+      body: 'Susun jadwal per kelas dan mata pelajaran; guru dan siswa melihatnya langsung.',
+    },
+    {
+      icon: Megaphone,
+      title: 'Pengumuman & portal',
+      body: 'Sampaikan berita dan informasi sekolah lewat portal publik yang dapat dikelola.',
+    },
+  ]
+
+  return (
+    <section className="section-band" id="modul">
+      <div className="section-band__inner">
+        <header className="section-band__head">
+          <h2>Yang bisa dikerjakan di Sismart</h2>
+          <p>Modul-modul inti untuk operasional sekolah sehari-hari.</p>
+        </header>
+        <div className="modules">
+          {items.map(({ icon: Icon, title, body }) => (
+            <article className="module" key={title}>
+              <span className="module__icon">
+                <Icon size={20} strokeWidth={1.8} />
+              </span>
+              <h3 className="module__title">{title}</h3>
+              <p className="module__body">{body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function ForWho() {
+  const roles = [
+    {
+      icon: Users,
+      name: 'Guru',
+      line: 'Input nilai dan absensi, unggah materi, susun jadwal mengajar.',
+    },
+    {
+      icon: Wallet,
+      name: 'Tata usaha',
+      line: 'Kelola SPP, pembayaran, data siswa, inventaris, dan surat.',
+    },
+    {
+      icon: ShieldCheck,
+      name: 'Kepala sekolah',
+      line: 'Pantau ringkasan kehadiran, keuangan, dan agenda lewat satu dasbor.',
+    },
+    {
+      icon: CreditCard,
+      name: 'Orang tua',
+      line: 'Lihat nilai, kehadiran, dan tagihan anak; bayar SPP secara online.',
+    },
+  ]
+
+  return (
+    <section className="roles" id="peran">
+      <div className="roles__inner">
+        <header className="roles__head">
+          <h2>Satu sistem, banyak peran</h2>
+          <p>Setiap pengguna melihat dan mengerjakan bagiannya sendiri — sesuai peran.</p>
+        </header>
+        <div className="roles__grid">
+          {roles.map(({ icon: Icon, name, line }) => (
+            <article className="role" key={name}>
+              <span className="role__badge">
+                <Icon size={18} strokeWidth={1.8} />
+                {name}
+              </span>
+              <p className="role__line">{line}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function HowIt() {
+  const steps = [
+    {
+      n: '01',
+      t: 'Terima kode unik',
+      d: 'Administrator sekolah memberi setiap pengguna satu kode masuk.',
+    },
+    {
+      n: '02',
+      t: 'Masuk ke Sismart',
+      d: 'Buka halaman masuk, masukkan kode, dan anda langsung diarahkan ke dasbor.',
+    },
+    {
+      n: '03',
+      t: 'Kerjakan bagian anda',
+      d: 'Guru mengajar dan menilai; tata usaha mengelola; orang tua memantau.',
+    },
+  ]
+  return (
+    <section className="how">
+      <div className="how__inner">
+        <header className="how__head">
+          <h2>Sesederhana tiga langkah</h2>
+        </header>
+        <ol className="how__steps">
+          {steps.map(({ n, t, d }) => (
+            <li className="how__step" key={n}>
+              <span className="how__num mono">{n}</span>
+              <h3 className="how__title">{t}</h3>
+              <p className="how__body">{d}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  )
+}
+
+function FinalCta() {
+  return (
+    <section className="final">
+      <div className="final__inner">
+        <h2 className="final__title">Sudah punya kode masuk?</h2>
+        <p className="final__sub">Masuk sekarang dan mulai dari dasbor anda.</p>
+        <Link route="session.create" className="btn btn--primary">
+          Masuk dengan kode
+          <ArrowRight size={16} />
+        </Link>
+      </div>
+    </section>
+  )
+}
+
+function Footer() {
+  const brand = useBrand()
+  return (
+    <footer className="site-foot">
+      <div className="site-foot__inner">
+        <div className="site-foot__brand">
+          <strong>{brand.name}</strong>
+          <span>{brand.tagline}</span>
+        </div>
+        <p className="site-foot__note">
+          Sismart membantu satu lembaga sekolah mengelola akademik dan keuangan dalam satu tempat.
+        </p>
+      </div>
+    </footer>
   )
 }
 

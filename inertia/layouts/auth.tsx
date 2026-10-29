@@ -1,9 +1,11 @@
 import Logo from '~/components/logo'
 import { type ReactNode } from 'react'
+import { usePage } from '@inertiajs/react'
 import FlashToasts from '~/components/flash_toasts'
 import ThemeToggle from '~/components/theme_toggle'
 
 export default function AuthLayout({ children }: { children: ReactNode }) {
+  const brand = usePage().props.brand
   return (
     <>
       <div className="auth">
@@ -19,23 +21,15 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           </div>
 
           <p className="auth__quote">
-            Auth, kept intentionally minimal so you can build it your way.
+            Satu kode untuk masuk. Satu tempat untuk seluruh urusan sekolah.
           </p>
 
           <div>
-            <div className="pitch__t">Looking for production-ready auth?</div>
+            <div className="pitch__t">{brand?.name ?? 'SMKN 1 Indonesia'}</div>
             <p className="pitch__p">
-              Check out Feature packs, production-ready full-stack components from the creator of
-              AdonisJS.
+              Nilai, absensi, jadwal, dan tagihan SPP siswa — dalam satu aplikasi yang rapi dan
+              mudah dipakai.
             </p>
-            <a
-              className="il pitch__a"
-              href="https://plus.adonisjs.com/feature-packs"
-              target="_blank"
-              rel="noreferrer"
-            >
-              Explore Feature packs →
-            </a>
           </div>
         </aside>
       </div>
