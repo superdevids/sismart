@@ -45,6 +45,7 @@ Keputusan kunci: single-tenant, 6 role (siswa/orang_tua/guru/staff/kepsek/admin)
 
 - **Kerjakan task satu per satu sesuai instruksi pemilik.** Jangan melompat ke task lain atau mengambil inisiatif di luar yang diminta. Tunggu instruksi task berikutnya.
 - **File sementara wajib di `tmp/`** di dalam project ini (bukan root, bukan `%TEMP%`), dan **hapus setelah selesai dipakai**. `tmp/` sudah di-gitignore (kecuali `.gitkeep`).
+- **Semua perintah shell/cmd dijalankan di latar belakang** (background), bukan foreground.
 - **Jangan test UI/UX dan jangan ambil screenshot.** Tampilan dinilai manual oleh pemilik. Test otomatis hanya untuk logic (mis. logic-login: validasi, verifikasi kode, sesi, redirect), bukan tampilan.
   - Larangan tegas: **tidak ada screenshot** dengan tool apa pun (Playwright, argent, browser MCP, dll). Jangan memuat skill pengujian UI/screenshot untuk tujuan ini.
   - Jangan menulis test yang memeriksa markup, kelas CSS, warna, layout, atau tampilan render.
