@@ -1,7 +1,12 @@
 import AuthLayout from '~/layouts/auth'
 import { Form } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
-import { ArrowRight, KeyRound, ShieldCheck } from 'lucide-react'
+import { KeyRound, LogIn, ShieldCheck } from 'lucide-react'
+import { Button } from '~/components/ui/button'
+import { Input } from '~/components/ui/input'
+import { Label } from '~/components/ui/label'
+import { Separator } from '~/components/ui/separator'
+import { cn } from '~/lib/utils'
 
 /**
  * Halaman masuk Sismart di `/auth/signin`.
@@ -14,30 +19,26 @@ export default function Signin() {
   const brandName = brand?.name ?? 'SMKN 1 Indonesia'
 
   return (
-    <div className="animate-fade">
-      <header>
-        <span className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
-          <KeyRound size={13} strokeWidth={2} />
-          Akses kode unik
-        </span>
-
-        <h1 className="mt-3.5 text-[26px] font-bold leading-tight tracking-tight text-foreground sm:text-[30px]">
-          Masuk ke Sismart
-        </h1>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground sm:text-[15px]">
-          Gunakan kode unik dari administrator{' '}
-          <strong className="font-semibold text-foreground">{brandName}</strong>.
+    <>
+      <div className="mb-6">
+        <h1 className="text-2xl font-semibold tracking-tight text-foreground">Masuk ke Sismart</h1>
+        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+          Satu kode untuk seluruh urusan {brand?.institutionType?.toLowerCase() ?? 'sekolah'}. Kode
+          dibagikan oleh administrator{' '}
+          <span className="font-medium text-foreground">{brandName}</span>.
         </p>
-      </header>
+      </div>
 
       <Form route="session.store">
         {({ errors, processing }) => (
-          <div className="mt-6 flex flex-col gap-4">
+          <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
-              <label htmlFor="loginCode" className="text-[13px] font-medium text-foreground">
+              <Label htmlFor="loginCode">
+                <KeyRound className="size-3.5 text-muted-foreground" />
                 Kode masuk
-              </label>
-              <input
+              </Label>
+
+              <Input
                 id="loginCode"
                 name="loginCode"
                 type="text"
@@ -49,64 +50,52 @@ export default function Signin() {
                 autoFocus
                 aria-invalid={errors.loginCode ? 'true' : 'false'}
                 aria-describedby={errors.loginCode ? 'loginCode-error' : 'loginCode-help'}
-                className={[
-                  'h-13 w-full rounded-xl border bg-background px-4',
-                  'font-mono text-lg font-semibold uppercase tracking-[0.14em] text-foreground',
-                  'placeholder:font-sans placeholder:text-[15px] placeholder:font-normal',
-                  'placeholder:normal-case placeholder:tracking-normal placeholder:text-muted-foreground',
-                  'transition-[border-color,box-shadow,background-color] outline-none',
-                  'focus:bg-card focus:ring-[4px]',
-                  errors.loginCode
-                    ? 'border-destructive focus:border-destructive focus:ring-destructive/20'
-                    : 'border-input focus:border-primary focus:ring-primary/20',
-                ].join(' ')}
+                className={cn(
+                  // Kode masuk adalah identifier teknis (bukan prosa), jadi
+                  // monospace diizinkan oleh DESIGN-SYSTEM.md §2. Placeholder
+                  // tetap memakai font teks karena berisi contoh, bukan kode nyata.
+                  'h-11 rounded-lg font-mono text-base font-semibold uppercase tracking-[0.12em]',
+                  'placeholder:font-sans placeholder:text-sm placeholder:font-normal placeholder:normal-case placeholder:tracking-normal'
+                )}
               />
 
               {errors.loginCode ? (
-                <span
+                <p
                   id="loginCode-error"
                   role="alert"
-                  className="text-[12.5px] font-medium text-destructive"
+                  className="text-xs font-medium text-destructive"
                 >
                   {errors.loginCode}
-                </span>
+                </p>
               ) : (
-                <span
-                  id="loginCode-help"
-                  className="text-[12.5px] leading-relaxed text-muted-foreground"
-                >
-                  Kode dibagikan oleh administrator sekolah. Hubungi tata usaha bila kode hilang.
-                </span>
+                <p id="loginCode-help" className="text-xs leading-relaxed text-muted-foreground">
+                  Huruf besar/kecil tidak dibedakan. Hubungi tata usaha bila kode hilang.
+                </p>
               )}
             </div>
 
-            <button
-              type="submit"
-              disabled={processing}
-              aria-busy={processing}
-              className="group flex h-12.5 w-full items-center justify-between gap-2.5 rounded-xl bg-primary pl-5 pr-2.5 text-[15px] font-semibold text-primary-foreground transition-[background-color,scale,opacity] hover:bg-primary/90 active:scale-[0.99] focus-visible:outline-none focus-visible:ring-[4px] focus-visible:ring-primary/30 disabled:pointer-events-none disabled:opacity-65"
-            >
-              <span>{processing ? 'Memeriksa…' : 'Masuk'}</span>
-              <span
-                aria-hidden="true"
-                className="grid size-7.5 place-items-center rounded-md bg-primary-foreground/15 transition-transform group-hover:translate-x-0.5"
-              >
-                <ArrowRight size={16} strokeWidth={2} />
-              </span>
-            </button>
+            <Button type="submit" disabled={processing} className="h-10 w-full rounded-lg">
+              <LogIn className="size-4" />
+              {processing ? 'Memeriksa…' : 'Masuk'}
+            </Button>
           </div>
         )}
       </Form>
 
-      <p className="mt-4.5 flex items-center gap-2 text-[12.5px] text-muted-foreground">
-        <ShieldCheck size={15} strokeWidth={1.8} className="shrink-0 text-success" />
-        <span>Sesi aman. Kode Anda tidak dibagikan ke siapa pun.</span>
-      </p>
+      <div className="my-5 flex items-center gap-3">
+        <Separator className="flex-1" />
+        <span className="text-xs text-muted-foreground">atau</span>
+        <Separator className="flex-1" />
+      </div>
 
-      <p className="mt-5.5 border-t border-border pt-4.5 text-[13px] leading-relaxed text-muted-foreground">
-        Belum punya kode? Hubungi administrator sekolah untuk mendapatkannya.
+      <p className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
+        <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-success" />
+        <span>
+          Belum punya kode? Hubungi administrator sekolah. Sesi Anda aman dan tidak dibagikan ke
+          siapa pun.
+        </span>
       </p>
-    </div>
+    </>
   )
 }
 

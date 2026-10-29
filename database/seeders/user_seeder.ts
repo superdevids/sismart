@@ -1,0 +1,36 @@
+import User from '#models/user'
+import { BaseSeeder } from '@adonisjs/lucid/seeders'
+
+/**
+ * Akun contoh untuk satu sekolah. Kode masuk mengikuti pola peran:
+ * S… siswa, O… orang tua, G… guru, T… staff, K… kepala sekolah, A… admin.
+ *
+ * Aman dijalankan berulang: akun yang sudah ada dilewati.
+ */
+const PEOPLE = [
+  { loginCode: 'A00001', fullName: 'Admin Sismart', role: 'admin' },
+  { loginCode: 'K00001', fullName: 'Dra. Siti Rahayu', role: 'kepsek' },
+  { loginCode: 'G00001', fullName: 'Budi Santoso, S.Pd.', role: 'guru' },
+  { loginCode: 'G00002', fullName: 'Rina Wulandari, S.Pd.', role: 'guru' },
+  { loginCode: 'T00001', fullName: 'Agus Prasetyo', role: 'staff' },
+  { loginCode: 'S2026001', fullName: 'Ayu Lestari', role: 'siswa' },
+  { loginCode: 'S2026002', fullName: 'Bagas Pratama', role: 'siswa' },
+  { loginCode: 'S2026003', fullName: 'Citra Dewi', role: 'siswa' },
+  { loginCode: 'O2026001', fullName: 'Ibu Ayu Lestari', role: 'orang_tua' },
+] as const
+
+export default class extends BaseSeeder {
+  async run() {
+    for (const person of PEOPLE) {
+      const existing = await User.findBy('loginCode', person.loginCode)
+      if (existing) continue
+
+      await User.create({
+        fullName: person.fullName,
+        loginCode: person.loginCode,
+        role: person.role,
+        isActive: true,
+      })
+    }
+  }
+}

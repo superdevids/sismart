@@ -32,6 +32,12 @@ const routes = {
     tokens: [[0,"dashboard"]],
     types: placeholder as Registry['dashboard']['types'],
   },
+  'users.index': {
+    methods: ["GET","HEAD"],
+    pattern: '/pengguna',
+    tokens: [[0,"pengguna"]],
+    types: placeholder as Registry['users.index']['types'],
+  },
   'session.destroy': {
     methods: ["POST"],
     pattern: '/logout',

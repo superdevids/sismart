@@ -1,18 +1,12 @@
 import Page from '~/components/page'
 import AppLayout from '~/layouts/app'
+import { Link } from '@adonisjs/inertia/react'
 import { usePage } from '@inertiajs/react'
 import { type ReactNode } from 'react'
-import {
-  ArrowUpRight,
-  BookOpenCheck,
-  CalendarDays,
-  GraduationCap,
-  LayoutGrid,
-  Users,
-  Wallet,
-} from 'lucide-react'
+import { ArrowRight, ShieldCheck, UserCheck, Users } from 'lucide-react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '~/components/ui/card'
 import { Badge } from '~/components/ui/badge'
+import { Button } from '~/components/ui/button'
 import {
   Table,
   TableBody,
@@ -22,127 +16,145 @@ import {
   TableRow,
 } from '~/components/ui/table'
 
+type Props = {
+  stats: { total: number; active: number }
+  roleBreakdown: { role: string; total: number }[]
+  recentUsers: {
+    id: number
+    fullName: string | null
+    loginCode: string | null
+    role: string
+    isActive: boolean
+    createdAt: string | null
+  }[]
+}
+
+const ROLE_LABELS: Record<string, string> = {
+  siswa: 'Siswa',
+  orang_tua: 'Orang tua',
+  guru: 'Guru',
+  staff: 'Staff',
+  kepsek: 'Kepala sekolah',
+  admin: 'Admin',
+}
+
 /**
- * Dasbor awal Sismart. Angka di bawah adalah contoh tampilan (belum membaca
- * database) supaya tata letak dapat dinilai; ganti dengan data nyata pada
- * modul terkait.
+ * Dasbor Sismart. Semua angka di halaman ini dibaca dari tabel `users`
+ * sungguhan. Modul akademik (nilai, absensi, SPP) belum ada di basis data,
+ * jadi tidak ditampilkan sebagai angka palsu.
  */
 export default function Dashboard() {
+  const { stats, roleBreakdown, recentUsers } = usePage<Props>().props
   const brand = usePage().props.brand
   const brandName = brand?.name ?? 'SMKN 1 Indonesia'
+
+  const inactive = stats.total - stats.active
+  const filledRoles = roleBreakdown.filter((r) => r.total > 0)
 
   return (
     <Page
       title="Dasbor"
-      description={`Ringkasan operasional ${brandName} hari ini.`}
-      actions={<Badge variant="muted">Contoh data</Badge>}
+      description={`Ringkasan akun ${brandName}. Angka dibaca langsung dari basis data.`}
+      actions={
+        <Button asChild size="sm" className="h-9">
+          <Link route="users.index">
+            Kelola pengguna
+            <ArrowRight className="size-4" />
+          </Link>
+        </Button>
+      }
     >
-      {/* Kartu statistik */}
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <StatCard
           icon={<Users className="size-4" />}
-          value="1.248"
-          title="Siswa aktif"
-          change="+12"
-          hint="dibanding bulan lalu"
+          value={String(stats.total)}
+          title="Total akun"
+          hint="Seluruh pengguna terdaftar"
         />
         <StatCard
-          icon={<GraduationCap className="size-4" />}
-          value="78,4"
-          title="Rata-rata nilai"
-          change="+1,2"
-          hint="dibanding semester lalu"
+          icon={<UserCheck className="size-4" />}
+          value={String(stats.active)}
+          title="Akun aktif"
+          hint={`${inactive} akun nonaktif`}
         />
         <StatCard
-          icon={<CalendarDays className="size-4" />}
-          value="96%"
-          title="Kehadiran bulan ini"
-          change="+2%"
-          hint="dibanding bulan lalu"
-        />
-        <StatCard
-          icon={<Wallet className="size-4" />}
-          value="182/210"
-          title="SPP terbayar"
-          change="86,7%"
-          hint="dari total tagihan"
+          icon={<ShieldCheck className="size-4" />}
+          value={String(filledRoles.length)}
+          title="Peran terpakai"
+          hint={`dari ${roleBreakdown.length} peran tersedia`}
         />
       </div>
 
-      {/* Tabel + panel samping */}
       <div className="mt-6 grid gap-4 xl:grid-cols-[1.6fr_1fr]">
         <Card>
           <CardHeader>
-            <CardTitle>Pembayaran SPP terbaru</CardTitle>
-            <CardDescription>Lima transaksi terakhir yang tercatat.</CardDescription>
+            <CardTitle>Akun terbaru</CardTitle>
+            <CardDescription>Lima akun yang paling akhir ditambahkan.</CardDescription>
           </CardHeader>
           <CardContent className="px-0">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="pl-5">Siswa</TableHead>
-                  <TableHead>Kelas</TableHead>
-                  <TableHead>Periode</TableHead>
-                  <TableHead className="text-right">Nominal</TableHead>
-                  <TableHead className="pr-5">Status</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {[
-                  ['Ayu Lestari', 'XII RPL 1', 'Oktober 2026', 'Rp350.000', 'Lunas'],
-                  ['Bagas Pratama', 'XI TKJ 2', 'Oktober 2026', 'Rp350.000', 'Lunas'],
-                  ['Citra Dewi', 'X DKV 1', 'Oktober 2026', 'Rp300.000', 'Menunggu'],
-                  ['Dimas Saputra', 'XII RPL 1', 'September 2026', 'Rp350.000', 'Lunas'],
-                  ['Eka Nuraini', 'XI AKL 1', 'September 2026', 'Rp300.000', 'Tertunda'],
-                ].map(([name, grade, period, amount, status]) => (
-                  <TableRow key={`${name}-${period}`}>
-                    <TableCell className="pl-5 font-medium">{name}</TableCell>
-                    <TableCell className="text-muted-foreground">{grade}</TableCell>
-                    <TableCell className="text-muted-foreground">{period}</TableCell>
-                    <TableCell className="text-right font-mono tabular-nums">{amount}</TableCell>
-                    <TableCell className="pr-5">
-                      <StatusBadge status={status} />
-                    </TableCell>
+            {recentUsers.length === 0 ? (
+              <p className="px-5 py-8 text-center text-sm text-muted-foreground">
+                Belum ada akun. Jalankan seeder untuk membuat data awal.
+              </p>
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="pl-5">Nama</TableHead>
+                    <TableHead>Kode</TableHead>
+                    <TableHead className="pr-5">Peran</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+                </TableHeader>
+                <TableBody>
+                  {recentUsers.map((u) => (
+                    <TableRow key={u.id}>
+                      <TableCell className="pl-5 font-medium">{u.fullName ?? '—'}</TableCell>
+                      <TableCell>
+                        <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs">
+                          {u.loginCode ?? '—'}
+                        </code>
+                      </TableCell>
+                      <TableCell className="pr-5">
+                        <Badge variant={u.isActive ? 'muted' : 'destructive'}>
+                          {ROLE_LABELS[u.role] ?? u.role}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Agenda pekan ini</CardTitle>
-            <CardDescription>Kegiatan yang perlu perhatian.</CardDescription>
+            <CardTitle>Sebaran peran</CardTitle>
+            <CardDescription>Jumlah akun untuk setiap peran.</CardDescription>
           </CardHeader>
-          <CardContent className="flex flex-col gap-3">
-            {[
-              ['Penilaian tengah semester', 'Sen–Kam · semua kelas'],
-              ['Rapat wali murid kelas XII', 'Jumat · 09.00'],
-              ['Batas pembayaran SPP', 'Sabtu · 23.59'],
-            ].map(([title, meta]) => (
-              <div
-                key={title}
-                className="flex items-start gap-3 rounded-lg border border-border bg-background p-3"
-              >
-                <span className="grid size-8 shrink-0 place-items-center rounded-md bg-primary/10 text-primary">
-                  <BookOpenCheck className="size-4" />
-                </span>
-                <div className="min-w-0">
-                  <p className="text-[13.5px] font-medium leading-snug text-foreground">{title}</p>
-                  <p className="mt-0.5 text-xs text-muted-foreground">{meta}</p>
+          <CardContent className="flex flex-col gap-2.5">
+            {roleBreakdown.map((r) => {
+              const pct = stats.total > 0 ? Math.round((r.total / stats.total) * 100) : 0
+              return (
+                <div key={r.role} className="flex flex-col gap-1">
+                  <div className="flex items-center justify-between text-[13px]">
+                    <span className="font-medium text-foreground">
+                      {ROLE_LABELS[r.role] ?? r.role}
+                    </span>
+                    <span className="tabular-nums text-muted-foreground">{r.total}</span>
+                  </div>
+                  <div className="h-1.5 w-full overflow-hidden rounded-full bg-muted">
+                    <div
+                      className="h-full rounded-full bg-primary transition-[width]"
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </CardContent>
         </Card>
       </div>
-
-      <p className="mt-6 flex items-center gap-1.5 text-xs text-muted-foreground">
-        <LayoutGrid className="size-3.5" />
-        Modul berikutnya menyusul sesuai rencana implementasi di{' '}
-        <code className="rounded bg-muted px-1 py-0.5 font-mono">docs/IPD.md</code>
-      </p>
     </Page>
   )
 }
@@ -151,13 +163,11 @@ function StatCard({
   icon,
   value,
   title,
-  change,
   hint,
 }: {
   icon: ReactNode
   value: string
   title: string
-  change: string
   hint: string
 }) {
   return (
@@ -170,24 +180,12 @@ function StatCard({
           {value}
         </span>
       </CardHeader>
-      <CardContent className="flex flex-col gap-1.5">
+      <CardContent className="flex flex-col gap-1">
         <span className="text-sm font-semibold text-foreground">{title}</span>
-        <p className="flex items-center gap-1.5 text-xs">
-          <span className="inline-flex items-center gap-0.5 font-medium text-success">
-            <ArrowUpRight className="size-3" />
-            {change}
-          </span>
-          <span className="text-muted-foreground">{hint}</span>
-        </p>
+        <p className="text-xs text-muted-foreground">{hint}</p>
       </CardContent>
     </Card>
   )
-}
-
-function StatusBadge({ status }: { status: string }) {
-  if (status === 'Lunas') return <Badge variant="success">Lunas</Badge>
-  if (status === 'Menunggu') return <Badge variant="warning">Menunggu</Badge>
-  return <Badge variant="destructive">Tertunda</Badge>
 }
 
 Dashboard.layout = [AppLayout]

@@ -9,4 +9,7 @@ export interface ApiDefinition {
     destroy: typeof routes['session.destroy']
   }
   dashboard: typeof routes['dashboard']
+  users: {
+    index: typeof routes['users.index']
+  }
 }

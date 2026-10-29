@@ -11,7 +11,7 @@ export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-dvh bg-background">
       <header className="sticky top-0 z-40 border-b border-border/70 bg-background/85 backdrop-blur-md">
-        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-4 px-4 xl:px-8">
           <Logo size={28} />
           <div className="flex items-center gap-2">
             <ThemeToggle />

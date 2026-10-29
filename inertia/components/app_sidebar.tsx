@@ -1,7 +1,7 @@
 import Logo from '~/components/logo'
 import { type ReactNode } from 'react'
 import { usePage } from '@inertiajs/react'
-import { House, LogOut, PanelLeftClose, PanelLeftOpen, X } from 'lucide-react'
+import { House, LogOut, PanelLeftClose, PanelLeftOpen, Users, X } from 'lucide-react'
 import { Form } from '@adonisjs/inertia/react'
 import { cn } from '~/lib/utils'
 import { Button } from '~/components/ui/button'
@@ -18,6 +18,10 @@ const NAV_GROUPS: NavGroup[] = [
   {
     label: 'Akademik',
     items: [{ label: 'Dasbor', route: 'dashboard', icon: House }],
+  },
+  {
+    label: 'Administrasi',
+    items: [{ label: 'Data pengguna', route: 'users.index', icon: Users }],
   },
 ]
 

@@ -47,16 +47,16 @@ function useBrand() {
 function Hero() {
   const brand = useBrand()
   return (
-    <section className="mx-auto grid w-full max-w-7xl items-center gap-12 px-4 py-16 sm:px-6 md:py-24 lg:grid-cols-[1.05fr_1fr] lg:px-8">
+    <section className="mx-auto grid w-full max-w-7xl grid-cols-1 items-center gap-12 px-4 py-16 xl:grid-cols-[1.05fr_1fr] xl:px-8 xl:py-24">
       <div className="animate-rise">
         <p className="text-xs font-semibold uppercase tracking-[0.1em] text-primary">
           {brand.tagline}
         </p>
         <h1 className="mt-4 text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.05] tracking-tight text-foreground">
-          Seluruh urusan {brand.institutionType.toLowerCase()},
-          <br className="hidden sm:block" /> dalam satu tempat.
+          Seluruh urusan {brand.institutionType.toLowerCase()},{' '}
+          <span className="xl:block">dalam satu tempat.</span>
         </h1>
-        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground sm:text-base">
+        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
           Sismart menyatukan data siswa, nilai, absensi, dan pembayaran SPP untuk sekolah SD hingga
           SMK. Guru, tata usaha, orang tua, dan siswa bekerja dari satu sumber yang sama.
         </p>
@@ -105,7 +105,7 @@ function Hero() {
                 className="flex items-center justify-between gap-3 rounded-lg px-2.5 py-2.5 transition-colors hover:bg-muted/60"
               >
                 <span className="text-[12.5px] text-muted-foreground">{label}</span>
-                <span className="font-mono text-sm font-semibold text-foreground">{value}</span>
+                <span className="text-sm font-semibold tabular-nums text-foreground">{value}</span>
               </div>
             ))}
           </div>
@@ -155,9 +155,9 @@ const MODULES = [
 function Modules() {
   return (
     <section id="modul" className="border-y border-border bg-muted/40">
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+      <div className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-20">
         <header className="max-w-2xl">
-          <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
             Yang bisa dikerjakan di Sismart
           </h2>
           <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
@@ -165,7 +165,7 @@ function Modules() {
           </p>
         </header>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-10 grid grid-cols-1 gap-4 xl:grid-cols-3">
           {MODULES.map(({ icon: Icon, title, body }) => (
             <article
               key={title}
@@ -211,9 +211,9 @@ const ROLES = [
 
 function ForWho() {
   return (
-    <section id="peran" className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
+    <section id="peran" className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-20">
       <header className="max-w-2xl">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
           Satu sistem, banyak peran
         </h2>
         <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
@@ -221,7 +221,7 @@ function ForWho() {
         </p>
       </header>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2">
+      <div className="mt-10 grid grid-cols-1 gap-4 xl:grid-cols-2">
         {ROLES.map(({ icon: Icon, name, line }) => (
           <article
             key={name}
@@ -260,15 +260,15 @@ const STEPS = [
 function HowIt() {
   return (
     <section className="border-y border-border bg-muted/40">
-      <div className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-20 lg:px-8">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+      <div className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-20">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
           Sesederhana tiga langkah
         </h2>
 
-        <ol className="mt-10 grid gap-4 md:grid-cols-3">
+        <ol className="mt-10 grid grid-cols-1 gap-4 xl:grid-cols-3">
           {STEPS.map(({ n, t, d }) => (
             <li key={n} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-              <span className="font-mono text-[13px] font-semibold text-primary">{n}</span>
+              <span className="text-[13px] font-semibold tabular-nums text-primary">{n}</span>
               <h3 className="mt-2.5 text-[15px] font-semibold tracking-tight text-foreground">
                 {t}
               </h3>
@@ -283,9 +283,9 @@ function HowIt() {
 
 function FinalCta() {
   return (
-    <section className="mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 md:py-24 lg:px-8">
-      <div className="rounded-3xl border border-border bg-card px-6 py-12 text-center shadow-sm sm:px-12">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+    <section className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-24">
+      <div className="rounded-2xl border border-border bg-card px-6 py-12 text-center shadow-sm xl:px-12">
+        <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
           Sudah punya kode masuk?
         </h2>
         <p className="mx-auto mt-2 max-w-md text-[15px] leading-relaxed text-muted-foreground">
@@ -306,7 +306,7 @@ function Footer() {
   const brand = useBrand()
   return (
     <footer className="border-t border-border bg-card">
-      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 sm:px-6 md:flex-row md:items-center md:justify-between lg:px-8">
+      <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 xl:flex-row xl:items-center xl:justify-between xl:px-8">
         <div className="flex flex-col">
           <strong className="text-sm font-semibold text-foreground">{brand.name}</strong>
           <span className="mt-0.5 text-[13px] text-muted-foreground">{brand.tagline}</span>

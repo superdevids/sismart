@@ -34,7 +34,8 @@ router.get('login', ({ response }) => response.redirect().toRoute('session.creat
 
 router
   .group(() => {
-    router.on('/dashboard').renderInertia('dashboard', {}).as('dashboard')
+    router.get('/dashboard', [controllers.Dashboard, 'index']).as('dashboard')
+    router.get('/pengguna', [controllers.Users, 'index']).as('users.index')
     router.post('logout', [controllers.Session, 'destroy']).as('session.destroy')
   })
   .use(middleware.auth())

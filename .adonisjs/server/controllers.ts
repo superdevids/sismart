@@ -4,5 +4,7 @@
  */
 
 export const controllers = {
+  Dashboard: () => import('#controllers/dashboard_controller'),
   Session: () => import('#controllers/session_controller'),
+  Users: () => import('#controllers/users_controller'),
 }

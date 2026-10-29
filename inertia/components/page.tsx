@@ -23,13 +23,13 @@ export default function Page({
   const hasHeader = !hideTitle || description || actions
 
   return (
-    <div className={cn('w-full px-4 py-5 sm:px-5 md:py-7')}>
+    <div className={cn('w-full px-4 py-5 xl:px-5 xl:py-7')}>
       <Head title={title} />
       {hasHeader && (
         <header className="mb-6 flex flex-wrap items-start justify-between gap-3">
           <div className="min-w-0">
             {!hideTitle && (
-              <h1 className="text-xl font-bold tracking-tight text-foreground md:text-2xl">
+              <h1 className="text-xl font-bold tracking-tight text-foreground xl:text-2xl">
                 {title}
               </h1>
             )}
