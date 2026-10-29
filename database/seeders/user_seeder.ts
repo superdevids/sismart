@@ -1,7 +1,7 @@
 import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
-const DEMO_PASSWORD = 'Sismart#2026'
+const DEMO_PASSWORD = 'pass1234'
 
 const PEOPLE = [
   { loginCode: 'A00001', fullName: 'Admin Sismart', role: 'admin' },
@@ -21,10 +21,8 @@ export default class extends BaseSeeder {
       const existing = await User.findBy('loginCode', person.loginCode)
 
       if (existing) {
-        if (!existing.password) {
-          existing.password = DEMO_PASSWORD
-          await existing.save()
-        }
+        existing.password = DEMO_PASSWORD
+        await existing.save()
         continue
       }
 
