@@ -38,6 +38,9 @@
   --radius-xl: calc(var(--radius) + 4px);
   --radius-2xl: calc(var(--radius) + 8px);
 
+  /* Warna ring-offset: hindari #fff bawaan Tailwind (aturan soft color). */
+  --tw-ring-offset-color: var(--background);
+
   /* Satu unit spasi: 6px desktop / 4px mobile (lihat media query di bawah) */
   --spacing: 6px;
 }
@@ -51,24 +54,27 @@
 
 /* --------------------------------------------------------------------------
    2. Token semantik per tema
+   Aturan: tidak ada #FFF / #000. Semua warna dibuat soft — latar tidak
+   pernah putih penuh / hitam penuh, dan teks di atas warna tidak memakai
+   putih murni.
    -------------------------------------------------------------------------- */
 :root {
-  --background: #ffffff;
-  --foreground: var(--palette-slate-900);
-  --card: #ffffff;
-  --card-foreground: var(--palette-slate-900);
-  --popover: #ffffff;
-  --popover-foreground: var(--palette-slate-900);
+  --background: #f7f8fa;
+  --foreground: #2a2d33;
+  --card: #fdfdfe;
+  --card-foreground: #2a2d33;
+  --popover: #fdfdfe;
+  --popover-foreground: #2a2d33;
   --primary: var(--palette-blue-600);
-  --primary-foreground: #ffffff;
+  --primary-foreground: #f7f9fc;
   --secondary: var(--palette-blue-500);
-  --secondary-foreground: #ffffff;
-  --muted: #f3f5f8;
+  --secondary-foreground: #f7f9fc;
+  --muted: #eef1f5;
   --muted-foreground: var(--palette-blue-400);
   --accent: var(--palette-lime);
   --accent-foreground: var(--palette-slate-900);
   --destructive: var(--palette-red);
-  --destructive-foreground: #ffffff;
+  --destructive-foreground: #fdf7f6;
   --success: var(--palette-green);
   --success-foreground: var(--palette-slate-900);
   --warning: var(--palette-yellow);
@@ -82,31 +88,31 @@
 
 .dark,
 :root[data-theme='dark'] {
-  --background: #0b0d10;
-  --foreground: #f4f6f8;
-  --card: #14171c;
-  --card-foreground: #f4f6f8;
-  --popover: #14171c;
-  --popover-foreground: #f4f6f8;
-  --primary: var(--palette-blue-600);
-  --primary-foreground: #ffffff;
-  --secondary: var(--palette-blue-500);
-  --secondary-foreground: #ffffff;
-  --muted: #1c2027;
-  --muted-foreground: var(--palette-blue-400);
+  --background: #16191f;
+  --foreground: #e8eaed;
+  --card: #1d2128;
+  --card-foreground: #e8eaed;
+  --popover: #1d2128;
+  --popover-foreground: #e8eaed;
+  --primary: #4a86f7;
+  --primary-foreground: #10131a;
+  --secondary: #5a82cd;
+  --secondary-foreground: #f2f5fa;
+  --muted: #232830;
+  --muted-foreground: #9aa5b8;
   --accent: var(--palette-lime);
   --accent-foreground: var(--palette-slate-900);
-  --destructive: var(--palette-red);
-  --destructive-foreground: #ffffff;
-  --success: var(--palette-green);
-  --success-foreground: var(--palette-slate-900);
-  --warning: var(--palette-yellow);
-  --warning-foreground: var(--palette-slate-900);
-  --info: var(--palette-cyan);
-  --info-foreground: var(--palette-slate-900);
-  --border: #2a2f38;
-  --input: #2a2f38;
-  --ring: var(--palette-blue-600);
+  --destructive: #e85f43;
+  --destructive-foreground: #fdf3f1;
+  --success: #4fd96b;
+  --success-foreground: #10131a;
+  --warning: #e8c43c;
+  --warning-foreground: #10131a;
+  --info: #48c9e0;
+  --info-foreground: #10131a;
+  --border: #333a45;
+  --input: #333a45;
+  --ring: #4a86f7;
 }
 
 /* Pemetaan ke utilitas Tailwind: bg-background, text-foreground, border-border… */
@@ -150,6 +156,15 @@
   * {
     border-color: var(--border);
   }
+
+  /* Ganti default ring-offset Tailwind (#fff) dengan warna latar soft.
+     `!important` diperlukan karena nilai framework di-emit setelah layer ini. */
+  *,
+  ::before,
+  ::after {
+    --tw-ring-offset-color: var(--background) !important;
+  }
+
   html {
     color-scheme: light;
   }
@@ -485,11 +500,11 @@ input {
   border-radius: var(--r-lg);
   padding: 42px 46px 24px;
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 1px 0 rgba(247, 249, 252, 0.55) inset,
     0 36px 70px -46px rgba(10, 10, 11, 0.45);
 }
 :root[data-theme='dark'] .prose-card {
-  box-shadow: 0 36px 80px -50px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 36px 80px -50px rgba(24, 27, 33, 0.55);
 }
 
 /* staggered enter: each chunk rises in ~100ms after the previous one */
@@ -642,12 +657,12 @@ input {
   margin-left: -8px;
   display: grid;
   place-items: center;
-  color: #fff;
+  color: #f7f9fc;
   font-weight: 600;
   font-size: 12px;
   box-shadow:
     0 0 0 3px var(--card),
-    0 2px 6px rgba(0, 0, 0, 0.18);
+    0 2px 6px rgba(24, 27, 33, 0.14);
   position: relative;
   transition:
     transform 0.16s ease,
@@ -975,12 +990,12 @@ input {
   border: 1px solid var(--line-2);
   border-radius: var(--r-lg);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 1px 0 rgba(247, 249, 252, 0.55) inset,
     0 10px 30px -12px rgba(10, 10, 11, 0.18);
   padding: 16px 18px;
 }
 :root[data-theme='dark'] [data-sonner-toaster] [data-sonner-toast] {
-  box-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 10px 30px -12px rgba(24, 27, 33, 0.45);
 }
 [data-sonner-toaster] [data-sonner-toast] [data-icon] {
   margin: 1px 0 0;
@@ -1113,12 +1128,12 @@ input {
   border: 1px solid var(--line-2);
   border-radius: var(--r-lg);
   box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.5) inset,
+    0 1px 0 rgba(247, 249, 252, 0.55) inset,
     0 40px 80px -52px rgba(10, 10, 11, 0.5);
   overflow: hidden;
 }
 :root[data-theme='dark'] .hero__panel {
-  box-shadow: 0 40px 90px -54px rgba(0, 0, 0, 0.85);
+  box-shadow: 0 40px 90px -54px rgba(24, 27, 33, 0.6);
 }
 .hero__panel-bar {
   display: flex;
@@ -1402,4 +1417,16 @@ input {
   .how__steps {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* ==========================================================================
+   Final override — ring-offset soft
+   Tailwind meng-emit `--tw-ring-offset-color:#fff` sebagai nilai awal.
+   Aturan ini (di luar semua layer) menjamin yang dipakai adalah warna
+   latar soft, sesuai aturan "jangan pakai #fff".
+   ========================================================================== */
+*,
+::before,
+::after {
+  --tw-ring-offset-color: var(--background);
 }

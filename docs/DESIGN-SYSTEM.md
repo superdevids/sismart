@@ -12,6 +12,8 @@
 2. **Mobile-first.** Semua penulisan dimulai dari layout mobile, lalu ditingkatkan untuk desktop.
 3. **Dua layout saja.** `xl` (desktop) dan lebih kecil (mobile). Tidak ada breakpoint lain.
 4. **Satu unit spasi.** 6px desktop / 4px mobile — bukan skala 4/8/12/16 yang terpisah-pisah.
+5. **Selalu ada light & dark mode.**
+6. **Warna soft: dilarang `#FFF` dan `#000`** (dan turunannya). Latar tidak pernah putih penuh / hitam penuh; teks di atas warna tidak memakai putih murni. Tidak terlalu terang, tidak terlalu gelap.
 
 ---
 
@@ -54,23 +56,25 @@ Bobot yang dimuat: 400, 500, 600, 700, 800.
 
 | Token                  | Terang    | Gelap     | Utilitas                  |
 | ---------------------- | --------- | --------- | ------------------------- |
-| `--background`         | `#FFFFFF` | `#0B0D10` | `bg-background`           |
-| `--foreground`         | `#2A2D33` | `#F4F6F8` | `text-foreground`         |
-| `--card`               | `#FFFFFF` | `#14171C` | `bg-card`                 |
-| `--primary`            | `#2C75FC` | `#2C75FC` | `bg-primary`              |
-| `--primary-foreground` | `#FFFFFF` | `#FFFFFF` | `text-primary-foreground` |
-| `--secondary`          | `#4B77C9` | `#4B77C9` | `bg-secondary`            |
-| `--muted`              | `#F3F5F8` | `#1C2027` | `bg-muted`                |
-| `--muted-foreground`   | `#566C96` | `#566C96` | `text-muted-foreground`   |
+| `--background`         | `#F7F8FA` | `#16191F` | `bg-background`           |
+| `--foreground`         | `#2A2D33` | `#E8EAED` | `text-foreground`         |
+| `--card`               | `#FDFDFE` | `#1D2128` | `bg-card`                 |
+| `--primary`            | `#2C75FC` | `#4A86F7` | `bg-primary`              |
+| `--primary-foreground` | `#F7F9FC` | `#10131A` | `text-primary-foreground` |
+| `--secondary`          | `#4B77C9` | `#5A82CD` | `bg-secondary`            |
+| `--muted`              | `#EEF1F5` | `#232830` | `bg-muted`                |
+| `--muted-foreground`   | `#566C96` | `#9AA5B8` | `text-muted-foreground`   |
 | `--accent`             | `#BDFC2B` | `#BDFC2B` | `bg-accent`               |
-| `--destructive`        | `#FC4A2B` | `#FC4A2B` | `bg-destructive`          |
-| `--success`            | `#2BFC2B` | `#2BFC2B` | `bg-success`              |
-| `--warning`            | `#FCD42B` | `#FCD42B` | `bg-warning`              |
-| `--info`               | `#2BE3FC` | `#2BE3FC` | `bg-info`                 |
-| `--border` / `--input` | `#4D5563` | `#2A2F38` | `border-border`           |
-| `--ring`               | `#2C75FC` | `#2C75FC` | `ring-ring`               |
+| `--destructive`        | `#FC4A2B` | `#E85F43` | `bg-destructive`          |
+| `--success`            | `#2BFC2B` | `#4FD96B` | `bg-success`              |
+| `--warning`            | `#FCD42B` | `#E8C43C` | `bg-warning`              |
+| `--info`               | `#2BE3FC` | `#48C9E0` | `bg-info`                 |
+| `--border` / `--input` | `#4D5563` | `#333A45` | `border-border`           |
+| `--ring`               | `#2C75FC` | `#4A86F7` | `ring-ring`               |
 
-**Contrast note (perlu ditinjau saat dipakai):** `--success` (#2BFC2B) dan `--warning` (#FCD42B) sangat terang — teks di atasnya harus `--foreground` (gelap), bukan putih.
+**Aturan warna soft:** tidak ada `#FFF`/`#000`. Light memakai `#F7F8FA`–`#FDFDFE`; dark `#16191F`–`#232830`. `--primary-foreground` light = `#F7F9FC` (bukan putih murni).
+
+**Contrast note (perlu ditinjau saat dipakai):** `--success` (#2BFC2B / #4FD96B) dan `--warning` (#FCD42B / #E8C43C) sangat terang — teks di atasnya harus `--foreground` (gelap), bukan putih.
 
 ---
 
