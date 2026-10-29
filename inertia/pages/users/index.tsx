@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react'
-import Page from '~/components/page'
+﻿import Page from '~/components/page'
 import AppLayout from '~/layouts/app'
 import { router, usePage } from '@inertiajs/react'
 import { type FormEvent, useState } from 'react'
@@ -96,7 +95,7 @@ export default function UsersIndex() {
               <Input
                 value={q}
                 onChange={(e) => setQ(e.target.value)}
-                placeholder="Cari nama atau ID Pengguna…"
+                placeholder="Cari nama atau ID Penggunaâ€¦"
                 aria-label="Cari pengguna"
                 className="pl-8"
               />
@@ -156,10 +155,10 @@ export default function UsersIndex() {
                 <TableBody>
                   {users.map((u) => (
                     <TableRow key={u.id}>
-                      <TableCell className="pl-4 font-medium">{u.fullName ?? '—'}</TableCell>
+                      <TableCell className="pl-4 font-medium">{u.fullName ?? 'â€”'}</TableCell>
                       <TableCell>
                         <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-foreground">
-                          {u.loginCode ?? '—'}
+                          {u.loginCode ?? 'â€”'}
                         </code>
                       </TableCell>
                       <TableCell>
@@ -215,7 +214,7 @@ export default function UsersIndex() {
 
 function formatDate(value: string): string {
   const date = new Date(value)
-  if (Number.isNaN(date.getTime())) return '—'
+  if (Number.isNaN(date.getTime())) return 'â€”'
   return new Intl.DateTimeFormat('id-ID', {
     day: '2-digit',
     month: 'short',
@@ -225,4 +224,4 @@ function formatDate(value: string): string {
   }).format(date)
 }
 
-UsersIndex.layout = (page: ReactElement) => <AppLayout title="Data pengguna">{page}</AppLayout>
+UsersIndex.layout = [AppLayout]
