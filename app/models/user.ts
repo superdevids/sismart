@@ -8,11 +8,7 @@ export type UserRole = (typeof USER_ROLES)[number]
 
 export default class User extends compose(
   UserSchema,
-  /**
-   * Sismart authenticates by unique login code, so the auth finder looks the
-   * user up by `loginCode`. The `password` column stays nullable and is only
-   * used if a second factor is added later for sensitive roles.
-   */
+
   withAuthFinder(hash, {
     uids: ['loginCode'],
     passwordColumnName: 'password',

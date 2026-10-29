@@ -6,14 +6,6 @@ import BaseInertiaMiddleware from '@adonisjs/inertia/inertia_middleware'
 
 export default class InertiaMiddleware extends BaseInertiaMiddleware {
   async share(ctx: HttpContext) {
-    /**
-     * The share method is called everytime an Inertia page is rendered. In
-     * certain cases, a page may get rendered before the session middleware
-     * or the auth middleware are executed. For example: During a 404 request.
-     *
-     * In that case, we must always assume that HttpContext is not fully hydrated
-     * with all the properties
-     */
     const { auth, request } = ctx as Partial<HttpContext>
 
     const theme: 'light' | 'dark' =
@@ -22,10 +14,6 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         encoded: false,
       }) ?? 'light'
 
-    /**
-     * Data shared with all Inertia pages. Make sure you are using
-     * transformers for rich data-types like Models.
-     */
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
@@ -35,11 +23,6 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
   }
 
   flash(ctx: HttpContext) {
-    /**
-     * Flash messages travel in the dedicated `flash` field of the page
-     * object instead of props, and the client strips them from history
-     * state so they never reappear when navigating back.
-     */
     const { session } = ctx as Partial<HttpContext>
 
     const success: string | undefined = session?.flashMessages.get('success')

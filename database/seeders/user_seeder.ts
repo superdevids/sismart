@@ -1,12 +1,8 @@
 import User from '#models/user'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 
-/**
- * Akun contoh untuk satu sekolah. Kode masuk mengikuti pola peran:
- * S… siswa, O… orang tua, G… guru, T… staff, K… kepala sekolah, A… admin.
- *
- * Aman dijalankan berulang: akun yang sudah ada dilewati.
- */
+const DEMO_PASSWORD = 'Sismart#2026'
+
 const PEOPLE = [
   { loginCode: 'A00001', fullName: 'Admin Sismart', role: 'admin' },
   { loginCode: 'K00001', fullName: 'Dra. Siti Rahayu', role: 'kepsek' },
@@ -23,13 +19,21 @@ export default class extends BaseSeeder {
   async run() {
     for (const person of PEOPLE) {
       const existing = await User.findBy('loginCode', person.loginCode)
-      if (existing) continue
+
+      if (existing) {
+        if (!existing.password) {
+          existing.password = DEMO_PASSWORD
+          await existing.save()
+        }
+        continue
+      }
 
       await User.create({
         fullName: person.fullName,
         loginCode: person.loginCode,
         role: person.role,
         isActive: true,
+        password: DEMO_PASSWORD,
       })
     }
   }

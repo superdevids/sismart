@@ -1,12 +1,5 @@
 import { BaseSchema } from '@adonisjs/lucid/schema'
 
-/**
- * Migrate `users` from email/password auth to unique-code auth (Sismart).
- *
- * - Adds `login_code` (unique), `role`, `is_active`, `last_login_at`.
- * - Makes `email` and `password` nullable so the old columns survive without
- *   breaking existing rows; they are no longer the primary login path.
- */
 export default class extends BaseSchema {
   protected tableName = 'users'
 

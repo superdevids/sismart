@@ -39,7 +39,7 @@ users
 └── updated_at            timestamp       nullable
 ```
 
-**Akan dimigrasi** untuk auth kode unik (lihat §2.1). `email`/`password` tidak lagi jalur utama.
+**Dimigrasi** untuk auth kode unik + password (lihat §2.1). `email` tidak lagi jalur utama; `password` dipakai sebagai faktor kedua.
 
 ---
 
@@ -47,7 +47,7 @@ users
 
 ### 2.1 `users` (revisi)
 
-**Perubahan:** tambah `login_code`, `role`, `is_active`, `last_login_at`; `email`+`password` jadi opsional.
+**Perubahan:** tambah `login_code`, `role`, `is_active`, `last_login_at`; `email` jadi opsional (kontak); `password` dipakai sebagai faktor kedua dan wajib untuk akun baru.
 
 ```
 users
@@ -57,7 +57,7 @@ users
 ├── role                  enum            notNullable  ('siswa','orang_tua','guru','staff','kepsek','admin')
 ├── is_active             boolean         notNullable, default true
 ├── email                 string(254)     nullable, unique      ← opsional, untuk kontak
-├── password              string          nullable              ← [TBD-BSD-02] bila tambah faktor kedua
+├── password              string          nullable              ← faktor kedua; di-hash model, wajib untuk akun baru
 ├── last_login_at         timestamp       nullable
 ├── created_at            timestamp       notNullable
 └── updated_at            timestamp       nullable
@@ -65,7 +65,7 @@ users
 INDEX: login_code (unique), role, is_active
 ```
 
-**Catatan keamanan:** `login_code` **wajib** cukup panjang/acak agar tidak mudah ditebak (lihat `TBD-TRD-03`). **[TBD-BSD-03]** format kode: prefiks `S`/`K` + angka? (lihat PRD TBD-09).
+**Catatan keamanan:** kode unik **bukan lagi satu-satunya faktor** — password diwajibkan untuk semua role (keputusan 2026-10-29). Kode tetap harus cukup panjang/acak agar tidak mudah ditebak. **[TBD-BSD-03]** format kode: prefiks `S`/`K` + angka? (lihat PRD TBD-09).
 
 ---
 

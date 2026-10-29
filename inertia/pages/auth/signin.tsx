@@ -1,28 +1,28 @@
+import { useState } from 'react'
 import AuthLayout from '~/layouts/auth'
 import { Form } from '@adonisjs/inertia/react'
-import { usePage } from '@inertiajs/react'
-import { AlertCircle, KeyRound, LoaderCircle, LogIn, ShieldCheck } from 'lucide-react'
+import {
+  AlertCircle,
+  Eye,
+  EyeOff,
+  KeyRound,
+  LoaderCircle,
+  LockKeyhole,
+  LogIn,
+  ShieldCheck,
+} from 'lucide-react'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { cn } from '~/lib/utils'
 
-/**
- * Halaman masuk Sismart di `/auth/signin`.
- *
- * Setiap pengguna — siswa, orang tua, guru, staff, kepala sekolah, admin —
- * masuk dengan satu kode unik. Tidak ada login email/password.
- */
 export default function Signin() {
-  const brand = usePage().props.brand
+  const [showPassword, setShowPassword] = useState(false)
 
   return (
     <>
       <div className="mb-6">
         <h1 className="text-2xl font-bold tracking-tight text-foreground">Masuk ke Sismart</h1>
-        <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
-          Satu kode untuk seluruh urusan {brand?.institutionType?.toLowerCase() ?? 'sekolah'}.
-        </p>
       </div>
 
       <Form route="session.store">
@@ -31,7 +31,7 @@ export default function Signin() {
             <div className="flex flex-col gap-2">
               <Label htmlFor="loginCode">
                 <KeyRound className="size-3.5 text-muted-foreground" />
-                Kode masuk
+                ID Pengguna
               </Label>
 
               <Input
@@ -42,20 +42,17 @@ export default function Signin() {
                 autoCapitalize="characters"
                 inputMode="text"
                 spellCheck={false}
-                placeholder="S2026001"
+                placeholder="Huruf besar/kecil tidak dibedakan."
                 autoFocus
                 aria-invalid={errors.loginCode ? 'true' : 'false'}
-                aria-describedby={errors.loginCode ? 'loginCode-error' : 'loginCode-help'}
+                aria-describedby={errors.loginCode ? 'loginCode-error' : undefined}
                 className={cn(
-                  // Kode masuk adalah identifier teknis (bukan prosa), jadi
-                  // monospace diizinkan oleh DESIGN-SYSTEM.md §2. Placeholder
-                  // tetap memakai font teks karena berisi contoh, bukan kode nyata.
                   'h-11 rounded-lg font-mono text-base font-semibold uppercase tracking-widest',
                   'placeholder:font-sans placeholder:text-sm placeholder:font-normal placeholder:normal-case placeholder:tracking-normal'
                 )}
               />
 
-              {errors.loginCode ? (
+              {errors.loginCode && (
                 <p
                   id="loginCode-error"
                   role="alert"
@@ -64,11 +61,48 @@ export default function Signin() {
                   <AlertCircle className="mt-0.5 size-3.5 shrink-0 text-destructive" />
                   <span>{errors.loginCode}</span>
                 </p>
-              ) : (
-                <p id="loginCode-help" className="text-xs leading-relaxed text-muted-foreground">
-                  Huruf besar/kecil tidak dibedakan. Hubungi tata usaha bila kode hilang.
-                </p>
               )}
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="password">
+                <LockKeyhole className="size-3.5 text-muted-foreground" />
+                Password
+              </Label>
+
+              <div className="relative">
+                <Input
+                  id="password"
+                  name="password"
+                  type={showPassword ? 'text' : 'password'}
+                  autoComplete="current-password"
+                  spellCheck={false}
+                  aria-invalid={errors.password ? 'true' : 'false'}
+                  aria-describedby={errors.password ? 'password-error' : undefined}
+                  className="h-11 rounded-lg pr-12 text-base"
+                />
+
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((visible) => !visible)}
+                  aria-label={showPassword ? 'Sembunyikan password' : 'Tampilkan password'}
+                  aria-pressed={showPassword}
+                  className="absolute right-1.5 top-1/2 inline-grid size-8 -translate-y-1/2 cursor-pointer place-items-center rounded-md text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                >
+                  {showPassword ? <EyeOff className="size-4" /> : <Eye className="size-4" />}
+                </button>
+              </div>
+
+              {errors.password ? (
+                <p
+                  id="password-error"
+                  role="alert"
+                  className="flex items-start gap-1.5 text-sm font-medium text-foreground"
+                >
+                  <AlertCircle className="mt-0.5 size-3.5 shrink-0 text-destructive" />
+                  <span>{errors.password}</span>
+                </p>
+              ) : null}
             </div>
 
             <Button
@@ -87,11 +121,11 @@ export default function Signin() {
         )}
       </Form>
 
-      <p className="mt-6 flex items-center gap-2 text-xs leading-relaxed text-muted-foreground">
+      <p className="mt-6 flex items-start gap-2 text-xs leading-relaxed">
         <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-success" />
         <span>
-          Kode ini bersifat rahasia dan hanya terhubung ke satu akun. Jangan bagikan kepada siapa
-          pun.
+          Kode dan password bersifat rahasia. Jangan bagikan kepada siapa pun, termasuk yang mengaku
+          panitia atau tata usaha.
         </span>
       </p>
     </>

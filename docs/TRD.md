@@ -110,25 +110,25 @@ providers/             # service provider kustom
 
 ## 4. Autentikasi & Otorisasi
 
-### 4.1 Autentikasi (kode unik)
+### 4.1 Autentikasi (kode unik + password)
 
-| Aspek                 | Keputusan                                                          |
-| --------------------- | ------------------------------------------------------------------ |
-| Mekanisme             | **Kode unik** (satu jalur, sesuai keputusan pemilik)               |
-| Beda starter saat ini | Memakai email/password → **WAJIB dimigrasi**                       |
-| Guard                 | Session guard `web` (sudah ada di `config/auth.ts`)                |
-| Session               | Cookie, `httpOnly`, `sameSite: lax`, `secure` di produksi, umur 2h |
-| Remember-me           | Nonaktif (konsisten starter)                                       |
-| Lockout               | **[TBD-TRD-02]** setelah N gagal / M menit                         |
+| Aspek                 | Keputusan                                                                               |
+| --------------------- | --------------------------------------------------------------------------------------- |
+| Mekanisme             | **Kode unik + password** (satu jalur; kode mengidentifikasi akun, password membuktikan) |
+| Beda starter saat ini | Starter memakai email/password → dimigrasi ke kode unik + password                      |
+| Guard                 | Session guard `web` (sudah ada di `config/auth.ts`)                                     |
+| Session               | Cookie, `httpOnly`, `sameSite: lax`, `secure` di produksi, umur 2h                      |
+| Remember-me           | Nonaktif (konsisten starter)                                                            |
+| Hashing               | scrypt via `@adonisjs/hash`; di-hash otomatis oleh `withAuthFinder` (`beforeSave`)      |
+| Lockout               | **[TBD-TRD-02]** setelah N gagal / M menit                                              |
 
 **Perubahan yang diperlukan dari starter:**
 
-- Tabel `users`: ganti `email`/`password` menjadi `login_code` (unik) + `role`.
-- Validator: ganti `loginValidator`/`signupValidator` untuk kode unik.
-- `config/auth.ts`: `sessionUserProvider` tetap, tapi model diubah.
-- **Catatan keamanan:** kode unik sebagai satu-satunya faktor berisiko bila mudah ditebak. Mitigasi: kode cukup panjang + rate limit + lockout. **[TBD-TRD-03]** apakah perlu faktor kedua untuk role admin/keuangan?
-
-> **Rekomendasi arsitek:** untuk role `admin`/`staff` (akses keuangan), pertimbangkan **password tambahan di atas kode unik**. Ini meningkatkan keamanan tanpa mengubah pola login dasar. Menunggu keputusan pemilik.
+- Tabel `users`: `login_code` (unik) + `role`; `password` dipakai sebagai faktor kedua; `email` opsional untuk kontak.
+- Validator: `loginCodeValidator` — kode 4–32 karakter `[A-Za-z0-9-]`, password 8–64 karakter.
+- `config/auth.ts`: `sessionUserProvider` + `withAuthFinder` (uid `loginCode`, kolom `password`).
+- **Catatan keamanan:** kode unik saja berisiko bila mudah ditebak, karena itu password diwajibkan untuk **semua role** (keputusan pemilik 2026-10-29, menggantikan `TBD-TRD-03`). Sisa risiko: rate limit/lockout belum ada (TASK-008) dan alur ganti password belum dibangun.
+- **Jangan hash manual:** hook `beforeSave` milik `withAuthFinder` sudah meng-hash kolom `password`; memberi nilai yang sudah ter-hash akan menyimpan hash dari hash.
 
 ### 4.2 Otorisasi (RBAC)
 
@@ -195,7 +195,7 @@ providers/             # service provider kustom
 | X-Frame-Options       | DENY                                      | Jika perlu embedding → ubah              |
 | HSTS                  | Aktif (180 hari)                          | Butuh HTTPS di produksi                  |
 | Content-type sniffing | nosniff                                   | OK                                       |
-| Hashing               | scrypt (cost 16384)                       | Cukup untuk kode unik                    |
+| Hashing               | scrypt (cost 16384)                       | Dipakai untuk verifikasi password login  |
 | CORS                  | Dev: semua origin; Prod: allowlist kosong | Isi allowlist di produksi                |
 | Secret                | `APP_KEY` di `.env` (tidak ter-commit)    | Jangan tulis ke log/source               |
 

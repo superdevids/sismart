@@ -2,11 +2,6 @@ import { type ReactNode } from 'react'
 import { Head } from '@inertiajs/react'
 import { cn } from '~/lib/utils'
 
-/**
- * Kerangka satu halaman aplikasi: menetapkan judul dokumen, lalu menampilkan
- * judul halaman, deskripsi opsional, dan aksi (tombol/tautan) yang rata kanan.
- * Pakai `hideTitle` bila hanya ingin menetapkan judul dokumen.
- */
 export default function Page({
   title,
   hideTitle = false,

@@ -8,10 +8,6 @@ import { Button } from '~/components/ui/button'
 import { Separator } from '~/components/ui/separator'
 import { cn } from '~/lib/utils'
 
-/**
- * Kerangka aplikasi bergaya admin dashboard (pola AdminCN):
- * sidebar kiri + header sticky berisi tombol menu dan breadcrumb.
- */
 export default function AppLayout({ children }: { children: ReactNode }) {
   const { component, url } = usePage()
   const [sidebarOpen, setSidebarOpen] = useState(false)
@@ -84,10 +80,6 @@ export default function AppLayout({ children }: { children: ReactNode }) {
   )
 }
 
-/**
- * Susun breadcrumb dari nama komponen Inertia dan URL. Nama komponen
- * dipetakan ke label yang ramah; segmen tak dikenal dirapikan otomatis.
- */
 function buildBreadcrumbs(component: string, url: string): { label: string }[] {
   const KNOWN: Record<string, string> = {
     'pages/dashboard': 'Dasbor',
@@ -104,7 +96,6 @@ function buildBreadcrumbs(component: string, url: string): { label: string }[] {
     if (label.toLowerCase() !== root.toLowerCase()) crumbs.push({ label })
   })
 
-  // Hindari duplikat saat root sudah mewakili segmen terakhir.
   return crumbs.filter((c, i, arr) => i === 0 || c.label !== arr[i - 1].label)
 }
 

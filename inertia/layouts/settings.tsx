@@ -2,20 +2,8 @@ import Page from '~/components/page'
 import { type ReactNode } from 'react'
 import NavLink, { type NavItem } from '~/components/nav_link'
 
-/**
- * Halaman-halaman area pengaturan, ditampilkan di sidebar. Daftarkan route
- * untuk setiap halaman lalu tambahkan di sini, contoh:
- *
- * `{ label: 'Profil', route: 'settings.profile', icon: User }`
- */
 const items: NavItem[] = []
 
-/**
- * Menampilkan judul pengaturan, sidebar tautan, dan kartu berisi halaman
- * aktif. Bersarang di bawah layout aplikasi dari setiap halaman pengaturan:
- *
- * `Profil.layout = [AppLayout, SettingsLayout]`
- */
 export default function SettingsLayout({ children }: { children: ReactNode }) {
   return (
     <Page title="Pengaturan" description="Kelola akun dan preferensi Anda.">

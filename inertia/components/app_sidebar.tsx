@@ -9,7 +9,6 @@ import { Separator } from '~/components/ui/separator'
 import NavLink, { type NavItem } from '~/components/nav_link'
 
 export type NavGroup = {
-  /** Label grup; boleh kosong untuk grup pertama tanpa judul. */
   label?: string
   items: NavItem[]
 }
@@ -25,10 +24,6 @@ const NAV_GROUPS: NavGroup[] = [
   },
 ]
 
-/**
- * Sidebar shell admin (pola AdminCN). Di layar < lg sidebar menjadi panel
- * geser yang dikendalikan tombol di header.
- */
 export default function AppSidebar({
   groups = NAV_GROUPS,
   open,
@@ -48,7 +43,6 @@ export default function AppSidebar({
 
   return (
     <>
-      {/* Latar gelap di mobile */}
       <div
         onClick={onClose}
         aria-hidden="true"
@@ -68,7 +62,6 @@ export default function AppSidebar({
           open ? 'translate-x-0' : '-translate-x-full'
         )}
       >
-        {/* Kepala sidebar */}
         <div className="flex h-14 items-center gap-2 px-4">
           <Logo size={24} />
           {!collapsed && (
@@ -92,7 +85,6 @@ export default function AppSidebar({
 
         <Separator />
 
-        {/* Daftar menu */}
         <nav className="flex-1 overflow-y-auto px-3 py-4">
           {groups.map((group) => (
             <div key={group.label ?? 'utama'} className="mb-5 last:mb-0">
@@ -114,7 +106,6 @@ export default function AppSidebar({
 
         <Separator />
 
-        {/* Kaki sidebar */}
         <div className="flex flex-col gap-1 p-3">
           <Button
             variant="ghost"

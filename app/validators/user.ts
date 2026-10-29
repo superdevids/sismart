@@ -1,11 +1,5 @@
 import vine from '@vinejs/vine'
 
-/**
- * Validator for Sismart login.
- *
- * Sismart uses a single authentication path: every user signs in with a unique
- * login code. There is no email/password login.
- */
 export const loginCodeValidator = vine.create({
   loginCode: vine
     .string()
@@ -13,4 +7,5 @@ export const loginCodeValidator = vine.create({
     .minLength(4)
     .maxLength(32)
     .regex(/^[A-Za-z0-9-]+$/),
+  password: vine.string().minLength(8).maxLength(64),
 })

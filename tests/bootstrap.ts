@@ -13,14 +13,6 @@ import { sessionApiClient } from '@adonisjs/session/plugins/api_client'
 import { sessionBrowserClient } from '@adonisjs/session/plugins/browser_client'
 import { inertiaApiClient } from '@adonisjs/inertia/plugins/api_client'
 
-/**
- * This file is imported by the "bin/test.ts" entrypoint file
- */
-
-/**
- * Configure Japa plugins in the plugins array.
- * Learn more - https://japa.dev/docs/runner-config#plugins-optional
- */
 export const plugins: Config['plugins'] = [
   assert(),
   apiClient(),
@@ -35,24 +27,7 @@ export const plugins: Config['plugins'] = [
   authBrowserClient(app),
 ]
 
-/**
- * Configure lifecycle function to run before and after all the
- * tests.
- *
- * The setup functions are executed before all the tests
- * The teardown functions are executed after all the tests
- */
 export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
-  /**
-   * Aplikasi dan test memakai file SQLite yang sama (`tmp/db.sqlite3`).
-   * Truncate per-test dari `group.each.setup(() => testUtils.db().truncate())`
-   * hanya berjalan SETELAH tiap test, sehingga test pertama pada satu
-   * rangkaian akan menabrak data dev yang tersisa (mis. hasil `db:seed`)
-   * dan gagal karena unique constraint.
-   *
-   * Karena itu database dibersihkan sekali sebelum seluruh test dimulai,
-   * agar hasil test tidak bergantung pada isi database dev saat itu.
-   */
   setup: [
     async () => {
       const truncate = await testUtils.db().truncate()
@@ -62,10 +37,6 @@ export const runnerHooks: Required<Pick<Config, 'setup' | 'teardown'>> = {
   teardown: [],
 }
 
-/**
- * Configure suites by tapping into the test suite instance.
- * Learn more - https://japa.dev/docs/test-suites#lifecycle-hooks
- */
 export const configureSuite: Config['configureSuite'] = (suite) => {
   if (['browser', 'functional', 'e2e'].includes(suite.name)) {
     return suite.setup(() => testUtils.httpServer().start())

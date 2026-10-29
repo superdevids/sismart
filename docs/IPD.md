@@ -40,22 +40,22 @@
 
 **Goal:** autentikasi kode unik, RBAC, master data. Basis semua modul.
 
-| Task     | Deskripsi                                                   | AC                                                        | Dependensi         | Paralel |
-| -------- | ----------------------------------------------------------- | --------------------------------------------------------- | ------------------ | ------- |
-| TASK-001 | Keputusan teknis: format kode unik final                    | Dokumen keputusan format (panjang, prefiks, cek-digit)    | —                  |         |
-| TASK-002 | Migration revisi `users` (login_code, role, is_active, dll) | Migration naik & turun bersih; `schema.ts` ter-regenerate | TASK-001           |         |
-| TASK-003 | Model `User` + enum role + helper                           | Model bertipe, enum role, test unit                       | TASK-002           | ✓       |
-| TASK-004 | Validator login (kode unik) + migrasi dari email/password   | Test: login valid/invalid/tidak aktif                     | TASK-003           | ✓       |
-| TASK-005 | Controller Session (login/logout) pakai kode unik           | AC alur AFD §2.1 lulus                                    | TASK-004           |         |
-| TASK-006 | Middleware `role` / `can` (fail-closed)                     | Test: akses tanpa izin → 403                              | TASK-003           | ✓       |
-| TASK-007 | Katalog permission + seeding role                           | Katalog permission terdaftar; test                        | TASK-006           |         |
-| TASK-008 | Rate limit / lockout login                                  | Test: N gagal → terkunci M menit                          | TASK-005           | ✓       |
-| TASK-009 | Migration master data (academic_years, classes, subjects)   | Migration + model + seeder                                | TASK-002           | ✓       |
-| TASK-010 | CRUD master data (admin)                                    | Test functional CRUD + RBAC                               | TASK-009, TASK-006 |         |
-| TASK-011 | Halaman login UI (kode unik)                                | Halaman render; form submit; error tampil                 | TASK-005           | ✓       |
-| TASK-012 | Redirect dashboard per role                                 | Test: tiap role → dashboard benar                         | TASK-005           | ✓       |
+| Task     | Deskripsi                                                            | AC                                                        | Dependensi         | Paralel |
+| -------- | -------------------------------------------------------------------- | --------------------------------------------------------- | ------------------ | ------- |
+| TASK-001 | Keputusan teknis: format kode unik final                             | Dokumen keputusan format (panjang, prefiks, cek-digit)    | —                  |         |
+| TASK-002 | Migration revisi `users` (login_code, role, is_active, dll)          | Migration naik & turun bersih; `schema.ts` ter-regenerate | TASK-001           |         |
+| TASK-003 | Model `User` + enum role + helper                                    | Model bertipe, enum role, test unit                       | TASK-002           | ✓       |
+| TASK-004 | Validator login (kode unik + password) + migrasi dari email/password | Test: login valid/invalid/tidak aktif/password salah      | TASK-003           | ✓       |
+| TASK-005 | Controller Session (login/logout) pakai kode unik + password         | AC alur AFD §2.1 lulus                                    | TASK-004           |         |
+| TASK-006 | Middleware `role` / `can` (fail-closed)                              | Test: akses tanpa izin → 403                              | TASK-003           | ✓       |
+| TASK-007 | Katalog permission + seeding role                                    | Katalog permission terdaftar; test                        | TASK-006           |         |
+| TASK-008 | Rate limit / lockout login                                           | Test: N gagal → terkunci M menit                          | TASK-005           | ✓       |
+| TASK-009 | Migration master data (academic_years, classes, subjects)            | Migration + model + seeder                                | TASK-002           | ✓       |
+| TASK-010 | CRUD master data (admin)                                             | Test functional CRUD + RBAC                               | TASK-009, TASK-006 |         |
+| TASK-011 | Halaman login UI (kode unik + password)                              | Halaman render; form submit; error tampil                 | TASK-005           | ✓       |
+| TASK-012 | Redirect dashboard per role                                          | Test: tiap role → dashboard benar                         | TASK-005           | ✓       |
 
-**Gate fase:** login kode unik berfungsi end-to-end; RBAC fail-closed terbukti; master data dapat dikelola.
+**Gate fase:** login kode unik + password berfungsi end-to-end; RBAC fail-closed terbukti; master data dapat dikelola.
 
 ---
 

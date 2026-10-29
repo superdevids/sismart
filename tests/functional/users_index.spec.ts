@@ -2,13 +2,6 @@ import { test } from '@japa/runner'
 import User from '#models/user'
 import testUtils from '@adonisjs/core/services/test_utils'
 
-/**
- * Test logic untuk halaman data pengguna dan dasbor.
- *
- * Yang diuji adalah perilaku controller: otorisasi, jumlah data, filter
- * pencarian/peran, paginasi, dan bentuk data yang dikirim ke halaman.
- * Tidak ada pemeriksaan markup atau tampilan.
- */
 test.group('Users / index (logic)', (group) => {
   group.each.setup(() => testUtils.db().truncate())
 
@@ -124,7 +117,6 @@ test.group('Users / index (logic)', (group) => {
       .loginAs(admin)
     const body = response.inertiaProps as any
 
-    // Tidak ada kepsek tersimpan; opsinya tetap tersedia untuk filter.
     assert.isArray(body.roleOptions)
     const kepsek = body.roleOptions.find((o: any) => o.value === 'kepsek')
     assert.equal(kepsek?.label, 'Kepala sekolah')

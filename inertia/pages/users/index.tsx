@@ -40,10 +40,6 @@ type Props = {
   roleOptions: { value: string; label: string }[]
 }
 
-/**
- * Daftar pengguna Sismart. Seluruh baris berasal dari tabel `users` —
- * tidak ada data contoh di halaman ini.
- */
 export default function UsersIndex() {
   const { users, meta, filters, roleOptions } = usePage<Props>().props
   const [q, setQ] = useState(filters.q)
@@ -93,7 +89,6 @@ export default function UsersIndex() {
         </CardHeader>
 
         <CardContent className="flex flex-col gap-4">
-          {/* Filter */}
           <form onSubmit={onSubmit} className="flex flex-wrap items-center gap-2">
             <div className="relative min-w-[220px] flex-1">
               <Search className="pointer-events-none absolute left-2.5 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -133,7 +128,6 @@ export default function UsersIndex() {
             )}
           </form>
 
-          {/* Tabel */}
           {users.length === 0 ? (
             <div className="flex flex-col items-center gap-2 rounded-xl border border-dashed border-border px-6 py-14 text-center">
               <span className="grid size-10 place-items-center rounded-lg bg-muted text-muted-foreground">
@@ -187,7 +181,6 @@ export default function UsersIndex() {
             </div>
           )}
 
-          {/* Paginasi */}
           {meta.lastPage > 1 && (
             <div className="flex items-center justify-between gap-3">
               <p className="text-xs text-muted-foreground">

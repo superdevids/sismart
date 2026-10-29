@@ -2,12 +2,6 @@ import Setting from '#models/setting'
 import { BaseSeeder } from '@adonisjs/lucid/seeders'
 import { BRANDING_DEFAULTS, BRANDING_KEYS } from '#services/branding_service'
 
-/**
- * Seeds the editable branding defaults. Runs with `node ace db:seed`.
- *
- * Uses `updateOrCreate` so re-running never overwrites values the admin has
- * already customised… except on a fresh database, where it sets the defaults.
- */
 export default class extends BaseSeeder {
   async run() {
     const defaults: Array<[string, string]> = [

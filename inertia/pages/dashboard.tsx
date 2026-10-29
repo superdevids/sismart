@@ -38,11 +38,6 @@ const ROLE_LABELS: Record<string, string> = {
   admin: 'Admin',
 }
 
-/**
- * Dasbor Sismart. Semua angka di halaman ini dibaca dari tabel `users`
- * sungguhan. Modul akademik (nilai, absensi, SPP) belum ada di basis data,
- * jadi tidak ditampilkan sebagai angka palsu.
- */
 export default function Dashboard() {
   const { stats, roleBreakdown, recentUsers } = usePage<Props>().props
   const brand = usePage().props.brand

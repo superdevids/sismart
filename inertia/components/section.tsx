@@ -1,10 +1,5 @@
 import { type ReactNode } from 'react'
 
-/**
- * Sekelompok konten dalam satu halaman — misalnya sekumpulan field form —
- * dengan judul dan deskripsi opsional. Beberapa Section ditumpuk akan
- * dipisahkan garis.
- */
 export default function Section({
   title,
   description,

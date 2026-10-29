@@ -3,11 +3,6 @@ import { toast, Toaster } from 'sonner'
 import { router, usePage } from '@inertiajs/react'
 import { CircleAlert, CircleCheck } from 'lucide-react'
 
-/**
- * Toast untuk pesan flash dari server. `Toaster` memakai `unstyled: true`,
- * jadi seluruh tampilan ditulis sebagai utilitas Tailwind di sini —
- * termasuk varian sukses dan error.
- */
 export default function FlashToasts() {
   const { flash } = usePage()
 

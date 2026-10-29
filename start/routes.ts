@@ -1,28 +1,9 @@
-/*
-|--------------------------------------------------------------------------
-| Routes file
-|--------------------------------------------------------------------------
-|
-| The routes file is used for defining the HTTP routes.
-|
-*/
-
 import { middleware } from '#start/kernel'
 import { controllers } from '#generated/controllers'
 import router from '@adonisjs/core/services/router'
 
 router.on('/').renderInertia('home', {}).as('home')
 
-/**
-|--------------------------------------------------------------------------
-| Authentication
-|--------------------------------------------------------------------------
-|
-| Sismart signs every user in with a unique login code. The canonical
-| sign-in page lives at `/auth/signin`; the legacy `/login` path redirects
-| there so no second door exists.
-|
-*/
 router
   .group(() => {
     router.get('auth/signin', [controllers.Session, 'create']).as('session.create')

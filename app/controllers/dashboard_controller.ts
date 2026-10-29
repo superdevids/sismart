@@ -1,11 +1,6 @@
 import User, { USER_ROLES } from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
-/**
- * Dasbor awal Sismart. Angka yang ditampilkan berasal dari tabel `users`
- * yang sebenarnya — bukan data contoh. Modul lain (nilai, absensi, SPP)
- * menyusul sesuai `docs/IPD.md`.
- */
 export default class DashboardController {
   async index({ inertia }: HttpContext) {
     const [total, active] = await Promise.all([

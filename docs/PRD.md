@@ -16,7 +16,7 @@ Dokumen ini disusun dari:
 2. **Konteks historis Sismart** yang dikonfirmasi pemilik pada 2026-10-29:
    - Sistem **sekolah** (SD–SMK) tingkat lembaga tunggal.
    - **6 role**: siswa, orang_tua, guru, staff, kepsek, admin.
-   - **Auth: semua pengguna memakai kode unik** (satu jalur auth, bukan email/password).
+   - **Auth: kode unik + password** (satu jalur auth; kode mengidentifikasi akun, password membuktikan pemiliknya).
    - **10 modul** sebagai roadmap penuh.
    - Deployment **single-sekolah** (satu instalasi = satu lembaga).
 
@@ -91,7 +91,7 @@ Sismart adalah sistem informasi sekolah terpadu untuk **satu lembaga pendidikan*
 
 | ID     | Requirement                                                                               | Prioritas |
 | ------ | ----------------------------------------------------------------------------------------- | --------- |
-| FR-001 | Sistem menyediakan autentikasi berbasis **kode unik** (bukan email/password).             | Must      |
+| FR-001 | Sistem menyediakan autentikasi **kode unik + password** (email bukan identitas login).    | Must      |
 | FR-002 | Kode unik dibedakan per jenis pengguna (mis. prefiks `S` untuk siswa, `K` untuk lainnya). | Must      |
 | FR-003 | Sistem memiliki 6 role: siswa, orang_tua, guru, staff, kepsek, admin.                     | Must      |
 | FR-004 | Akses fitur dibatasi berbasis role (permission fail-closed: tanpa izin → 403).            | Must      |
@@ -197,11 +197,11 @@ Sismart adalah sistem informasi sekolah terpadu untuk **satu lembaga pendidikan*
 
 Ringkas; detail di `AFD.md`.
 
-1. **Login** — pengguna masuk dengan kode unik → diarahkan ke dashboard sesuai role.
+1. **Login** — pengguna masuk dengan kode unik + password → diarahkan ke dashboard sesuai role.
 2. **Guru input nilai** — pilih kelas/mapel → input (atau paste Excel) → simpan.
 3. **Orang tua cek tagihan** — login → lihat daftar tagihan anak → bayar online / lihat riwayat.
 4. **Staff kelola SPP** — buat tagihan massal → verifikasi pembayaran → rekap.
-5. **Admin kelola pengguna** — buat akun + kode unik → tetapkan role → aktifkan.
+5. **Admin kelola pengguna** — buat akun + kode unik + password awal → tetapkan role → aktifkan.
 
 ---
 

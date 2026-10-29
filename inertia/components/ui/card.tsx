@@ -1,11 +1,6 @@
 import * as React from 'react'
 import { cn } from '~/lib/utils'
 
-/**
- * Card pola shadcn/ui (AdminCN). Struktur: Card > CardHeader > CardTitle /
- * CardDescription / CardAction, lalu CardContent, CardFooter.
- * Seluruh warna membaca token design system.
- */
 function Card({
   className,
   size = 'default',

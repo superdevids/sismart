@@ -42,24 +42,27 @@ Pengguna
 ### 2.1 Login dengan Kode Unik
 
 **Aktor:** semua role.
-**Prasyarat:** akun aktif dengan `login_code` valid.
+**Prasyarat:** akun aktif dengan `login_code` valid dan password terpasang.
 
 ```
-1. Pengguna buka /login
-2. Masukkan kode unik
-   ◇ Kode tidak ditemukan? → ⚠ "Kode tidak valid" (pesan generik, tak bocorkan detail)
+1. Pengguna buka /auth/signin
+2. Masukkan kode unik dan password
+   ◇ Kode/password salah?   → ⚠ "Kode masuk atau password salah, atau akun tidak aktif."
+   ◇ Akun nonaktif?         → ⚠ pesan yang sama (tidak membocorkan status akun)
    ◇ Sudah terkunci?        → ⚠ "Coba lagi dalam M menit"
-3. Sistem verifikasi kode
-   ◇ Kode valid?
+3. Sistem verifikasi kode lalu password
+   ◇ Keduanya cocok?
       → sistem buat sesi, catat login, arahkan ke dashboard role
-      ⚠ Kode salah → tambah hitungan gagal; bila ≥ N → kunci akun M menit
+      ⚠ Gagal → tambah hitungan gagal; bila ≥ N → kunci akun M menit
 4. Selesai: pengguna di dashboard sesuai role
 ```
 
 **Aturan:**
 
-- Pesan error **generik** (tidak membedakan "kode tidak ada" vs "kode terkunci").
+- Pesan error **generik**: tidak membedakan kode salah, password salah, akun nonaktif, atau akun tanpa password.
+- Kode dinormalisasi ke huruf besar sebelum dicocokkan; password **tidak** di-trim.
 - **[TBD-AFD-01]** N gagal & durasi M mengikuti `TBD-TRD-02`.
+- Alur ganti password belum ada (lihat catatan TRD §4.1).
 
 **Alur logout:** POST `/logout` → hapus sesi → redirect `/login`.
 
@@ -222,9 +225,9 @@ Pengguna
 
 ```
 1. Admin login → menu "Pengguna"
-2. Tambah pengguna → isi identitas → sistem GENERATE kode unik → pilih role
-3. Simpan → kode ditampilkan untuk didistribusikan
-   ◇ Reset kode? → generate ulang → kode lama tidak berlaku
+2. Tambah pengguna → isi identitas → sistem GENERATE kode unik → tetapkan password awal → pilih role
+3. Simpan → kode + password awal ditampilkan untuk didistribusikan
+   ◇ Reset kode/password? → generate ulang → nilai lama tidak berlaku
 4. Nonaktifkan/hapus user → akses dicabut
 ```
 

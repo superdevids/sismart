@@ -15,13 +15,6 @@ import {
 } from 'lucide-react'
 import { Button } from '~/components/ui/button'
 
-/**
- * Landing page Sismart — halaman publik di `/`.
- *
- * Nama sekolah (brand) berasal dari pengaturan yang dapat diubah admin, bukan
- * teks mati. Produk tetap bernama "Sismart"; yang dinamis adalah identitas
- * sekolah yang memakainya.
- */
 export default function Home() {
   return (
     <div className="animate-fade">
@@ -83,7 +76,6 @@ function Hero() {
         </p>
       </div>
 
-      {/* Kartu pratinjau dasbor */}
       <div
         aria-hidden="true"
         className="relative rounded-2xl border border-border bg-card p-1.5 shadow-2xl shadow-foreground/10 animate-rise"

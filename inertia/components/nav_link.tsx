@@ -13,12 +13,6 @@ export type NavItem = {
   icon?: LucideIcon
 }
 
-/**
- * Tautan yang menandai dirinya dengan `aria-current="page"` bila URL aktif
- * cocok dengan route-nya. Secara default URL bertingkat ikut dianggap cocok,
- * jadi tautan "Pengaturan" tetap aktif di "/settings/security". Pakai
- * `exact` bila hanya ingin mencocokkan route itu sendiri.
- */
 export default function NavLink({
   route,
   exact = false,

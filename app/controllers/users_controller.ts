@@ -1,7 +1,6 @@
 import User, { USER_ROLES } from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
-/** Label bahasa Indonesia untuk setiap peran. */
 export const ROLE_LABELS: Record<string, string> = {
   siswa: 'Siswa',
   orang_tua: 'Orang tua',
@@ -11,11 +10,6 @@ export const ROLE_LABELS: Record<string, string> = {
   admin: 'Admin',
 }
 
-/**
- * Daftar pengguna untuk halaman admin. Membaca tabel `users` sungguhan —
- * tanpa data contoh. Pencarian dan paginasi dijalankan di sisi server agar
- * tetap ringan saat jumlah pengguna bertambah.
- */
 export default class UsersController {
   async index({ request, inertia }: HttpContext) {
     const q = String(request.input('q', '')).trim()
