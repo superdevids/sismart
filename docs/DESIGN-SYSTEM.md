@@ -1,0 +1,155 @@
+# Design System — Sismart
+
+> **Versi:** 1.0 · **Tanggal:** 2026-10-29
+> **Sumber kebenaran tunggal:** `inertia/css/app.css` (blok `@theme` + token semantik)
+> **Status nilai:** semua di bawah adalah **DEFAULT** dan dapat diubah tanpa menyentuh komponen.
+
+---
+
+## 1. Prinsip
+
+1. **Satu sumber.** Warna, font, radius, dan spasi hanya didefinisikan di `inertia/css/app.css`. Komponen membaca token, tidak menulis hex.
+2. **Mobile-first.** Semua penulisan dimulai dari layout mobile, lalu ditingkatkan untuk desktop.
+3. **Dua layout saja.** `xl` (desktop) dan lebih kecil (mobile). Tidak ada breakpoint lain.
+4. **Satu unit spasi.** 6px desktop / 4px mobile — bukan skala 4/8/12/16 yang terpisah-pisah.
+
+---
+
+## 2. Tipografi
+
+| Token         | Nilai                                     | Catatan                                                                         |
+| ------------- | ----------------------------------------- | ------------------------------------------------------------------------------- |
+| `--font-sans` | `'Plus Jakarta Sans'` (+ fallback system) | Wajib dimuat via `<link>` Google Fonts di `resources/views/inertia_layout.edge` |
+| `--font-mono` | system monospace                          | Hanya untuk kode/angka teknis                                                   |
+
+Bobot yang dimuat: 400, 500, 600, 700, 800.
+
+**Mengubah font:** ganti `--font-sans` di `@theme` **dan** URL Google Fonts di edge layout.
+
+---
+
+## 3. Warna
+
+### 3.1 Palet primitif (13 warna, urutan dipertahankan)
+
+| Token                     | Hex       | Peran                           |
+| ------------------------- | --------- | ------------------------------- |
+| `--palette-blue-600`      | `#2C75FC` | Biru utama → `primary`          |
+| `--palette-blue-500`      | `#4B77C9` | Biru lembut → `secondary`       |
+| `--palette-blue-400`      | `#566C96` | Biru pucat → `muted-foreground` |
+| `--palette-slate-600`     | `#4D5563` | Garis → `border`, `input`       |
+| `--palette-slate-900`     | `#2A2D33` | Teks → `foreground`             |
+| `--palette-lime`          | `#BDFC2B` | Aksen → `accent`                |
+| `--palette-red`           | `#FC4A2B` | Bahaya → `destructive`          |
+| `--palette-yellow`        | `#FCD42B` | Peringatan → `warning`          |
+| `--palette-orange`        | `#FC9F2B` | Oranye (cadangan)               |
+| `--palette-green`         | `#2BFC2B` | Sukses → `success`              |
+| `--palette-cyan`          | `#2BE3FC` | Info → `info`                   |
+| `--palette-yellow-bright` | `#FCE52B` | Kuning terang (cadangan)        |
+| `--palette-amber`         | `#FCBA2B` | Amber (cadangan)                |
+
+> **Jangan pakai `--palette-*` langsung di komponen.** Gunakan token semantik di §3.2.
+
+### 3.2 Token semantik
+
+| Token                  | Terang    | Gelap     | Utilitas                  |
+| ---------------------- | --------- | --------- | ------------------------- |
+| `--background`         | `#FFFFFF` | `#0B0D10` | `bg-background`           |
+| `--foreground`         | `#2A2D33` | `#F4F6F8` | `text-foreground`         |
+| `--card`               | `#FFFFFF` | `#14171C` | `bg-card`                 |
+| `--primary`            | `#2C75FC` | `#2C75FC` | `bg-primary`              |
+| `--primary-foreground` | `#FFFFFF` | `#FFFFFF` | `text-primary-foreground` |
+| `--secondary`          | `#4B77C9` | `#4B77C9` | `bg-secondary`            |
+| `--muted`              | `#F3F5F8` | `#1C2027` | `bg-muted`                |
+| `--muted-foreground`   | `#566C96` | `#566C96` | `text-muted-foreground`   |
+| `--accent`             | `#BDFC2B` | `#BDFC2B` | `bg-accent`               |
+| `--destructive`        | `#FC4A2B` | `#FC4A2B` | `bg-destructive`          |
+| `--success`            | `#2BFC2B` | `#2BFC2B` | `bg-success`              |
+| `--warning`            | `#FCD42B` | `#FCD42B` | `bg-warning`              |
+| `--info`               | `#2BE3FC` | `#2BE3FC` | `bg-info`                 |
+| `--border` / `--input` | `#4D5563` | `#2A2F38` | `border-border`           |
+| `--ring`               | `#2C75FC` | `#2C75FC` | `ring-ring`               |
+
+**Contrast note (perlu ditinjau saat dipakai):** `--success` (#2BFC2B) dan `--warning` (#FCD42B) sangat terang — teks di atasnya harus `--foreground` (gelap), bukan putih.
+
+---
+
+## 4. Spasi
+
+**Satu unit**: `--spacing` = **6px** di desktop (`>=1280px`), **4px** di mobile.
+
+| Konteks       | Nilai |
+| ------------- | ----- |
+| Desktop (xl)  | 6px   |
+| Mobile (< xl) | 4px   |
+
+**Xl breakpoint:** `1280px`.
+
+**Contoh pemakaian:** `p-4` = 24px desktop / 16px mobile. `gap-2` = 12px / 8px.
+
+> Konsekuensi: jarak berskala otomatis. Jangan menulis px manual; pakai kelipatan unit.
+
+---
+
+## 5. Radius
+
+| Token          | Nilai             |
+| -------------- | ----------------- |
+| `--radius`     | `0.625rem` (10px) |
+| `--radius-sm`  | `radius - 4px`    |
+| `--radius-md`  | `radius - 2px`    |
+| `--radius-lg`  | `radius`          |
+| `--radius-xl`  | `radius + 4px`    |
+| `--radius-2xl` | `radius + 8px`    |
+
+---
+
+## 6. Layout
+
+Hanya dua tipe:
+
+| Nama               | Kondisi          | Perilaku                          |
+| ------------------ | ---------------- | --------------------------------- |
+| **Desktop layout** | `>= 1280px` (xl) | Spasi 6px, grid boleh multi-kolom |
+| **Mobile layout**  | `< 1280px`       | Spasi 4px, satu kolom utama       |
+
+**Mobile-first:** tulis gaya mobile dulu, lalu `@media (min-width: 1280px)` atau `xl:`.
+
+---
+
+## 7. Komponen (shadcn/ui)
+
+| Komponen                                | Lokasi                             | Status |
+| --------------------------------------- | ---------------------------------- | ------ |
+| `Button` (+ varian & `asChild`)         | `inertia/components/ui/button.tsx` | ✅ ada |
+| `cn()` util (`clsx` + `tailwind-merge`) | `inertia/lib/utils.ts`             | ✅ ada |
+
+Menambah komponen shadcn: taruh di `inertia/components/ui/`, gunakan `cn()` dan token semantik.
+
+---
+
+## 8. Tema gelap
+
+Aktif lewat **class `.dark`** atau atribut **`[data-theme='dark']`** pada `<html>` (keduanya didukung, agar kompatibel dengan `ThemeToggle` yang sudah ada).
+
+---
+
+## 9. Cara Mengubah (untuk admin/developer nanti)
+
+| Ingin mengubah     | Ubah di                                               |
+| ------------------ | ----------------------------------------------------- |
+| Warna brand        | `--palette-blue-600` (dan turunannya) di `@theme`     |
+| Font               | `--font-sans` + `<link>` Google Fonts                 |
+| Kerapatan spasi    | `--spacing` (desktop & mobile)                        |
+| Sudut komponen     | `--radius`                                            |
+| Warna tema gelap   | blok `.dark`                                          |
+| Breakpoint desktop | media query `1279.98px` + nilai `1280px` (dua tempat) |
+
+**Catatan:** branding nama sekolah (bukan visual) dikelola admin lewat tabel `settings` (`BrandingService`), bukan di file ini.
+
+---
+
+## 10. Bukti Implementasi
+
+- `npm run build` → CSS ter-emit, `.bg-primary{background-color:var(--primary)}` ada, hex `#2C75FC` ada.
+- `npm run typecheck` / `npm run lint` / `npm test` (12) hijau.

@@ -1,47 +1,193 @@
 /* ==========================================================================
-   AdonisJS Starter Kit
-   Tokens are the only thing you need to touch to re-theme.
+   Sismart — Design System (Tailwind v4, CSS-first)
+   Sumber kebenaran tunggal untuk warna, tipografi, spasi, radius, dan tema.
+   Nilai di sini adalah DEFAULT dan dapat diubah di satu tempat ini.
    ========================================================================== */
 
-:root {
-  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  --mono: ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace;
-  --serif: ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+@import 'tailwindcss';
+@import 'tw-animate-css';
 
-  --paper: #f5f5f6;
-  --card: #ffffff;
-  --ink: #0a0a0b;
-  --ink-2: #2a2c30;
-  --muted: #6b6f76;
-  --subtle: #a4a8af;
-  --line: #ededee;
-  --line-2: #dddfe2;
-  --btn: #0a0a0b;
-  --btn-fg: #ffffff;
-  --ring: rgba(10, 10, 11, 0.13);
-  --field: #ffffff;
-  --ok: #18794e;
+/* --------------------------------------------------------------------------
+   1. Primitif — 13 warna dari pemilik (urutan dipertahankan)
+   -------------------------------------------------------------------------- */
+@theme {
+  /* Palet mentah (jangan dipakai langsung di komponen) */
+  --palette-blue-600: #2c75fc;
+  --palette-blue-500: #4b77c9;
+  --palette-blue-400: #566c96;
+  --palette-slate-600: #4d5563;
+  --palette-slate-900: #2a2d33;
+  --palette-lime: #bdfc2b;
+  --palette-red: #fc4a2b;
+  --palette-yellow: #fcd42b;
+  --palette-orange: #fc9f2b;
+  --palette-green: #2bfc2b;
+  --palette-cyan: #2be3fc;
+  --palette-yellow-bright: #fce52b;
+  --palette-amber: #fcba2b;
 
-  --r: 8px;
-  --r-lg: 14px;
-  color-scheme: light;
+  /* Tipografi */
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+  /* Radius (skala shadcn) */
+  --radius: 0.625rem;
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+
+  /* Satu unit spasi: 6px desktop / 4px mobile (lihat media query di bawah) */
+  --spacing: 6px;
 }
 
+/* Mobile-first: unit spasi 4px di bawah xl (1280px). */
+@media (max-width: 1279.98px) {
+  :root {
+    --spacing: 4px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   2. Token semantik per tema
+   -------------------------------------------------------------------------- */
+:root {
+  --background: #ffffff;
+  --foreground: var(--palette-slate-900);
+  --card: #ffffff;
+  --card-foreground: var(--palette-slate-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--palette-slate-900);
+  --primary: var(--palette-blue-600);
+  --primary-foreground: #ffffff;
+  --secondary: var(--palette-blue-500);
+  --secondary-foreground: #ffffff;
+  --muted: #f3f5f8;
+  --muted-foreground: var(--palette-blue-400);
+  --accent: var(--palette-lime);
+  --accent-foreground: var(--palette-slate-900);
+  --destructive: var(--palette-red);
+  --destructive-foreground: #ffffff;
+  --success: var(--palette-green);
+  --success-foreground: var(--palette-slate-900);
+  --warning: var(--palette-yellow);
+  --warning-foreground: var(--palette-slate-900);
+  --info: var(--palette-cyan);
+  --info-foreground: var(--palette-slate-900);
+  --border: var(--palette-slate-600);
+  --input: var(--palette-slate-600);
+  --ring: var(--palette-blue-600);
+}
+
+.dark,
 :root[data-theme='dark'] {
-  --paper: #08080a;
-  --card: #111114;
-  --ink: #ededee;
-  --ink-2: #c4c6ca;
-  --muted: #8b8f97;
-  --subtle: #585c64;
-  --line: #1e1f23;
-  --line-2: #2c2e33;
-  --btn: #ededee;
-  --btn-fg: #0a0a0b;
-  --ring: rgba(237, 237, 238, 0.14);
-  --field: #0c0c0f;
-  --ok: #3ecf8e;
-  color-scheme: dark;
+  --background: #0b0d10;
+  --foreground: #f4f6f8;
+  --card: #14171c;
+  --card-foreground: #f4f6f8;
+  --popover: #14171c;
+  --popover-foreground: #f4f6f8;
+  --primary: var(--palette-blue-600);
+  --primary-foreground: #ffffff;
+  --secondary: var(--palette-blue-500);
+  --secondary-foreground: #ffffff;
+  --muted: #1c2027;
+  --muted-foreground: var(--palette-blue-400);
+  --accent: var(--palette-lime);
+  --accent-foreground: var(--palette-slate-900);
+  --destructive: var(--palette-red);
+  --destructive-foreground: #ffffff;
+  --success: var(--palette-green);
+  --success-foreground: var(--palette-slate-900);
+  --warning: var(--palette-yellow);
+  --warning-foreground: var(--palette-slate-900);
+  --info: var(--palette-cyan);
+  --info-foreground: var(--palette-slate-900);
+  --border: #2a2f38;
+  --input: #2a2f38;
+  --ring: var(--palette-blue-600);
+}
+
+/* Pemetaan ke utilitas Tailwind: bg-background, text-foreground, border-border… */
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
+  --radius-2xl: var(--radius-2xl);
+}
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    color-scheme: light;
+  }
+  html.dark,
+  html[data-theme='dark'] {
+    color-scheme: dark;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   3. Alias kompatibilitas — komponen lama (kelas .btn, .field, .page, dst.)
+   tetap berjalan dan kini membaca token design system di atas.
+   -------------------------------------------------------------------------- */
+:root {
+  --sans: var(--font-sans);
+  --mono: var(--font-mono);
+  --serif: var(--font-sans);
+
+  --paper: var(--background);
+  --ink: var(--foreground);
+  --ink-2: var(--foreground);
+  --subtle: var(--muted-foreground);
+  --line: var(--border);
+  --line-2: var(--border);
+  --btn: var(--primary);
+  --btn-fg: var(--primary-foreground);
+  --field: var(--card);
+  --ok: var(--success);
+
+  --r: var(--radius-md);
+  --r-lg: var(--radius-lg);
 }
 
 * {
