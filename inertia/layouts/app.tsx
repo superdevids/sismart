@@ -1,57 +1,116 @@
-import Logo from '~/components/logo'
-import { type ReactNode } from 'react'
-import { House, LogOut } from 'lucide-react'
-import { Form } from '@adonisjs/inertia/react'
+import { type ReactNode, useState } from 'react'
+import { usePage } from '@inertiajs/react'
+import { ChevronRight, PanelLeft } from 'lucide-react'
 import FlashToasts from '~/components/flash_toasts'
 import ThemeToggle from '~/components/theme_toggle'
-import NavLink, { type NavItem } from '~/components/nav_link'
+import AppSidebar from '~/components/app_sidebar'
+import { Button } from '~/components/ui/button'
+import { Separator } from '~/components/ui/separator'
+import { cn } from '~/lib/utils'
 
 /**
- * Navigasi aplikasi tingkat atas. Tambahkan entri di sini untuk setiap area
- * baru aplikasi, dan entri tersebut muncul di bilah navigasi dengan status
- * aktif yang sudah ditangani.
+ * Kerangka aplikasi bergaya admin dashboard (pola AdminCN):
+ * sidebar kiri + header sticky berisi tombol menu dan breadcrumb.
  */
-const nav: NavItem[] = [{ label: 'Dashboard', route: 'dashboard', icon: House }]
-
 export default function AppLayout({ children }: { children: ReactNode }) {
+  const { component, url } = usePage()
+  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [collapsed, setCollapsed] = useState(false)
+
+  const crumbs = buildBreadcrumbs(component, url)
+
   return (
-    <div className="flex min-h-dvh flex-col bg-background">
-      <header className="sticky top-0 z-40 border-b border-border bg-card/90 backdrop-blur-md">
-        <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between gap-4 px-4 sm:px-6 lg:px-8">
-          <Logo size={26} />
-          <div className="flex items-center gap-2">
-            <ThemeToggle />
-            <Form route="session.destroy">
-              <button
-                type="submit"
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg border border-border bg-background px-3 text-sm font-medium text-foreground transition-colors hover:bg-muted focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50"
-              >
-                <LogOut size={15} strokeWidth={1.8} />
-                Keluar
-              </button>
-            </Form>
-          </div>
-        </div>
+    <div className="flex min-h-dvh bg-background">
+      <AppSidebar
+        open={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+        collapsed={collapsed}
+        onToggleCollapse={() => setCollapsed((v) => !v)}
+      />
 
-        <nav className="border-t border-border/60">
-          <div className="mx-auto flex h-12 w-full max-w-7xl items-center gap-1 px-4 sm:px-6 lg:px-8">
-            {nav.map(({ label, route, icon: Icon }) => (
-              <NavLink
-                key={label}
-                route={route}
-                className="inline-flex h-9 items-center gap-1.5 rounded-lg px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-                activeClassName="bg-muted text-foreground"
-              >
-                {Icon && <Icon size={14} strokeWidth={1.8} />}
-                {label}
-              </NavLink>
-            ))}
-          </div>
-        </nav>
-      </header>
+      <div className="flex min-w-0 flex-1 flex-col">
+        <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur-md">
+          <div className="flex h-14 items-center gap-3 px-3 sm:px-5">
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Buka menu"
+              className="lg:hidden"
+            >
+              <PanelLeft />
+            </Button>
 
-      <main className="flex-1">{children}</main>
+            <Separator orientation="vertical" className="hidden h-5 sm:block" />
+
+            <nav aria-label="Breadcrumb" className="hidden min-w-0 sm:block">
+              <ol className="flex items-center gap-1.5 text-sm">
+                {crumbs.map((c, i) => {
+                  const last = i === crumbs.length - 1
+                  return (
+                    <li key={c.label} className="flex items-center gap-1.5">
+                      <span
+                        className={cn(
+                          'truncate',
+                          last ? 'font-medium text-foreground' : 'text-muted-foreground'
+                        )}
+                        aria-current={last ? 'page' : undefined}
+                      >
+                        {c.label}
+                      </span>
+                      {!last && (
+                        <ChevronRight
+                          className="size-3.5 shrink-0 text-muted-foreground/70"
+                          aria-hidden="true"
+                        />
+                      )}
+                    </li>
+                  )
+                })}
+              </ol>
+            </nav>
+
+            <div className="ml-auto flex items-center gap-1.5">
+              <ThemeToggle />
+            </div>
+          </div>
+        </header>
+
+        <main className="flex-1">{children}</main>
+      </div>
+
       <FlashToasts />
     </div>
   )
+}
+
+/**
+ * Susun breadcrumb dari nama komponen Inertia dan URL. Nama komponen
+ * dipetakan ke label yang ramah; segmen tak dikenal dirapikan otomatis.
+ */
+function buildBreadcrumbs(component: string, url: string): { label: string }[] {
+  const KNOWN: Record<string, string> = {
+    'pages/dashboard': 'Dasbor',
+    'pages/home': 'Beranda',
+  }
+
+  const root = KNOWN[component] ?? titleize(component.split('/').pop() ?? 'Dasbor')
+  const path = url.split('?')[0]
+  const segments = path.split('/').filter(Boolean)
+
+  const crumbs = [{ label: root }]
+  segments.forEach((segment) => {
+    const label = titleize(segment)
+    if (label.toLowerCase() !== root.toLowerCase()) crumbs.push({ label })
+  })
+
+  // Hindari duplikat saat root sudah mewakili segmen terakhir.
+  return crumbs.filter((c, i, arr) => i === 0 || c.label !== arr[i - 1].label)
+}
+
+function titleize(value: string): string {
+  return value
+    .replace(/[-_]/g, ' ')
+    .replace(/\b\w/g, (c) => c.toUpperCase())
+    .trim()
 }

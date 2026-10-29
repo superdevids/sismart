@@ -24,12 +24,14 @@ export default function NavLink({
   exact = false,
   className,
   activeClassName,
+  onClick,
   children,
 }: {
   route: NavRoute
   exact?: boolean
   className?: string
   activeClassName?: string
+  onClick?: () => void
   children: ReactNode
 }) {
   const { url } = usePage()
@@ -40,6 +42,7 @@ export default function NavLink({
   return (
     <Link
       href={href}
+      onClick={onClick}
       className={cn(className, isActive && activeClassName)}
       aria-current={isActive ? 'page' : undefined}
     >
