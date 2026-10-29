@@ -12,6 +12,8 @@
 
 Disusun dari kondisi nyata (`database/migrations/`, `database/schema.ts`, `config/database.ts`) + keputusan pemilik (single-sekolah, auth kode unik, 6 role).
 
+**Database runtime:** PostgreSQL 18 via Docker Compose (`127.0.0.1:5432`). Semua tipe kolom di bawah mengikuti pemetaan Postgres Lucid:
+
 **Konvensi Lucid (mengikuti starter):**
 
 - Nama tabel: **snake_case plural** (`users`, `class_subjects`).
@@ -20,6 +22,23 @@ Disusun dari kondisi nyata (`database/migrations/`, `database/schema.ts`, `confi
 - `database/schema.ts` **di-generate otomatis** — jangan edit manual.
 - Semua perubahan skema lewat **migration file**.
 - **[TBD-BSD-01]** Gunakan UUID atau auto-increment? Saat ini starter memakai `increments` (integer). Untuk data sensitif sekolah, auto-increment sederhana & cukup; UUID menambah kompleksitas. **Rekomendasi: tetap integer.**
+
+**Pemetaan tipe Postgres (dari migration yang berjalan):**
+
+| Deklarasi Lucid    | Postgres                | Catatan                                      |
+| ------------------ | ----------------------- | -------------------------------------------- |
+| `increments('id')` | `integer generated ...` | PK auto-increment (serial)                   |
+| `string(x)`        | `varchar(x)`            | Kolom pencarian (`full_name`, `login_code`)  |
+| `text()`           | `text`                  | Nilai branding di `settings.value`           |
+| `boolean()`        | `boolean`               | Default harus eksplisit saat `notNullable()` |
+| `enum([...])`      | `varchar` + `CHECK`     | Postgres tidak punya tipe enum asli di Lucid |
+| `timestamp()`      | `timestamptz`           | Lucid menyimpan dengan offset waktu          |
+
+**Catatan Postgres yang mengikat implementasi:**
+
+- Klien **case-sensitive**: `uppercase(col) = ?` membandingkan literal apa adanya, sedangkan SQLite tidak. Karena itu pencarian memakai helper `whereILike` yang menerjemahkan ke `ILIKE` (atau `lower(...) LIKE lower(...)` pada driver non-Postgres).
+- `alterTable` berjalan sebagai `ALTER TABLE` terpisah; migration yang mengubah kolom harus idempoten agar aman dijalankan ulang pada database bersih.
+- Constraint unik melaporkan error `23505` (SQLite: `SQLITE_CONSTRAINT_UNIQUE`) — kode penanganan error tidak boleh mengandalkan satu kode saja.
 
 **Status:** semua skema di bawah adalah **RANCANGAN** — akan ditulis sebagai migration pada implementasi. Yang belum diputuskan ditandai `[TBD]`.
 
@@ -353,7 +372,7 @@ exams (1)───(N) exam_attempts (1)───(N) exam_answers
 ## 4. Strategi Migrasi (dari starter ke Sismart)
 
 1. **Migration `users` revisi** — tambah kolom; jangan drop `email`/`password` dulu (buat nullable).
-   - **Risiko:** bila ada data user nyata. Saat ini `tmp/db.sqlite3` (dev) → kemungkinan kosong/dummy. **[TBD-BSD-06]** konfirmasi.
+   - **Risiko:** bila ada data user nyata. Database dev yang dipakai sekarang adalah `sismart` di Postgres (Docker), hanya berisi seed contoh — tidak ada data pengguna nyata. **[TBD-BSD-06]** selesai.
 2. **Seeder** — tahun ajaran, mapel dasar, akun admin pertama.
 3. Migration modul per-fase (lihat `IPD.md`).
 

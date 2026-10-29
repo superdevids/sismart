@@ -36,7 +36,7 @@ Disusun dari kondisi nyata di disk (starter AdonisJS 7) + keputusan pemilik 2026
 └─────────────────────────────┼───────────────────────────┘
                               │
                     ┌─────────▼──────────┐
-                    │  PostgreSQL [TBD]  │  (dev saat ini: SQLite)
+                    │    PostgreSQL      │  (Docker Compose, port 5432)
                     └────────────────────┘
 ```
 
@@ -72,10 +72,9 @@ Disusun dari kondisi nyata di disk (starter AdonisJS 7) + keputusan pemilik 2026
 | Bahasa           | TypeScript                           | ~6.0.3          |
 | Date/time        | luxon                                | ^3.7.2          |
 | Testing          | Japa (runner/assert/browser-client)  | ^5.3.0          |
-| DB driver dev    | better-sqlite3                       | ^13.0.3         |
-| DB driver prod   | **[TBD]** pg                         | —               |
+| DB driver        | pg                                   | ^8.23.1         |
 
-**[TBD-TRD-01]** Driver PostgreSQL (`pg`) belum terpasang; `config/database.ts` mengomentari konfigurasi `pg`.
+**Database:** PostgreSQL 18 (image `postgres:18-alpine`) via Docker Compose di `127.0.0.1:5432`. Tidak ada lagi SQLite.
 
 ---
 
@@ -143,14 +142,14 @@ providers/             # service provider kustom
 
 ## 5. Data & Persistensi
 
-| Aspek   | Keputusan                                                  |
-| ------- | ---------------------------------------------------------- |
-| ORM     | Lucid                                                      |
-| Dev DB  | SQLite (`tmp/db.sqlite3`) — **hanya untuk pengembangan**   |
-| Prod DB | **[TBD-TRD-05]** PostgreSQL (rekomendasi)                  |
-| Migrasi | `node ace migration:run`; schema auto-generate             |
-| Seed    | Perlu seeder untuk master data (tahun ajaran, role, mapel) |
-| Backup  | **[TBD-TRD-06]** strategi (dump berkala, retensi)          |
+| Aspek   | Keputusan                                              |
+| ------- | ------------------------------------------------------ |
+| ORM     | Lucid                                                  |
+| Dev DB  | PostgreSQL via Docker Compose (`docker compose up -d`) |
+| Prod DB | PostgreSQL (versi sama dengan dev)                     |
+| Migrasi | `node ace migration:run`; schema auto-generate         |
+| Seed    | `node ace db:seed` (akun contoh + branding)            |
+| Backup  | **[TBD-TRD-06]** strategi (dump berkala, retensi)      |
 
 **Aturan transaksi & uang (dari pengalaman proyek sejenis):**
 
@@ -183,6 +182,7 @@ providers/             # service provider kustom
   - Serializer membungkus `{ data }` (`providers/api_provider.ts`).
   - **[TBD-TRD-08]** apakah kontrak penuh `{ code, status, message, data }` (seperti pola proyek sebelumnya) atau cukup `{ data }`?
 - **Webhook masuk** (Midtrans, WhatsApp callback): dikecualikan dari CSRF, diamankan via signature/secret.
+- **Pagination list:** memakai `paginate()` Lucid (`{ total, perPage, currentPage, lastPage }`), dipakai halaman pengguna sebagai sumber `meta`.
 
 ---
 
@@ -254,26 +254,25 @@ Semua harus hijau sebelum pekerjaan dianggap selesai. **Jangan pernah** jalankan
 
 ## 12. Deployment & Operasi
 
-- **Dev:** `npm run dev` (HMR).
+- **Dev:** `npm run dev` (HMR) dengan database dari `docker compose up -d`.
 - **Prod:** `npm run build` → `npm start` (`node bin/server.js`).
-- **[TBD-TRD-11]** Container/CI mana? (Docker compose pernah dipakai; GitHub Actions belum ada)
+- **Database lokal:** `docker compose up -d` (PostgreSQL 18, `127.0.0.1:5432`), `docker compose down` untuk berhenti. Database test `sismart_test` dibuat otomatis oleh `docker/initdb/`.
+- **[TBD-TRD-11]** Container/CI mana? (Compose untuk DB sudah ada; image aplikasi & GitHub Actions belum)
 - **Monitoring:** log ke file (`config/logger.ts`); **[TBD-TRD-12]** log aggregation?
 
 ---
 
 ## 13. Daftar [TBD] Teknis
 
-| ID         | Pertanyaan                                         |
-| ---------- | -------------------------------------------------- |
-| TBD-TRD-01 | Pasang driver `pg` + aktifkan konfigurasi Postgres |
-| TBD-TRD-02 | Kebijakan lockout (N gagal / M menit)              |
-| TBD-TRD-03 | Faktor kedua untuk role sensitif?                  |
-| TBD-TRD-04 | Model permission: role-only vs tabel permission    |
-| TBD-TRD-05 | Konfirmasi PostgreSQL produksi                     |
-| TBD-TRD-06 | Strategi backup & retensi                          |
-| TBD-TRD-07 | Auto-detect tema gelap sistem                      |
-| TBD-TRD-08 | Kontrak respons API penuh                          |
-| TBD-TRD-09 | Aktifkan CSP                                       |
-| TBD-TRD-10 | Set `TZ=Asia/Jakarta`                              |
-| TBD-TRD-11 | Container & CI/CD                                  |
-| TBD-TRD-12 | Log aggregation / monitoring                       |
+| ID         | Pertanyaan                                      |
+| ---------- | ----------------------------------------------- |
+| TBD-TRD-02 | Kebijakan lockout (N gagal / M menit)           |
+| TBD-TRD-03 | Faktor kedua untuk role sensitif?               |
+| TBD-TRD-04 | Model permission: role-only vs tabel permission |
+| TBD-TRD-06 | Strategi backup & retensi                       |
+| TBD-TRD-07 | Auto-detect tema gelap sistem                   |
+| TBD-TRD-08 | Kontrak respons API penuh                       |
+| TBD-TRD-09 | Aktifkan CSP                                    |
+| TBD-TRD-10 | Set `TZ=Asia/Jakarta`                           |
+| TBD-TRD-11 | Container & CI/CD                               |
+| TBD-TRD-12 | Log aggregation / monitoring                    |

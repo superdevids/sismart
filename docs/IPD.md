@@ -236,16 +236,15 @@ Fase 1 & 2 adalah jalur kritis. Fase 3/4/6 relatif independen setelah Fase 0.
 | RISK-IPD-005       | Kurikulum belum diputuskan → rapor tertunda                     | Putuskan TBD-BSD-05 sebelum TASK-108                           |
 | RISK-IPD-006       | Midtrans sandbox belum tersedia                                 | Kerjakan TASK-205/206 di akhir Fase 2, gunakan mock bila perlu |
 | ASSUMPTION-IPD-001 | Single-tenant                                                   | Sesuai keputusan pemilik                                       |
-| ASSUMPTION-IPD-002 | Dev pakai SQLite, prod Postgres                                 | Konfigurasi ganda diuji                                        |
+| ASSUMPTION-IPD-002 | Dev dan prod sama-sama PostgreSQL (tidak ada lagi SQLite)       | Docker Compose menyediakan Postgres 18 lokal                   |
 
 ---
 
 ## 8. Daftar [TBD] yang Memblokir Task
 
-| TBD                          | Memblokir                    |
-| ---------------------------- | ---------------------------- |
-| TBD-TRD-03 (faktor kedua)    | TASK-004/005 (bila diadopsi) |
-| TBD-BSD-05 (kurikulum)       | TASK-108 (rapor)             |
-| TBD-06 (Midtrans)            | TASK-205 (sandbox)           |
-| TBD-BSD-06 (data user nyata) | TASK-002 (migrasi)           |
-| TBD-DBD-01 (warna brand)     | TASK-702                     |
+| TBD                       | Memblokir                    |
+| ------------------------- | ---------------------------- |
+| TBD-TRD-03 (faktor kedua) | TASK-004/005 (bila diadopsi) |
+| TBD-BSD-05 (kurikulum)    | TASK-108 (rapor)             |
+| TBD-06 (Midtrans)         | TASK-205 (sandbox)           |
+| TBD-DBD-01 (warna brand)  | TASK-702                     |

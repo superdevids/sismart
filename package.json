@@ -14,7 +14,10 @@
     "test": "node ace test",
     "lint": "eslint .",
     "format": "prettier --write .",
-    "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json"
+    "typecheck": "tsc --noEmit && tsc --noEmit --project inertia/tsconfig.json",
+    "db:up": "docker compose up -d",
+    "db:down": "docker compose down",
+    "db:setup": "node ace migration:run && node ace db:seed"
   },
   "imports": {
     "#controllers/*": "./app/controllers/*.js",
@@ -78,6 +81,7 @@
     "@inertiajs/react": "^3.7.1",
     "@radix-ui/react-slot": "^1.5.0",
     "@tuyau/core": "^1.2.2",
+    "@types/pg": "^8.23.1",
     "@vinejs/vine": "^4.4.0",
     "better-sqlite3": "^13.0.3",
     "class-variance-authority": "^0.7.1",
@@ -85,6 +89,7 @@
     "edge.js": "^6.5.1",
     "lucide-react": "^1.48.0",
     "luxon": "^3.7.2",
+    "pg": "^8.23.1",
     "react": "^19.3.0",
     "react-dom": "^19.3.0",
     "reflect-metadata": "^0.2.2",
