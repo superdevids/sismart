@@ -53,47 +53,63 @@ Bobot yang dimuat: `200;300;400;500;600;700;800`.
 
 ### 3.1 Palet primitif (13 warna, urutan dipertahankan)
 
-| Token                     | Hex       | Peran                           |
-| ------------------------- | --------- | ------------------------------- |
-| `--palette-blue-600`      | `#2C75FC` | Biru utama → `primary`          |
-| `--palette-blue-500`      | `#4B77C9` | Biru lembut → `secondary`       |
-| `--palette-blue-400`      | `#566C96` | Biru pucat → `muted-foreground` |
-| `--palette-slate-600`     | `#4D5563` | Garis → `border`, `input`       |
-| `--palette-slate-900`     | `#2A2D33` | Teks → `foreground`             |
-| `--palette-lime`          | `#BDFC2B` | Aksen → `accent`                |
-| `--palette-red`           | `#FC4A2B` | Bahaya → `destructive`          |
-| `--palette-yellow`        | `#FCD42B` | Peringatan → `warning`          |
-| `--palette-orange`        | `#FC9F2B` | Oranye (cadangan)               |
-| `--palette-green`         | `#2BFC2B` | Sukses → `success`              |
-| `--palette-cyan`          | `#2BE3FC` | Info → `info`                   |
-| `--palette-yellow-bright` | `#FCE52B` | Kuning terang (cadangan)        |
-| `--palette-amber`         | `#FCBA2B` | Amber (cadangan)                |
+| Token                     | Hex       | Peran                                                             |
+| ------------------------- | --------- | ----------------------------------------------------------------- |
+| `--palette-blue-600`      | `#2C75FC` | Biru acuan (token semantik memakai turunan lebih pekat `#2563EB`) |
+| `--palette-blue-500`      | `#4B77C9` | Biru lembut (token `secondary` memakai `#3F68B8`)                 |
+| `--palette-blue-400`      | `#566C96` | Biru pucat → `muted-foreground`                                   |
+| `--palette-slate-600`     | `#4D5563` | Acuan slate (garis memakai `#D9DEE8`)                             |
+| `--palette-slate-900`     | `#2A2D33` | Teks → `foreground`                                               |
+| `--palette-lime`          | `#BDFC2B` | Aksen → `accent`                                                  |
+| `--palette-red`           | `#FC4A2B` | Acuan bahaya (token memakai `#C7371C`)                            |
+| `--palette-yellow`        | `#FCD42B` | Acuan peringatan (token memakai `#9A6206`)                        |
+| `--palette-orange`        | `#FC9F2B` | Oranye (cadangan)                                                 |
+| `--palette-green`         | `#2BFC2B` | Acuan sukses (token memakai `#15734A`)                            |
+| `--palette-cyan`          | `#2BE3FC` | Acuan info (token memakai `#0E6D80`)                              |
+| `--palette-yellow-bright` | `#FCE52B` | Kuning terang (cadangan)                                          |
+| `--palette-amber`         | `#FCBA2B` | Amber (cadangan)                                                  |
 
 > **Jangan pakai `--palette-*` langsung di komponen.** Gunakan token semantik di §3.2.
+>
+> **Catatan penting (perubahan 2026-10-29):** sebagian nilai primitif hanya acuan warna — nilai semantik sengaja lebih pekat/gelap karena primitif gagal WCAG AA sebagai warna teks atau latar tombol. Contoh terukur: `#2C75FC` hanya **3,94:1** untuk teks putih di tombol; `#FC4A2B` hanya **3,36:1** sebagai teks. Jangan "membalikkan" token semantik ke nilai primitif tanpa menghitung ulang kontras.
 
 ### 3.2 Token semantik
 
-| Token                  | Terang    | Gelap     | Utilitas                  |
-| ---------------------- | --------- | --------- | ------------------------- |
-| `--background`         | `#F7F8FA` | `#16191F` | `bg-background`           |
-| `--foreground`         | `#2A2D33` | `#E8EAED` | `text-foreground`         |
-| `--card`               | `#FDFDFE` | `#1D2128` | `bg-card`                 |
-| `--primary`            | `#2C75FC` | `#4A86F7` | `bg-primary`              |
-| `--primary-foreground` | `#F7F9FC` | `#10131A` | `text-primary-foreground` |
-| `--secondary`          | `#4B77C9` | `#5A82CD` | `bg-secondary`            |
-| `--muted`              | `#EEF1F5` | `#232830` | `bg-muted`                |
-| `--muted-foreground`   | `#566C96` | `#9AA5B8` | `text-muted-foreground`   |
-| `--accent`             | `#BDFC2B` | `#BDFC2B` | `bg-accent`               |
-| `--destructive`        | `#FC4A2B` | `#E85F43` | `bg-destructive`          |
-| `--success`            | `#2BFC2B` | `#4FD96B` | `bg-success`              |
-| `--warning`            | `#FCD42B` | `#E8C43C` | `bg-warning`              |
-| `--info`               | `#2BE3FC` | `#48C9E0` | `bg-info`                 |
-| `--border` / `--input` | `#4D5563` | `#333A45` | `border-border`           |
-| `--ring`               | `#2C75FC` | `#4A86F7` | `ring-ring`               |
+| Token                  | Terang    | Gelap     | Utilitas                       |
+| ---------------------- | --------- | --------- | ------------------------------ |
+| `--background`         | `#F7F8FA` | `#16191F` | `bg-background`                |
+| `--foreground`         | `#2A2D33` | `#E8EAED` | `text-foreground`              |
+| `--card`               | `#FDFDFE` | `#1D2128` | `bg-card`                      |
+| `--primary`            | `#2563EB` | `#5B93F8` | `bg-primary`                   |
+| `--primary-foreground` | `#F7F9FC` | `#10131A` | `text-primary-foreground`      |
+| `--primary-soft`       | `#E8EFFD` | `#1E293F` | `bg-primary-soft`              |
+| `--primary-ink`        | `#1F55CF` | `#8FB5FB` | `text-primary-ink`             |
+| `--secondary`          | `#3F68B8` | `#5A82CD` | `bg-secondary`                 |
+| `--muted`              | `#EEF1F5` | `#232830` | `bg-muted`                     |
+| `--muted-foreground`   | `#566C96` | `#9AA7BD` | `text-muted-foreground`        |
+| `--accent`             | `#BDFC2B` | `#BDFC2B` | `bg-accent`                    |
+| `--destructive`        | `#C7371C` | `#F2684D` | `bg-destructive`               |
+| `--destructive-soft`   | `#FBE9E5` | `#3A221F` | `bg-destructive-soft`          |
+| `--destructive-ink`    | `#B32E14` | `#F59480` | `text-destructive-ink`         |
+| `--success`            | `#15734A` | `#4FDD4F` | `bg-success`                   |
+| `--success-soft`       | `#E3F4EA` | `#1D3324` | `bg-success-soft`              |
+| `--warning`            | `#9A6206` | `#F3CF55` | `bg-warning`                   |
+| `--warning-soft`       | `#FDF3DC` | `#3A3320` | `bg-warning-soft`              |
+| `--info`               | `#0E6D80` | `#4FE6FC` | `bg-info`                      |
+| `--info-soft`          | `#E2F5F9` | `#173038` | `bg-info-soft`                 |
+| `--border`             | `#D9DEE8` | `#333A45` | `border-border`                |
+| `--border-strong`      | `#C3CAD8` | `#424B59` | dipakai via `--border` turunan |
+| `--ring`               | `#2563EB` | `#5B93F8` | `ring-ring`                    |
 
-**Aturan warna soft:** tidak ada `#FFF`/`#000`. Light memakai `#F7F8FA`–`#FDFDFE`; dark `#16191F`–`#232830`. `--primary-foreground` light = `#F7F9FC` (bukan putih murni).
+**Aturan warna soft:** tidak ada `#FFF`/`#000`. Light memakai `#F7F8FA`–`#FDFDFE`; dark `#16191F`–`#232830`.
 
-**Contrast note (perlu ditinjau saat dipakai):** `--success` (#2BFC2B / #4FD96B) dan `--warning` (#FCD42B / #E8C43C) sangat terang — teks di atasnya harus `--foreground` (gelap), bukan putih.
+**Pola pasangan warna (WAJIB):**
+
+- Teks di atas `*-soft` **wajib** memakai `*-ink` untuk `primary` dan `destructive` (varian `-soft` menurunkan kontras ~0,6). Contoh benar: `bg-primary-soft text-primary-ink`.
+- `success`, `warning`, `info` boleh langsung di atas latar `-soft`-nya (semua ≥4,5:1 terverifikasi).
+- Teks di atas `bg-primary` memakai `text-primary-foreground` (4,90:1 terang, 6,17:1 gelap).
+
+**Bukti kontras (dihitung, bukan asumsi):** 21 pasangan kritis diuji, **0 gagal**, ambang WCAG AA 4,5:1. Nilai terendah = `--warning` di `--warning-soft` (4,61 terang). Bila menambah pasangan warna baru, hitung ulang sebelum dipakai.
 
 ---
 
@@ -145,9 +161,29 @@ Hanya dua tipe:
 | Komponen                                | Lokasi                             | Status |
 | --------------------------------------- | ---------------------------------- | ------ |
 | `Button` (+ varian & `asChild`)         | `inertia/components/ui/button.tsx` | ✅ ada |
+| `Badge` (+ varian status)               | `inertia/components/ui/badge.tsx`  | ✅ ada |
+| `Card` (+ `CardHeader`, `CardContent`)  | `inertia/components/ui/card.tsx`   | ✅ ada |
+| `Table` (+ header/body/row/cell)        | `inertia/components/ui/table.tsx`  | ✅ ada |
 | `cn()` util (`clsx` + `tailwind-merge`) | `inertia/lib/utils.ts`             | ✅ ada |
 
 Menambah komponen shadcn: taruh di `inertia/components/ui/`, gunakan `cn()` dan token semantik.
+
+### 7.1 Komponen panel (`inertia/components/panel_stats.tsx`)
+
+Satu set komponen bersama untuk **keenam** panel role. Semua panel wajib memakai komponen ini agar konsisten.
+
+| Komponen     | Tujuan                                               | Aturan pemakaian                                           |
+| ------------ | ---------------------------------------------------- | ---------------------------------------------------------- |
+| `HeroPanel`  | Identitas + sapaan + ringkasan di puncak panel       | Wajib satu per panel, prop `role` menentukan aksen         |
+| `Metric`     | Satu angka penting + label + keterangan              | Isi `progress` (0–100) bila angka berupa proporsi          |
+| `MetricGrid` | Wadah metrik                                         | `columns` 2/3/4; otomatis 1 kolom di mobile                |
+| `TaskList`   | Daftar tugas/modul + status `siap`/`belum`           | Jangan tampilkan daftar tanpa konteks ("belum aktif" saja) |
+| `QuickLink`  | Baris aksi/rujukan ringkas                           | Untuk hal yang bisa dilakukan pengguna                     |
+| `InfoCard`   | Catatan penting bertona (`info`/`success`/`warning`) | Maksimal 2 per kolom samping                               |
+
+**Aturan status:** status **selalu** memakai label teks + ikon (`CheckCircle2`/`CircleDashed`), tidak pernah warna saja (aksesibilitas buta warna). Label yang dipakai: `Aktif` / `Menyusul` — hindari kata negatif seperti "belum bisa dipakai" sebagai label utama.
+
+**Aksen per role** (`ROLE_META`): admin = `primary`, kepsek = `info`, guru = `secondary`, staff = `warning`, siswa = `accent`, orang tua = `success`. Aksen dipakai pada `HeroPanel` dan batang grafik, **bukan** dasar warna seluruh halaman.
 
 ---
 
@@ -159,15 +195,25 @@ Aktif lewat **class `.dark`** atau atribut **`[data-theme='dark']`** pada `<html
 
 ## 9. Cara Mengubah (untuk admin/developer nanti)
 
-| Ingin mengubah     | Ubah di                                               |
-| ------------------ | ----------------------------------------------------- |
-| Warna brand        | `--palette-blue-600` (dan turunannya) di `@theme`     |
-| Font               | `--font-sans` + `<link>` Google Fonts                 |
-| Bobot dipakai      | Skala resmi §2.1: `200/300/400/500/600/700/800`       |
-| Kerapatan spasi    | `--spacing` (desktop & mobile)                        |
-| Sudut komponen     | `--radius`                                            |
-| Warna tema gelap   | blok `.dark`                                          |
-| Breakpoint desktop | media query `1279.98px` + nilai `1280px` (dua tempat) |
+| Ingin mengubah     | Ubah di                                                         |
+| ------------------ | --------------------------------------------------------------- |
+| Warna brand        | `--primary`, `--primary-soft`, `--primary-ink` (tiga sekaligus) |
+| Font               | `--font-sans` + `<link>` Google Fonts                           |
+| Bobot dipakai      | Skala resmi §2.1: `200/300/400/500/600/700/800`                 |
+| Kerapatan spasi    | `--spacing` (desktop & mobile)                                  |
+| Sudut komponen     | `--radius`                                                      |
+| Warna tema gelap   | blok `.dark`                                                    |
+| Breakpoint desktop | media query `1279.98px` + nilai `1280px` (dua tempat)           |
+
+**Jebakan yang sudah terbukti di proyek ini (jangan diulang):**
+
+1. **Jangan menambah token warna yang namanya bertabrakan dengan utilitas Tailwind lain.** `--color-border-strong` dan `--color-edge` **tidak ter-emit** menjadi kelas; Tailwind membuangnya diam-diam dan CSS tetap sukses dibangun. Ganti warna garis lewat `border-muted-foreground/40` atau utility kustom.
+2. **Selalu verifikasi hasil build**, jangan percaya build hijau. Cek langsung di `public/assets/*.css`:
+   ```powershell
+   $t = Get-Content (Get-ChildItem public/assets/*.css)[0] -Raw
+   $t -match '\.bg-primary-soft\{'
+   ```
+3. **Mengubah `--primary` wajib mengubah `--primary-ink` juga**, karena `--primary-ink` dipakai sebagai teks di atas `--primary-soft`.
 
 **Catatan:** branding nama sekolah (bukan visual) dikelola admin lewat tabel `settings` (`BrandingService`), bukan di file ini.
 
@@ -175,5 +221,9 @@ Aktif lewat **class `.dark`** atau atribut **`[data-theme='dark']`** pada `<html
 
 ## 10. Bukti Implementasi
 
-- `npm run build` → CSS ter-emit, `.bg-primary{background-color:var(--primary)}` ada, hex `#2C75FC` ada.
-- `npm run typecheck` / `npm run lint` / `npm test` (12) hijau.
+Diperbarui 2026-10-29 setelah penyeragaman panel enam role:
+
+- **Kontras:** 21 pasangan warna kritis (terang + gelap) dihitung, **0 gagal** ambang WCAG AA 4,5:1.
+- **Typecheck** `0` · **Lint** `0` · **Build** sukses · **Test** 39 lulus / 0 gagal.
+- **Utilitas baru ter-emit** (dicek di CSS hasil build): `bg-primary-soft`, `text-primary-ink`, `text-destructive-ink`, `bg-success-soft`, `bg-warning-soft`, `bg-info-soft`, `panel-glow`.
+- **Bug diperbaiki:** `migration:rollback` sebelumnya gagal `email set not null ... contains null values`; kini rollback + migrate ulang terbukti bersih.
