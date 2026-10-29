@@ -33,7 +33,7 @@ export default function AppLayout({ children, title }: { children: ReactNode; ti
       <div
         className={cn(
           'flex min-h-dvh flex-col transition-[padding] duration-300 ease-in-out',
-          sidebar.isMobile ? 'pl-0' : sidebar.showLabels ? 'pl-72' : 'pl-[90px]'
+          sidebar.isMobile ? 'pl-0' : sidebar.showLabels ? 'pl-[290px]' : 'pl-[90px]'
         )}
       >
         <AppHeader

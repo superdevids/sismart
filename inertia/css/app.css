@@ -195,6 +195,7 @@
     color-scheme: light;
     -webkit-text-size-adjust: 100%;
   }
+
   html.dark,
   html[data-theme='dark'] {
     color-scheme: dark;
@@ -241,6 +242,7 @@
       opacity: 0;
       transform: translateY(10px);
     }
+
     to {
       opacity: 1;
       transform: translateY(0);
@@ -251,6 +253,7 @@
     from {
       opacity: 0;
     }
+
     to {
       opacity: 1;
     }
@@ -258,6 +261,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   *,
   ::before,
   ::after {
@@ -270,30 +274,22 @@
 
 @utility panel-glow {
   background-image:
-    radial-gradient(
-      120% 140% at 0% 0%,
+    radial-gradient(120% 140% at 0% 0%,
       color-mix(in oklab, var(--primary) 14%, transparent) 0%,
-      transparent 58%
-    ),
-    radial-gradient(
-      90% 120% at 100% 0%,
+      transparent 58%),
+    radial-gradient(90% 120% at 100% 0%,
       color-mix(in oklab, var(--accent) 10%, transparent) 0%,
-      transparent 62%
-    );
+      transparent 62%);
 }
 
 @utility surface-grid {
   background-image:
-    linear-gradient(
-      to right,
+    linear-gradient(to right,
       color-mix(in oklab, var(--border) 55%, transparent) 1px,
-      transparent 1px
-    ),
-    linear-gradient(
-      to bottom,
+      transparent 1px),
+    linear-gradient(to bottom,
       color-mix(in oklab, var(--border) 55%, transparent) 1px,
-      transparent 1px
-    );
+      transparent 1px);
   background-size: 24px 24px;
 }
 
