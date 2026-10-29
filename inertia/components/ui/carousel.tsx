@@ -1,7 +1,7 @@
-'use client'
+﻿'use client'
 
 import * as React from 'react'
-import { cn } from 'cn'
+import { cn } from '~/lib/utils'
 import useEmblaCarousel, { type UseEmblaCarouselType } from 'embla-carousel-react'
 import { ArrowLeft, ArrowRight } from 'lucide-react'
 
@@ -87,8 +87,8 @@ function Carousel({
   )
 
   // Sinkronisasi dengan instance embla: setApi dipanggil sekali saat api tersedia.
-  // Ini memang memperbarui state induk, tetapi hanya ketika instance berubah —
-  // bukan setiap render — sehingga tidak memicu render berantai.
+  // Ini memang memperbarui state induk, tetapi hanya ketika instance berubah â€”
+  // bukan setiap render â€” sehingga tidak memicu render berantai.
   React.useEffect(() => {
     if (!api || !setApi) return
     setApi(api)

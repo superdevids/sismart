@@ -1,98 +1,48 @@
-import { type ReactNode, useState } from 'react'
-import { usePage } from '@inertiajs/react'
-import { ChevronRight, PanelLeft } from 'lucide-react'
-import FlashToasts from '~/components/flash_toasts'
-import ThemeToggle from '~/components/theme_toggle'
+import type { ReactNode } from 'react'
+import AppHeader from '~/components/app_header'
 import AppSidebar from '~/components/app_sidebar'
-import { Button } from '~/components/ui/button'
-import { Separator } from '~/components/ui/separator'
+import FlashToasts from '~/components/flash_toasts'
+import { useSidebar } from '~/hooks/use_sidebar'
 import { cn } from '~/lib/utils'
 
-export default function AppLayout({ children }: { children: ReactNode }) {
-  const { component, url } = usePage()
-  const pageProps = usePage().props
-  const user = pageProps.user
-  const [sidebarOpen, setSidebarOpen] = useState(false)
-  const [collapsed, setCollapsed] = useState(false)
+/**
+ * Kerangka aplikasi bergaya TailAdmin: sidebar tetap di kiri (melebar atau
+ * menjadi rail), header lengket di atas konten, dan overlay pada layar kecil.
+ *
+ * `title` hanya ditampilkan pada header; halaman tetap bertanggung jawab atas
+ * isinya sendiri lewat komponen `Page`.
+ */
+export default function AppLayout({ children, title }: { children: ReactNode; title?: string }) {
+  const sidebar = useSidebar()
 
-  const crumbs = buildBreadcrumbs(component, url)
-  const initials = buildInitials(user?.fullName, user?.loginCode)
-  const roleHint = ROLE_LABELS[user?.role ?? ''] ?? 'Pengguna'
-
+  // Laci mobile ditutup saat pengguna mengklik tautan mana pun di dalam
+  // sidebar. Ditangani di event handler, bukan di dalam effect, agar tidak
+  // memicu setState bertingkat saat render.
   return (
-    <div className="flex min-h-dvh bg-background">
-      <AppSidebar
-        open={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        collapsed={collapsed}
-        onToggleCollapse={() => setCollapsed((v) => !v)}
-      />
+    <div className="min-h-dvh bg-background text-foreground">
+      <AppSidebar {...sidebar} />
 
-      <div className="flex min-w-0 flex-1 flex-col">
-        <header className="sticky top-0 z-30 border-b border-border bg-card/90 backdrop-blur-md">
-          <div className="flex h-14 items-center gap-3 px-3 sm:px-5">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSidebarOpen(true)}
-              aria-label="Buka menu"
-              className="lg:hidden"
-            >
-              <PanelLeft />
-            </Button>
+      {sidebar.isMobileOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-foreground/40 backdrop-blur-[1px] lg:hidden"
+          onClick={sidebar.closeMobileSidebar}
+          aria-hidden="true"
+        />
+      )}
 
-            <Separator orientation="vertical" className="hidden h-5 sm:block" />
-
-            <nav aria-label="Breadcrumb" className="hidden min-w-0 sm:block">
-              <ol className="flex items-center gap-1.5 text-sm">
-                {crumbs.map((c, i) => {
-                  const last = i === crumbs.length - 1
-                  return (
-                    <li key={c.label} className="flex items-center gap-1.5">
-                      <span
-                        className={cn(
-                          'truncate',
-                          last ? 'font-medium text-foreground' : 'text-muted-foreground'
-                        )}
-                        aria-current={last ? 'page' : undefined}
-                      >
-                        {c.label}
-                      </span>
-                      {!last && (
-                        <ChevronRight
-                          className="size-3.5 shrink-0 text-muted-foreground/70"
-                          aria-hidden="true"
-                        />
-                      )}
-                    </li>
-                  )
-                })}
-              </ol>
-            </nav>
-
-            <div className="ml-auto flex items-center gap-1.5">
-              <ThemeToggle />
-
-              <Separator orientation="vertical" className="mx-1 hidden h-5 sm:block" />
-
-              {/* Identitas pengguna, mengikuti pola menu user pada dashboard admin */}
-              <div className="flex items-center gap-2 rounded-full py-1 pl-1 pr-2 sm:pr-3">
-                <span
-                  className="grid size-8 shrink-0 place-items-center rounded-full bg-primary-soft text-[11px] font-semibold text-primary-ink ring-2 ring-primary/15"
-                  aria-hidden="true"
-                >
-                  {initials}
-                </span>
-                <div className="hidden min-w-0 flex-col leading-tight sm:flex">
-                  <span className="max-w-[12rem] truncate text-[13px] font-semibold text-foreground">
-                    {user?.fullName ?? 'Pengguna'}
-                  </span>
-                  <span className="truncate text-[11px] text-muted-foreground">{roleHint}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </header>
+      <div
+        className={cn(
+          'flex min-h-dvh flex-col transition-[padding] duration-300 ease-in-out',
+          sidebar.isMobile ? 'pl-0' : sidebar.showLabels ? 'pl-72' : 'pl-[90px]'
+        )}
+      >
+        <AppHeader
+          title={title}
+          isMobile={sidebar.isMobile}
+          isExpanded={sidebar.isExpanded}
+          onToggleSidebar={sidebar.toggleSidebar}
+          onOpenMobileSidebar={sidebar.toggleMobileSidebar}
+        />
 
         <main className="flex-1">{children}</main>
       </div>
@@ -100,55 +50,4 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <FlashToasts />
     </div>
   )
-}
-
-function buildInitials(name: string | null | undefined, code: string | null | undefined) {
-  const source = (name ?? '').trim()
-  if (source) {
-    const parts = source.split(/\s+/)
-    const first = parts[0]?.[0] ?? ''
-    const last = parts.length > 1 ? (parts[parts.length - 1]?.[0] ?? '') : ''
-    return `${first}${last}`.toUpperCase()
-  }
-  return (code ?? '—').slice(0, 2).toUpperCase()
-}
-
-const ROLE_LABELS: Record<string, string> = {
-  admin: 'Administrator',
-  kepsek: 'Kepala sekolah',
-  guru: 'Guru',
-  staff: 'Tata usaha',
-  siswa: 'Siswa',
-  orang_tua: 'Orang tua',
-}
-
-function buildBreadcrumbs(component: string, url: string): { label: string }[] {
-  const KNOWN: Record<string, string> = {
-    'pages/panel/admin': 'Panel admin',
-    'pages/panel/kepsek': 'Panel kepala sekolah',
-    'pages/panel/guru': 'Panel guru',
-    'pages/panel/staff': 'Panel tata usaha',
-    'pages/panel/orang_tua': 'Panel orang tua',
-    'pages/panel/siswa': 'Panel siswa',
-    'pages/home': 'Beranda',
-  }
-
-  const root = KNOWN[component] ?? titleize(component.split('/').pop() ?? 'Dasbor')
-  const path = url.split('?')[0]
-  const segments = path.split('/').filter(Boolean)
-
-  const crumbs = [{ label: root }]
-  segments.forEach((segment) => {
-    const label = titleize(segment)
-    if (label.toLowerCase() !== root.toLowerCase()) crumbs.push({ label })
-  })
-
-  return crumbs.filter((c, i, arr) => i === 0 || c.label !== arr[i - 1].label)
-}
-
-function titleize(value: string): string {
-  return value
-    .replace(/[-_]/g, ' ')
-    .replace(/\b\w/g, (c) => c.toUpperCase())
-    .trim()
 }

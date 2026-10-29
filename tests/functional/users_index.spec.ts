@@ -188,7 +188,10 @@ test.group('Panel / per role (logic)', (group) => {
     assert.equal(response.headers()['location'], '/panel')
   })
 
-  test('admin menerima statistik akun dari basis data', async ({ client, assert }) => {
+  test('panel tidak lagi mengirim statistik agregat ke peran mana pun', async ({
+    client,
+    assert,
+  }) => {
     const admin = await User.create({
       loginCode: 'ADM-STAT',
       fullName: 'Admin',
@@ -205,12 +208,14 @@ test.group('Panel / per role (logic)', (group) => {
     const response = await client.get('/panel').withInertia().loginAs(admin)
     const body = response.inertiaProps as any
 
-    assert.equal(body.stats.total, 2)
-    assert.equal(body.stats.active, 1)
-    assert.lengthOf(body.roleBreakdown, 6)
+    // Panel sengaja dikosongkan: props agregat tidak boleh dikirim lagi.
+    assert.notProperty(body, 'stats')
+    assert.notProperty(body, 'roleBreakdown')
+    assert.notProperty(body, 'recentUsers')
+    assert.notProperty(body, 'trend')
   })
 
-  test('kepsek menerima jumlah siswa dan guru', async ({ client, assert }) => {
+  test('kepsek juga tidak menerima statistik agregat', async ({ client, assert }) => {
     const kepsek = await User.create({
       loginCode: 'KEP-STAT',
       fullName: 'Kepsek',
@@ -227,8 +232,8 @@ test.group('Panel / per role (logic)', (group) => {
     const response = await client.get('/panel').withInertia().loginAs(kepsek)
     const body = response.inertiaProps as any
 
-    assert.equal(body.stats.teachers, 1)
-    assert.equal(body.stats.students, 0)
+    assert.notProperty(body, 'stats')
+    assert.notProperty(body, 'trend')
   })
 
   test('guru tidak menerima data akun terbaru', async ({ client, assert }) => {

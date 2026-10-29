@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react'
 import Page from '~/components/page'
 import AppLayout from '~/layouts/app'
 import { router, usePage } from '@inertiajs/react'
@@ -224,4 +225,4 @@ function formatDate(value: string): string {
   }).format(date)
 }
 
-UsersIndex.layout = [AppLayout]
+UsersIndex.layout = (page: ReactElement) => <AppLayout title="Data pengguna">{page}</AppLayout>
