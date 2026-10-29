@@ -14,11 +14,15 @@ export default class InertiaMiddleware extends BaseInertiaMiddleware {
         encoded: false,
       }) ?? 'light'
 
+    const brand = await branding.all()
+
+    ctx.view?.share({ brandName: brand.name })
+
     return {
       errors: ctx.inertia.always(this.getValidationErrors(ctx)),
       user: ctx.inertia.always(auth?.user ? UserTransformer.transform(auth.user) : undefined),
       preferences: ctx.inertia.always({ theme }),
-      brand: ctx.inertia.always(await branding.all()),
+      brand: ctx.inertia.always(brand),
     }
   }
 
