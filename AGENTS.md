@@ -44,6 +44,7 @@ Keputusan kunci: single-tenant, 6 role (siswa/orang_tua/guru/staff/kepsek/admin)
 ## Konvensi kerja
 
 - **Kerjakan task satu per satu sesuai instruksi pemilik.** Jangan melompat ke task lain atau mengambil inisiatif di luar yang diminta. Tunggu instruksi task berikutnya.
+- **Tailwind CSS adalah default untuk semua gaya.** Tulis gaya sebagai utilitas di `className`. CSS native hanya boleh di `inertia/css/app.css` untuk hal yang benar-benar tidak bisa di Tailwind (token, `@custom-variant`, `@utility` pola yang tak bisa disusun utilitas, `@keyframes`), dan wajib diberi komentar alasan. Detail: `docs/DESIGN-SYSTEM.md` §0.
 - **File sementara wajib di `tmp/`** di dalam project ini (bukan root, bukan `%TEMP%`), dan **hapus setelah selesai dipakai**. `tmp/` sudah di-gitignore (kecuali `.gitkeep`).
 - **Semua perintah shell/cmd dijalankan di latar belakang** (background), bukan foreground.
 - **Jangan test UI/UX dan jangan ambil screenshot.** Tampilan dinilai manual oleh pemilik. Test otomatis hanya untuk logic (mis. logic-login: validasi, verifikasi kode, sesi, redirect), bukan tampilan.

@@ -45,11 +45,11 @@ function Hero() {
         <p className="text-xs font-semibold uppercase tracking-[0.1em] text-primary">
           {brand.tagline}
         </p>
-        <h1 className="mt-4 text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.05] tracking-tight text-foreground">
+        <h1 className="mt-4 text-[clamp(32px,4.6vw,56px)] font-extrabold leading-[1.05] text-balance tracking-tight text-foreground">
           Seluruh urusan {brand.institutionType.toLowerCase()},{' '}
           <span className="xl:block">dalam satu tempat.</span>
         </h1>
-        <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-pretty text-muted-foreground">
           Sismart menyatukan data siswa, nilai, absensi, dan pembayaran SPP untuk sekolah SD hingga
           SMK. Guru, tata usaha, orang tua, dan siswa bekerja dari satu sumber yang sama.
         </p>
@@ -208,10 +208,10 @@ function ForWho() {
   return (
     <section id="peran" className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-20">
       <header className="max-w-2xl">
-        <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
+        <h2 className="text-2xl font-bold tracking-tight text-balance text-foreground xl:text-3xl">
           Satu sistem, banyak peran
         </h2>
-        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-pretty text-muted-foreground">
           Setiap pengguna melihat dan mengerjakan bagiannya sendiri — sesuai peran.
         </p>
       </header>

@@ -6,6 +6,42 @@
 
 ---
 
+## 0. Aturan Gaya: Tailwind dulu, CSS native pengecualian
+
+**Default project ini Tailwind CSS v4.** Gaya halaman dan komponen ditulis sebagai utilitas di JSX.
+
+| Boleh                                | Dilarang                                                              |
+| ------------------------------------ | --------------------------------------------------------------------- |
+| Utilitas Tailwind di `className`     | `style={{…}}` inline untuk properti yang punya utilitas               |
+| Utilitas kustom via `@utility`       | Selektor manual (`body {}`, `:focus-visible {}`, `* {}`) di `app.css` |
+| Token via `@theme` / `@theme inline` | Hex literal di komponen (harus lewat token semantik)                  |
+| Variant `dark:` untuk tema gelap     | Blok `.dark {}` baru di luar blok token                               |
+| `@custom-variant` untuk variant baru | `<style>` di dalam komponen                                           |
+
+**Pengecualian yang diizinkan — harus benar-benar tidak bisa di Tailwind:**
+
+1. `@keyframes` → wajib di CSS (Tailwind tidak punya cara mendefinisikannya; dipakai lewat `--animate-*`).
+2. `@utility` untuk pola `background-image` berganda yang tidak bisa disusun utilitas `bg-*`/`gradient-*` (mis. `surface-grid`, `panel-glow`).
+3. Blok definisi token (`:root`, `.dark`) — ini data, bukan gaya.
+4. Token `--spacing` responsif yang dipilih lewat media query (nilai, bukan selektor elemen).
+
+Setiap penambahan CSS native **wajib** disertai alasan "tidak bisa di Tailwind" di komentar, dan diverifikasi ikut ter-emit di CSS hasil build.
+
+### 0.1 Padanan yang dipakai (jangan bikin CSS untuk ini)
+
+| Kebutuhan                      | Cara Tailwind                                  |
+| ------------------------------ | ---------------------------------------------- |
+| warna latar/teks/garis         | `bg-*`, `text-*`, `border-*` dari token        |
+| warna bayangan bernuansa token | `shadow-*` (nilai `--shadow-sm` memakai token) |
+| `font-variant-numeric`         | `tabular-nums`                                 |
+| kerapatan angka                | `--spacing` tunggal → semua `p-*`, `gap-*`     |
+| perataan teks                  | `text-balance`, `text-pretty`                  |
+| skema warna kontrol browser    | `scheme-light` / `scheme-dark`                 |
+| animasi masuk                  | `animate-rise`, `animate-fade`                 |
+| tema gelap                     | variant `dark:`                                |
+
+---
+
 ## 1. Prinsip
 
 1. **Satu sumber.** Warna, font, radius, dan spasi hanya didefinisikan di `inertia/css/app.css`. Komponen membaca token, tidak menulis hex.

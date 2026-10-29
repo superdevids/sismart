@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html
   data-theme="{{ request.plainCookie('app_theme', { defaultValue: 'light', encoded: false }) }}"
-  class="{{ request.plainCookie('app_theme', { defaultValue: 'light', encoded: false }) === 'dark' ? 'dark' : '' }}"
+  class="{{ request.plainCookie('app_theme', { defaultValue: 'light', encoded: false }) === 'dark' ? 'dark scheme-dark' : 'scheme-light' }} scroll-smooth tab-4 antialiased [text-rendering:optimizeLegibility]"
 >
   <head>
     <meta charset="utf-8" />
@@ -20,7 +20,7 @@
     @stack('dumper')
   </head>
 
-  <body>
+  <body class="bg-background font-sans text-foreground">
     @inertia()
   </body>
 

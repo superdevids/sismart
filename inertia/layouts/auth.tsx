@@ -62,7 +62,7 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
             <h2 className="max-w-md text-3xl font-extrabold leading-tight tracking-tight text-balance">
               {tagline}
             </h2>
-            <p className="max-w-sm text-sm leading-relaxed text-primary-foreground/80">
+            <p className="max-w-sm text-sm leading-relaxed text-pretty text-primary-foreground/80">
               Satu tempat untuk akademik, administrasi, dan komunikasi sekolah.
             </p>
           </div>
