@@ -163,27 +163,22 @@ Hanya dua tipe:
 | `Button` (+ varian & `asChild`)         | `inertia/components/ui/button.tsx` | ✅ ada |
 | `Badge` (+ varian status)               | `inertia/components/ui/badge.tsx`  | ✅ ada |
 | `Card` (+ `CardHeader`, `CardContent`)  | `inertia/components/ui/card.tsx`   | ✅ ada |
+| `Input`                                 | `inertia/components/ui/input.tsx`  | ✅ ada |
+| `Label`                                 | `inertia/components/ui/label.tsx`  | ✅ ada |
 | `Table` (+ header/body/row/cell)        | `inertia/components/ui/table.tsx`  | ✅ ada |
 | `cn()` util (`clsx` + `tailwind-merge`) | `inertia/lib/utils.ts`             | ✅ ada |
 
-Menambah komponen shadcn: taruh di `inertia/components/ui/`, gunakan `cn()` dan token semantik.
+**Hanya enam komponen di atas yang di-vendor.** Komponen shadcn lain sengaja dihapus pada 2026-10-29 karena tidak dipakai satu pun halaman dan `unused` di repo (komponen tanpa pemakai ikut ter-typecheck & ter-lint sehingga menambah noise tanpa nilai). Kode halaman yang sudah ada tidak boleh menambah komponen baru "untuk nanti"; tambahkan saat benar-benar dipakai.
 
-### 7.1 Komponen panel (`inertia/components/panel_stats.tsx`)
+Menambah komponen shadcn: taruh di `inertia/components/ui/`, gunakan `cn()` dan token semantik, lalu jalankan gate penuh.
 
-Satu set komponen bersama untuk **keenam** panel role. Semua panel wajib memakai komponen ini agar konsisten.
+### 7.1 Komponen panel (belum ada)
 
-| Komponen     | Tujuan                                               | Aturan pemakaian                                           |
-| ------------ | ---------------------------------------------------- | ---------------------------------------------------------- |
-| `HeroPanel`  | Identitas + sapaan + ringkasan di puncak panel       | Wajib satu per panel, prop `role` menentukan aksen         |
-| `Metric`     | Satu angka penting + label + keterangan              | Isi `progress` (0–100) bila angka berupa proporsi          |
-| `MetricGrid` | Wadah metrik                                         | `columns` 2/3/4; otomatis 1 kolom di mobile                |
-| `TaskList`   | Daftar tugas/modul + status `siap`/`belum`           | Jangan tampilkan daftar tanpa konteks ("belum aktif" saja) |
-| `QuickLink`  | Baris aksi/rujukan ringkas                           | Untuk hal yang bisa dilakukan pengguna                     |
-| `InfoCard`   | Catatan penting bertona (`info`/`success`/`warning`) | Maksimal 2 per kolom samping                               |
+Tidak ada komponen panel bersama saat ini: keenam halaman `inertia/pages/panel/*.tsx` sengaja dikosongkan (commit `7802763`). Saat modul panel dibangun, komponen bersama (hero identitas, metrik/KPI, daftar tugas, info bertona) dibuat di `inertia/components/` lalu dipakai keenam role agar konsisten.
 
-**Aturan status:** status **selalu** memakai label teks + ikon (`CheckCircle2`/`CircleDashed`), tidak pernah warna saja (aksesibilitas buta warna). Label yang dipakai: `Aktif` / `Menyusul` — hindari kata negatif seperti "belum bisa dipakai" sebagai label utama.
+**Aturan status (berlaku saat komponen dibuat):** status **selalu** memakai label teks + ikon, tidak pernah warna saja (aksesibilitas buta warna). Label yang dipakai: `Aktif` / `Menyusul` — hindari kata negatif seperti "belum bisa dipakai" sebagai label utama.
 
-**Aksen per role** (`ROLE_META`): admin = `primary`, kepsek = `info`, guru = `secondary`, staff = `warning`, siswa = `accent`, orang tua = `success`. Aksen dipakai pada `HeroPanel` dan batang grafik, **bukan** dasar warna seluruh halaman.
+**Aksen per role (rencana):** admin = `primary`, kepsek = `info`, guru = `secondary`, staff = `warning`, siswa = `accent`, orang tua = `success`. Aksen dipakai pada hero panel dan batang grafik, **bukan** dasar warna seluruh halaman.
 
 ---
 
