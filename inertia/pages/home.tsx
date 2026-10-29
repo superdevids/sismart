@@ -56,24 +56,29 @@ function Hero() {
           Seluruh urusan {brand.institutionType.toLowerCase()},{' '}
           <span className="xl:block">dalam satu tempat.</span>
         </h1>
-        <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-muted-foreground">
+        <p className="mt-5 max-w-xl text-base leading-relaxed text-muted-foreground">
           Sismart menyatukan data siswa, nilai, absensi, dan pembayaran SPP untuk sekolah SD hingga
           SMK. Guru, tata usaha, orang tua, dan siswa bekerja dari satu sumber yang sama.
         </p>
 
         <div className="mt-8 flex flex-wrap items-center gap-3">
-          <Button asChild size="lg" className="h-11 rounded-xl px-5 text-[15px]">
+          <Button asChild size="lg" className="h-11 rounded-xl px-5 text-sm font-semibold">
             <Link route="session.create">
               Masuk dengan kode
               <ArrowRight size={16} />
             </Link>
           </Button>
-          <Button asChild variant="outline" size="lg" className="h-11 rounded-xl px-5 text-[15px]">
+          <Button
+            asChild
+            variant="outline"
+            size="lg"
+            className="h-11 rounded-xl px-5 text-sm font-semibold"
+          >
             <a href="#peran">Lihat per peran</a>
           </Button>
         </div>
 
-        <p className="mt-4 text-[13px] text-muted-foreground">
+        <p className="mt-4 text-sm text-muted-foreground">
           Akses hanya dengan kode unik dari administrator sekolah.
         </p>
       </div>
@@ -88,9 +93,7 @@ function Hero() {
             <span className="size-2 rounded-full bg-destructive/70" />
             <span className="size-2 rounded-full bg-warning/70" />
             <span className="size-2 rounded-full bg-success/70" />
-            <span className="ml-2 text-[11px] font-medium text-muted-foreground">
-              Sismart · Dasbor
-            </span>
+            <span className="ml-2 text-xs font-medium text-muted-foreground">Sismart · Dasbor</span>
           </div>
 
           <div className="mt-3 flex flex-col gap-1">
@@ -104,13 +107,13 @@ function Hero() {
                 key={label}
                 className="flex items-center justify-between gap-3 rounded-lg px-2.5 py-2.5 transition-colors hover:bg-muted/60"
               >
-                <span className="text-[12.5px] text-muted-foreground">{label}</span>
+                <span className="text-xs text-muted-foreground">{label}</span>
                 <span className="text-sm font-semibold tabular-nums text-foreground">{value}</span>
               </div>
             ))}
           </div>
 
-          <p className="mt-2 border-t border-border/60 pt-2.5 text-[11px] text-muted-foreground">
+          <p className="mt-2 border-t border-border/60 pt-2.5 text-xs text-muted-foreground">
             Contoh tampilan dasbor
           </p>
         </div>
@@ -160,7 +163,7 @@ function Modules() {
           <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
             Yang bisa dikerjakan di Sismart
           </h2>
-          <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
             Modul-modul inti untuk operasional sekolah sehari-hari.
           </p>
         </header>
@@ -169,15 +172,15 @@ function Modules() {
           {MODULES.map(({ icon: Icon, title, body }) => (
             <article
               key={title}
-              className="group rounded-2xl border border-border bg-card p-5 text-card-foreground shadow-sm transition-[box-shadow,transform] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-foreground/5"
+              className="group rounded-2xl border border-border bg-card p-5 text-card-foreground transition-transform hover:-translate-y-0.5"
             >
               <span className="grid size-10 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
                 <Icon size={20} strokeWidth={1.8} />
               </span>
-              <h3 className="mt-4 text-[15px] font-semibold tracking-tight text-foreground">
+              <h3 className="mt-4 text-base font-semibold tracking-tight text-foreground">
                 {title}
               </h3>
-              <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{body}</p>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{body}</p>
             </article>
           ))}
         </div>
@@ -216,7 +219,7 @@ function ForWho() {
         <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
           Satu sistem, banyak peran
         </h2>
-        <p className="mt-2 text-[15px] leading-relaxed text-muted-foreground">
+        <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
           Setiap pengguna melihat dan mengerjakan bagiannya sendiri — sesuai peran.
         </p>
       </header>
@@ -225,13 +228,13 @@ function ForWho() {
         {ROLES.map(({ icon: Icon, name, line }) => (
           <article
             key={name}
-            className="rounded-2xl border border-border bg-card p-5 shadow-sm transition-colors hover:border-primary/40"
+            className="rounded-2xl border border-border bg-card p-5 transition-colors hover:border-primary/40"
           >
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-[13px] font-semibold text-foreground">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-muted px-2.5 py-1 text-xs font-semibold text-foreground">
               <Icon size={15} strokeWidth={1.8} className="text-primary" />
               {name}
             </span>
-            <p className="mt-3 text-[13.5px] leading-relaxed text-muted-foreground">{line}</p>
+            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{line}</p>
           </article>
         ))}
       </div>
@@ -267,12 +270,10 @@ function HowIt() {
 
         <ol className="mt-10 grid grid-cols-1 gap-4 xl:grid-cols-3">
           {STEPS.map(({ n, t, d }) => (
-            <li key={n} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-              <span className="text-[13px] font-semibold tabular-nums text-primary">{n}</span>
-              <h3 className="mt-2.5 text-[15px] font-semibold tracking-tight text-foreground">
-                {t}
-              </h3>
-              <p className="mt-1.5 text-[13.5px] leading-relaxed text-muted-foreground">{d}</p>
+            <li key={n} className="rounded-2xl border border-border bg-card p-5">
+              <span className="text-xs font-semibold tabular-nums text-primary">{n}</span>
+              <h3 className="mt-2.5 text-base font-semibold tracking-tight text-foreground">{t}</h3>
+              <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">{d}</p>
             </li>
           ))}
         </ol>
@@ -284,14 +285,14 @@ function HowIt() {
 function FinalCta() {
   return (
     <section className="mx-auto w-full max-w-7xl px-4 py-16 xl:px-8 xl:py-24">
-      <div className="rounded-2xl border border-border bg-card px-6 py-12 text-center shadow-sm xl:px-12">
+      <div className="rounded-2xl border border-border bg-card px-6 py-12 text-center xl:px-12">
         <h2 className="text-2xl font-bold tracking-tight text-foreground xl:text-3xl">
           Sudah punya kode masuk?
         </h2>
-        <p className="mx-auto mt-2 max-w-md text-[15px] leading-relaxed text-muted-foreground">
+        <p className="mx-auto mt-2 max-w-md text-sm leading-relaxed text-muted-foreground">
           Masuk sekarang dan mulai dari dasbor Anda.
         </p>
-        <Button asChild size="lg" className="mt-6 h-11 rounded-xl px-5 text-[15px]">
+        <Button asChild size="lg" className="mt-6 h-11 rounded-xl px-5 text-sm font-semibold">
           <Link route="session.create">
             Masuk dengan kode
             <ArrowRight size={16} />
@@ -308,10 +309,10 @@ function Footer() {
     <footer className="border-t border-border bg-card">
       <div className="mx-auto flex w-full max-w-7xl flex-col gap-3 px-4 py-8 xl:flex-row xl:items-center xl:justify-between xl:px-8">
         <div className="flex flex-col">
-          <strong className="text-sm font-semibold text-foreground">{brand.name}</strong>
-          <span className="mt-0.5 text-[13px] text-muted-foreground">{brand.tagline}</span>
+          <strong className="text-base font-semibold text-foreground">{brand.name}</strong>
+          <span className="mt-0.5 text-sm text-muted-foreground">{brand.tagline}</span>
         </div>
-        <p className="max-w-md text-[13px] leading-relaxed text-muted-foreground">
+        <p className="max-w-md text-sm leading-relaxed text-muted-foreground">
           Sismart membantu satu lembaga sekolah mengelola akademik dan keuangan dalam satu tempat.
         </p>
       </div>

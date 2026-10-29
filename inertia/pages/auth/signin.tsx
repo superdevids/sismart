@@ -88,12 +88,9 @@ export default function Signin() {
         <Separator className="flex-1" />
       </div>
 
-      <p className="flex items-start gap-2 text-xs leading-relaxed text-muted-foreground">
-        <ShieldCheck className="mt-0.5 size-3.5 shrink-0 text-success" />
-        <span>
-          Belum punya kode? Hubungi administrator sekolah. Sesi Anda aman dan tidak dibagikan ke
-          siapa pun.
-        </span>
+      <p className="flex items-center gap-2 text-xs leading-relaxed text-muted-foreground">
+        <ShieldCheck className="mt-0.5 size-3 shrink-0 text-success" />
+        <span>Sesi Anda aman dan tidak dibagikan ke siapa pun.</span>
       </p>
     </>
   )

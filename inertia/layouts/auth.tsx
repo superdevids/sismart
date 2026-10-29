@@ -13,7 +13,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
   const brand = usePage().props.brand
   const brandName = brand?.name ?? 'SMKN 1 Indonesia'
   const institutionType = brand?.institutionType ?? 'Sekolah'
-  const tagline = brand?.tagline ?? 'Sistem informasi sekolah'
 
   return (
     <div className="relative flex min-h-dvh flex-col overflow-x-hidden bg-background px-4 py-8 xl:px-8">
@@ -32,10 +31,10 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
               <div className="flex items-center gap-2.5">
                 <Logo size={30} />
                 <div className="flex flex-col">
-                  <span className="text-[15px] font-semibold leading-tight text-foreground">
+                  <span className="text-sm font-semibold leading-tight text-foreground">
                     {brandName}
                   </span>
-                  <span className="text-[11.5px] text-muted-foreground">{institutionType}</span>
+                  <span className="text-xs text-muted-foreground">{institutionType}</span>
                 </div>
               </div>
               <ThemeToggle />
@@ -45,14 +44,6 @@ export default function AuthLayout({ children }: { children: ReactNode }) {
           <div className="mt-6">{children}</div>
         </div>
       </div>
-
-      <footer className="mx-auto mt-6 flex w-full max-w-lg flex-wrap items-center justify-center gap-x-2 gap-y-1 text-xs text-muted-foreground">
-        <span>
-          © {new Date().getFullYear()} {brandName}
-        </span>
-        <span aria-hidden="true" className="size-[3px] rounded-full bg-current opacity-60" />
-        <span>{tagline}</span>
-      </footer>
 
       <FlashToasts />
     </div>
